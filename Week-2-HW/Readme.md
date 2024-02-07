@@ -1,0 +1,1 @@
+This repo is for a foundational course on D3 that I am taking in Spring 2024. It contains homework and mini-project. 
