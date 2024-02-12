@@ -1,4 +1,9 @@
-# D3 Fundamentals
+# About Me
+I am making a career change into the field of data analysis and visualization. While I did take a D3 course before, I was seriously out of my element, and that class moved very fast. Here, I have a chance to better grasp the basics of D3.
+
+**Fun Fact** After a lifelong fear of the water, I started taking swim classes in 2020. 
+
+## D3 Fundamentals
 
 This repo is for a **foundational course on D3** that I am taking in Spring 2024. The folder contains the following:
 1. Class code
