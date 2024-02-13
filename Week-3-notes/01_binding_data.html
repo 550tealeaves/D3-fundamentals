@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Binding Data Example</title>
+        <script src= "https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css">
+            /*NOTE: This is how you comment in CSS!*/
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript">
+
+        //the variable name "data" could be anything - standard is to use data
+        //const data = [10, 20, 30, 40, 50];
+        const data = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+        //const data = [15, 25];
+ 
+        //D3 relies on chaining bits of code w/ "."
+        //Select elements and bind data to the DOM
+        d3.select("body")
+          .selectAll("p") //select all the "p" elements
+          .data(data) //using the data named "data"
+          .enter() //enter is always enter b/c creating placeholder
+          .append("p") //appending "p" for each placeholder created
+          //.text("We are binding data!");//don't forget the ; - will display the sentence 5x b/c it adds text for each array item
+
+            //arrow function
+        //.text(d => d); // Note: you may have seen: .text(function(d) {return d;});
+            //this shows the value of the array items  
+
+          //d is the current value of the data and is used as placeholder in anonymous functions 
+         .text(d => "The number is " + d); //will loop through each item in the array and add it at the end of the sentence
+        //.style("color", "red")
+
+            //NOTE: This is how you comment in JavaScript!
+            
+            /*NOTE: 
+            You can also comment like this,
+            if your comment is multiple lines 
+            long!*/
+
+        </script>
+    </body>
+</html>
