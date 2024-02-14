@@ -20,24 +20,35 @@
         array values? See our foundations 1 slide deck if needed.*/      
             
             const data = [
-                            [200, 40], [170, 100], [400, 60], [100, 150], [410, 300], [120, 220], [310, 260], [400, 110]
+                [200, 40], 
+                [170, 100], 
+                [400, 60], 
+                [100, 150], 
+                [410, 300], 
+                [120, 220], 
+                [310, 260], 
+                [400, 110]
             ];
 
         
         //2. Declare SVG width and height in pixels (remember the ; after declaring variables!)
+
+            const width = 400;
+            const height = 300;
+            const radius = 5;
             
-            //TODO: const 
-            //TODO: const
+            
+
 
 
         //3. Create our SVG element, applying the SVG (canvas) width and height 
         //NOTE: this should be pretty straight forward from our example. 
             
             
-            //TODO: const svg = d3.select()
-                                // .append()
-                                // .attr() 
-                                // .attr(); //Hint: don't delete this ending ;
+            TODO: const svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
 
 
             
@@ -48,14 +59,14 @@
         (3 in total)-check today's slide deck.*/ 
         //TIP: get the circles showing before you attempt the labels (step 5) 
             
-            //TODO: svg.selectAll()
-                        // .data()
-                        // .enter()
-                        // .append()
-                        // .attr() //(a required circle value, and a function of what it returns)  // Hint: we want to return d[] with the x value of the array
-                        // .attr() //(a required circle value, and a function of what it returns)  // Hint: we want to return d[] with the y value of the array 
-                        // .attr() //(another required circle value, and a number: try 10)
-                        // .attr(); //optional: change the color of the circles 
+            TODO: svg.selectAll("circle")
+                        .data(data)
+                        .enter()
+                        .append("circle")
+                        .attr("cx") //(a required circle value, and a function of what it returns)  // Hint: we want to return d[] with the x value of the array
+                        .attr("cy") //(a required circle value, and a function of what it returns)  // Hint: we want to return d[] with the y value of the array 
+                        .attr("r") //(another required circle value, and a number: try 10)
+                        .attr("fill", "pink"); //optional: change the color of the circles 
 
             //HINT: don't forget the ending ;
 
@@ -63,13 +74,13 @@
         //5. Add data labels 
         //NOTE: This will rely on much of the same code we have used in our SVG example. 
             
-            // TODO: svg.selectAll()
-            //      .data()
-            //      .enter()
-            //      .append()
-            //      .text() //we want the text to return the data values
-            //      .attr() //we want to give the text an x value, use what you used above, mind the difference between circle text properties 
-            //      .attr(); //we want to give the text a y value, use what you used above, mind the difference between circle text properties 
+            TODO: svg.selectAll("text")
+                 .data(data)
+                 .enter()
+                 .append("text")
+                 .text(d=>d) //we want the text to return the data values
+                 .attr("cx") //we want to give the text an x value, use what you used above, mind the difference between circle text properties 
+                 .attr("cy"); //we want to give the text a y value, use what you used above, mind the difference between circle text properties 
 
 
         /*OPTIONAL: other .attr() properties you might add to a text 
