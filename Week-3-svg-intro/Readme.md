@@ -1,6 +1,6 @@
 # Homework 2
 ## Aim
-Reinforce knowledge of SVGs by creating a basic scatterplot with the "circle" SVG.
+Reinforce knowledge of SVGs by creating a basic scatter plot with the "circle" SVG.
 
 **Circles have 3 attributes or arguments**
 - cx (x-position)
