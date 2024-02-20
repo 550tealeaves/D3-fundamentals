@@ -92,11 +92,11 @@
             .attr("alignment-baseline", "middle")
 
             //ATTRIBUTE X
-            .attr("x", (d, i) => i * (width / data.length)) //give the text an x value - moves the numbers to the right
+            .attr("x", (d, i) => i * (width / data.length)) //give the text an x value - text moves but can't position over correct circles
             //.attr("x", d => d.x + d.bandwidth()*200)
             
             //ATTRIBUTE Y
-            .attr("y", d => (height / data.length) + 75) // give the text a y value -  text is stuck in the top left corner - can't move it
+            .attr("y", d => (height / data.length) + 275) // give the text a y value -  text moves down but can't position it over the correct circles
             //.attr("y", d=> d.y)
 
             //STYLING THE TEXT LABELS

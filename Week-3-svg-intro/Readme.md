@@ -12,3 +12,5 @@ Then we will use code to create text labels that display the circle coordinates 
 After much frustration, I was able to generate the scatter plot, however, the text labels are difficult to re-position. They are stuck at the top left corner of the screen. 
 
 
+![Scatter plot but with the labels listed incorrectly](scatterplot_hw.jpg)
+
