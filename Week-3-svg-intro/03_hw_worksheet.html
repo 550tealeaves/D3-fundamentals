@@ -54,14 +54,17 @@
             .data(data)  
             .enter() //should be blank
             .append("circle") //adds circle
-            //Add cx attribute
+            
+            //ADD CX ATTRIBUTE
             .attr("cx", ([x, y]) => x) //(a required circle value, and a function of what it returns)  // Hint: we want to return d[] with the x value of the array
 
-            //Add cy attribute
+            //ADD CY ATTRIBUTE
             .attr("cy", ([x, y]) => y) //(a required circle value, and a function of what it returns)  // Hint: we want to return d[] with the y value of the array 
 
-            //Add radius attribute
+            //ADD RADIUS ATTRIBUTE
             .attr("r", 15) //(another required circle value, and a number: try 10)
+
+            //STYLING THE CIRCLES 
             .attr("fill", "violet") //change the color
             .attr("stroke", "red", 18) //add outline
             .style("stroke-width", 4); //change thickness of outline
