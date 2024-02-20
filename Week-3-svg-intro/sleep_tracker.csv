@@ -1,37 +1,29 @@
-﻿Date,# veggies eaten daily,Fell asleep after waking up to use bathroom,Sleep quality,Hours sleep
-1/15/2024,3,Y,Bad,3
-1/16/2024,3,N,Very bad,2
-1/17/2024,3,N,Bad,3
-1/18/2024,3,Y,Bad,3.5
-1/19/2024,3,N,Bad,3
-1/20/2024,3,N,Bad,3
-1/21/2024,3,N,Bad,4
-1/22/2024,2,Y,Very bad,2
-1/23/2024,2,Y,Very bad,2
-1/24/2024,2,N,Neutral,5
-1/25/2024,3,Y,Good,6
-1/26/2024,1,Y,Neutral,4.5
-1/27/2024,3,Y,Great,7
-1/28/2024,2,Y,Neutral,5
-1/29/2024,1,Y,Neutral,5
-1/30/2024,2,N,Bad,3.5
-1/31/2024,3,N,Neutral,5
-2/1/2024,3,Y,Good,6
-2/2/2024,4,N,Very bad,2
-2/3/2024,2,Y,Neutral,5
-2/4/2024,2,Y,Very bad,1
-2/5/2024,2,Y,Neutral,5
-2/6/2024,2,Y,Neutral,5
-2/7/2024,2,Y,Bad,3
-2/8/2024,3,Y,Neutral,5
-2/9/2024,1,Y,Neutral,5
-2/10/2024,3,Y,Bad,3
-2/11/2024,2,N,Very bad,2
-2/12/2024,2,N,Bad,3
-2/13/2024,2,Y,Bad,3
-2/14/2024,2,Y,Neutral,5
-2/15/2024,1,Y,Good,6
-2/16/2024,2,Y,Neutral,5
-2/17/2024,2,Y,Good,6.5
-2/18/2024,1,N,Bad,3
-2/19/2024,2,Y,Bad,3
+﻿day,vegges_eaten,asleep_after_bathroom,sleep_quality,sleep_hours
+Monday,3,Y,Bad,3
+Tuesday,3,N,Very bad,2
+Wednesday,3,N,Bad,3
+Thursday,3,Y,Bad,3.5
+Friday,3,N,Bad,3
+Saturday,3,N,Bad,3
+Sunday,3,N,Bad,4
+Monday,2,Y,Very bad,2
+Tuesday,2,Y,Very bad,2
+Wednesday,2,N,Neutral,5
+Thursday,3,Y,Good,6
+Friday,1,Y,Neutral,4.5
+Saturday,3,Y,Great,7
+Sunday,2,Y,Neutral,5
+Monday,1,Y,Neutral,5
+Tuesday,2,N,Bad,3.5
+Wednesday,3,N,Neutral,5
+Thursday,3,Y,Good,6
+Friday,4,N,Very bad,2
+Saturday,2,Y,Neutral,5
+Sunday,2,Y,Very bad,1
+Monday,2,Y,Neutral,5
+Tuesday,2,Y,Neutral,5
+Wednesday,2,Y,Bad,3
+Thursday,3,Y,Neutral,5
+Friday,1,Y,Neutral,5
+Saturday,3,Y,Bad,3
+Sunday,2,N,Very bad,2
