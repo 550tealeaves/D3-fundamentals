@@ -17,7 +17,7 @@
             const margin = 50; 
             const radius = 6;
 
-            //2. Data & related variables: max for x and y 
+            //2. Data & related variables: max for x and y - x is index(0), y is index(1)
             const data = [
             [200, 40], [170, 100], 
             [400, 60], [100, 150], 
@@ -28,29 +28,30 @@
             ];
 
             // d3.max to create variables for max XY (for scales Option 2)
-            const maxX = d3.max(data, d => d[0]);            
-            const maxY = d3.max(data, d => d[1]);
+            //have to call the data as an array and tell d3 which is the 0 position & which is the 1st 
+            const maxX = d3.max(data, d => d[0]); //find max x-value           
+            const maxY = d3.max(data, d => d[1]); //find max y-value
             
             console.log("data", data);
 
-            //3a. (NEW) Scales Option 1: using hard coded values
+            //3a. (NEW) Scales Option 1: using hard coded values - just entered numbers - scale will be 0-1000
+            // const xScale = d3.scaleLinear()
+            //                  .domain([0, 1000]) 
+            //                  .range([margin, svgW-margin]); //keep viz w/in margin on both sides
+
+            // const yScale = d3.scaleLinear()
+            //                  .domain([0, 1000]) 
+            //                  .range([svgH-margin, margin]); //y is always flipped 
+
+
+            //3b. (NEW) Scales Option 2: using d3.max (recommended)
             const xScale = d3.scaleLinear()
-                             .domain([0, 1000]) 
+                             .domain([0, maxX]) //scale ends at max x-value
                              .range([margin, svgW-margin]); 
 
             const yScale = d3.scaleLinear()
-                             .domain([0, 1000]) 
-                             .range([svgH-margin, margin]); 
-
-
-            // //3b. (NEW) Scales Option 2: using d3.max (recommended)
-            // const xScale = d3.scaleLinear()
-            //                  .domain([0, maxX]) 
-            //                  .range([margin, svgW-margin]); 
-
-            // const yScale = d3.scaleLinear()
-            //                  .domain([0, maxY]) 
-            //                  .range([svgH-margin, margin]); 
+                             .domain([0, maxY]) //scale ends at max y-value
+                             .range([svgH-margin, margin]); //y-flipped
 
             //4. SVG             
             const svg = d3.select("body")
@@ -58,19 +59,21 @@
                         .attr("width", svgW) 
                         .attr("height", svgH);
 
-            //5. (NEW) Axes - create and implement
+            
+            //5. (NEW) AXES - CREATE & IMPLEMENT
             /*Each axis needs the relevant scale & any ticks.
             To implement: you also need to actually call it!*/
             
             //bottom (X) axis
-            const bottomAxis = d3.axisBottom()
-                                .scale(xScale)
-                                //.tickValues([0, 100, 300, 500]);
-                                .ticks(10);
-            //implement x axis
-            svg.append("g")
-                .attr("transform", "translate(0," + (svgH -margin) + ")") //this makes the axis appear at the bottom of the chart--pushes it down to the bottom
-                .call(bottomAxis); // now we are calling our the bottomAxis function that we generated above
+            const bottomAxis = d3.axisBottom() 
+                                .scale(xScale) //give the axes the scale
+                                //.tickValues([0, 100, 300, 500]); //specifies the exact ticks
+                                .ticks(10); //optional - d3 can preset if not explicit
+            
+            //IMPLEMENT X-AXIS
+            svg.append("g") //g = group
+                .attr("transform", "translate(0," + (svgH - margin) + ")") //this makes the axis appear at the bottom of the chart--pushes it down to the bottom - go to the bottom - margin 
+                .call(bottomAxis); // call bottomAxis function that we generated above
 
             //left (Y) axis
             const leftAxis = d3.axisLeft()
@@ -80,17 +83,18 @@
             
             //implement y axis
             svg.append("g")
-                 .attr("transform", "translate(" + margin + ",0)") //this makes the axis appear at the left of the chart--and includes the margin so we can see it.
-                 .call(leftAxis); // now we are calling our the leftAxis function that we generated above
+                 .attr("transform", "translate(" + margin + ",0)") //this makes the axis appear at the left of the chart--and includes the margin so we can see it. - goes all the way to the left and then shift back by the margin number
+                 .call(leftAxis); // call leftAxis function that we generated above
 
 
             //6. Circles 
+            //Must include the scales
             svg.selectAll("circle") 
                 .data(data) 
                 .enter()
                 .append("circle") 
-                .attr("cx", d => xScale(d[0])) 
-                .attr("cy", d => yScale(d[1])) 
+                .attr("cx", d => xScale(d[0])) //apply scale to everything
+                .attr("cy", d => yScale(d[1])) //apply scale to everything
                 .attr("r", radius) 
                 .attr("fill", "pink"); 
 

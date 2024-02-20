@@ -5,7 +5,9 @@
         <title>Bar Chart Scales and Load Data</title>
         <script type="text/javascript" src= "https://d3js.org/d3.v7.min.js"></script>
         <style type="text/css">
-            /*TBD*/
+            body{
+                background-color: azure;
+            }
         </style>
     </head>
     <body>
@@ -15,63 +17,76 @@
         const margin = 30;
         const width = 500; 
         const height = 500;
-        const padding = .02;  
+        const padding = .05; //space b/w bars
 
 
-        //Load data and related variables
+        //LOAD EXTERNAL DATA & RELATED VARIABLES
+        //d3 works w/ all types of formats
+        //make sure column names are simple to prevent error
+        //load data on a promise - code doesn't have to wait for the data to show up
+        //d3.csv makes request, points to data file
+        //use .then to chain code once execution happens - then, give the csv file a variable name (data) and then format the data
+        //always keep console log in to ensure data loaded correctly
         d3.csv("emails.csv").then(data => {
             console.log("data", data)
+        
         //format data
+        //forEach row under a column, format it a specific way
+        //data is an object - have to use .notation to access the data from the columns - .day & .emails = col headers
+        //have to convert string numbers into integers
         data.forEach(d => { 
             d.day = d.day;
-            d.emails = +d.emails; 
+            d.emails = +d.emails; // "+" uniary? operator parses the data & converts strings into integers
         });
 
-        const maxY = d3.max(data, d => d.emails);
+        //FIND MAX VALUE OF THE COLUMN
+        const maxY = d3.max(data, d => d.emails); //find max value in emails col
 
 
-        //Scales - note: band and linear
-        const xScale = d3.scaleBand()
-                        .domain(data.map(d => d.day))
-                        .range([margin, width - margin])
-                        .paddingInner(padding);
+        //SCALES - note: BAND & LINEAR
+        const xScale = d3.scaleBand() //use this for non-numeric (ordinal) data
+                        .domain(data.map(d => d.day)) //maps the things in day column evenly on DOM
+                        .range([margin, width - margin]) //fit "things" w/in margin
+                        .paddingInner(padding); //add padding b/w "thing" names
         
         const yScale = d3.scaleLinear()
-                        .domain([0, maxY]) 
-                        .range([height - margin, margin]);
+                        .domain([0, maxY]) //goes from 0 to max value in email
+                        .range([height - margin, margin]); 
         
 
-        //SVG
+        //CREATE SVG
         const svg = d3.select("body")
                     .append("svg")
                     .attr("width", width)
                     .attr("height", height);
 
                     
-        //Axes - create and implement x/y axes
+        //AXES - CREATE & IMPLEMENT X/Y AXES
         const bottomAxis = d3.axisBottom()
-                             .scale(xScale);
+                             .scale(xScale); //give it the x-scale
         
         svg.append("g")
-            .attr("transform", "translate(0," + (height - margin) + ")") 
-            .call(bottomAxis); 
+            .attr("transform", "translate(0," + (height - margin) + ")") //position
+            .call(bottomAxis); //must call axes for it to display
         
         const leftAxis = d3.axisLeft()
-                           .scale(yScale);
+                           .scale(yScale); //give it y-scale
 
         svg.append("g")
             .attr("transform", "translate(" + margin + ",0)")
-            .call(leftAxis); 
+            .call(leftAxis); //call axes so it shows
         
-        //Bars
+        //CREATE BARS
         svg.selectAll("rect") 
             .data(data) 
             .enter()
             .append("rect")
+            //4 parameters - x,y, width, height
             .attr("x", d => xScale(d.day)) 
             .attr("y", d => yScale(d.emails)) 
-            .attr("width", xScale.bandwidth())
+            .attr("width", xScale.bandwidth()) //take scale & have d3 determine width of bars based on other parameters
             .attr("height", d => (height-margin) - yScale(d.emails))
+            .attr("stroke", "brown")
             .attr("fill", "pink");
 
                 
