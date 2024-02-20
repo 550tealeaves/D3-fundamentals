@@ -93,11 +93,11 @@
 
             //ATTRIBUTE X
             .attr("x", (d, i) => i * (width / data.length)) //give the text an x value - moves the numbers to the right
-            //.attr("cx", d => d.x + d.bandwidth()*200)
+            //.attr("x", d => d.x + d.bandwidth()*200)
             
             //ATTRIBUTE Y
             .attr("y", d => (height / data.length) + 75) // give the text a y value -  text is stuck in the top left corner - can't move it
-            //.attr("cy", d=> d.y)
+            //.attr("y", d=> d.y)
 
             //STYLING THE TEXT LABELS
             .attr("stroke", "forestgreen") //change the colors of the data labels
