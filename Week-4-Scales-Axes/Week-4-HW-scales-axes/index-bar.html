@@ -51,7 +51,7 @@
             const xScale = d3.scaleBand() //use this for non-numeric (ordinal) data
                 .domain(data.map(d => d.quality)) //maps the things in day column evenly on DOM
                 .range([margin, width - margin]) //fit "things" w/in margin
-                //.paddingInner(padding); //add padding b/w "thing" names
+                .paddingInner(padding); //add padding b/w "thing" names
 
             const yScale = d3.scaleLinear()
                 .domain([0, maxY]) //goes from 0 to max value in email
@@ -83,47 +83,29 @@
                 .attr("transform", "translate(" + margin + ",0)")
                 .call(yAxis); //call axes so it shows
 
-
-            //CREATE CIRCLES
-            svg.selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("cx", d => xScale(d.quality) + 45) //moved the dots to the right so it aligns with axis ticks
-            .attr("cy", d => yScale(d.sleep))
-            .attr("r", 6)
-            .attr("stroke", "navy")
-            .attr("stroke-width", 3)
-            .attr("fill", "limegreen");
-            
-
+            //CREATE BARS
+            svg.selectAll("rect")
+                .data(data)
+                .enter()
+                .append("rect")
+                //4 parameters - x,y, width, height
+                .attr("x", d => xScale(d.quality))
+                .attr("y", d => yScale(d.sleep))
+                .attr("width", xScale.bandwidth()) //take scale & have d3 determine width of bars based on other parameters
+                .attr("height", d => (height - margin) - yScale(d.sleep))
+                .attr("stroke", "brown")
+                .attr("fill", "pink");
 
 
-
-            // //CREATE BARS
-            // svg.selectAll("rect")
-            //     .data(data)
-            //     .enter()
-            //     .append("rect")
-            //     //4 parameters - x,y, width, height
-            //     .attr("x", d => xScale(d.quality))
-            //     .attr("y", d => yScale(d.sleep))
-            //     .attr("width", xScale.bandwidth()) //take scale & have d3 determine width of bars based on other parameters
-            //     .attr("height", d => (height - margin) - yScale(d.sleep))
-            //     .attr("stroke", "brown")
-            //     .style("stroke-width", 5)
-            //     .attr("fill", "indigo");
-
-
-            //CREATE CIRCLE LABELS
+            //CREATE BAR LABELS
             svg.selectAll("text")
                 .data(data)
                 .enter()
                 .append("text")
                 .text(d=>d)
+                //.attr("x", (d, i) => i * (width / d.quality) + 150)
                 .attr("x", d => xScale(d.quality) + width)
-                //.attr("x", (d, i) => i * (width))
-                .attr("y", d =>  yScale(d.sleep) - [height-margin])
+                .attr("y", d =>  yScale(d.sleep) + margin)
                 .attr("fill", "purple");
 
 
