@@ -16,13 +16,13 @@
         //DECLARE CONSTANTS
         const width = 600;
         const height = 700;
-        const margin = { top: 40, left: 60, bottom: 60, right: 20 };
+        const margin = 40;
         const padding = 0.06;
 
 
         //LOAD THE DATASET
         d3.csv("sleep_tracker.csv").then(data => {
-            console.log("sleep", data);
+            console.log("sleep", data)
 
         //FORMAT THE DATA
         //RELABEL COLUMNS
@@ -34,8 +34,64 @@
             d.asleep = d.asleep_after_bathroom; //store col as diff name
         });
 
+        //Could use d3.max to find the max value but the values are very small, so will manually code it
 
         
+        
+        //CREATE SCALES
+        //X-SCALE
+        const xScale = d3.scaleBand()
+            .domain(data.map(d => d.quality))
+            //.domain(data.map(d => d.day))
+            .range([margin, width - margin])
+            .paddingInner(padding);
+        
+        
+        //Y-SCALE
+        const yScale = d3.scaleLinear()
+            .domain([0, 10])
+            .range(height - margin, margin);
+        
+        
+        
+        //CREATE SVG
+        const svg = d3.select("body")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+        
+        
+        //CREATE AXES
+        //x-AXIS
+        const xAxis = d3.axisBottom()
+            .scale(xScale);
+
+        //APPEND & CALL X-AXIS
+        svg.append("g")
+            .attr("transform", "translate(0," + (height - margin) + ")")
+            .call(xAxis);
+
+        //Y-AXIS
+        const yAxis = d3.axisLeft()
+            .scale(yScale);
+
+        //APPEND & CALL Y-AXIS
+        svg.append("g")
+            .attr("transform", "translate(" + margin + ",0)")
+            .call(yAxis);
+
+        
+        //CREATE BARS
+        svg.selectAll("rect")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("x", d => xScale(d.quality))
+            .attr("y", d => yScale(d.sleep))
+            .attr("width", xScale.bandwidth())
+            .attr("height", d=> (height-margin) - yScale(d.sleep))
+            .attr("stroke", "indigo")
+            .attr("fill", "orange");
 
 
 
@@ -53,7 +109,20 @@
 
 
 
-        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+        });
 
 
 
