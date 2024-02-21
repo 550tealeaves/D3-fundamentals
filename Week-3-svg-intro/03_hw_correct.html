@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>SVG Scatterplot Homework 1</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style type="text/css">
+        /*TBD*/
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+
+        //1. Use this dataset for our scatter plot -- nothing to do.    
+
+        /* NOTE: this looks different the data we used for a bar chart.
+        It is an array of arrays. [200, 40] is the [x,y] values of the
+        first point in our scatter plot. Do you remember how to call 
+        array values? See our foundations 1 slide deck if needed.*/ 
+        const data = [
+                [200, 40],
+                [170, 100],
+                [400, 60],
+                [100, 150],
+                [410, 300],
+                [120, 220],
+                [310, 260],
+                [400, 110]
+            ];
+
+        //2. Declare SVG width and height in pixels (remember the ; after declaring variables!)
+        const width = 800;
+        const height = 600;
+        const margin = { top: 40, left: 60, bottom: 60, right: 20 };
+
+
+        //3. Create our SVG element, applying the SVG (canvas) width and height
+        //NOTE: this should be pretty straight forward from our example. 
+        const svg = d3.select("body") //select body element
+            .append("svg") //append svg 
+            .attr("width", width) //apply width and height specified  
+            .attr("height", height);
+
+
+        //4. Use "circle" (not "rect") and add them to SVG to visualize our data. 
+            
+        /*NOTE: Remember that "rect" needed the following in .attr(): 
+        x,y,width,height. But, "circle" requires different parameters
+        (3 in total)-check today's slide deck.*/ 
+        //TIP: get the circles showing before you attempt the labels (step 5) 
+        svg.selectAll("circle") //selectAll circles in the SVG not just one - these don't currently exist
+            .data(data)  
+            .enter() //should be blank
+            .append("circle") //adds circle
+
+            //ADD CX ATTRIBUTE
+            .attr("cx", d => d[0]) //index 1 of the data array
+
+            //ADD CY ATTRIBUTE
+            .attr("cy", d => height - d[1]) // select index 1 of the data array - must include the height b/c flipped
+
+            //ADD RADIUS ATTRIBUTE
+            .attr("r", 15) //(another required circle value, and a number: try 10)
+
+            //STYLING THE CIRCLES 
+            .attr("fill", "violet") //change the color
+            .attr("stroke", "red", 18) //add outline
+            .style("stroke-width", 4); //change thickness of outline
+
+        //HINT: don't forget the ending ;
+
+
+        console.log(data.length); // to see what the length is you can always print to console
+
+        //5. Add data labels 
+        //NOTE: This will rely on much of the same code we have used in our SVG example. 
+
+        //6. Add data labels 
+        /*Note: This relies on basically the same code, 
+        but now we are making a text element which (like line, 
+        circle, ellipse, and circle) we can add to an SVG element. 
+        We are using .text() to return d, our data values. 
+        We then use the exact same x and y information).*/
+        svg.selectAll("text") //select all text elements that aren't created
+            .data(data) //use data
+            .enter()
+            .append("text") //adds text
+            .text(d => d) //text should return the data values
+            //.attr("text-anchor", "middle")
+            .attr("alignment-baseline", "middle")
+
+            //ATTRIBUTE X
+            .attr("x", d => d[0] + 20) //give text an x value which is the 0 index position - positive # moves text to right
+            
+            //ATTRIBUTE Y
+            .attr("y", d => height - d[1] + 2) // give text a y value, which is the 1 index position  - must include the height b/c flipped - positive # moves text down
+
+            //STYLING THE TEXT LABELS
+            .attr("stroke", "forestgreen") //change the colors of the data labels
+            .attr("font-ize", 15)
+            .attr("font-style", "italic")
+            .attr("font-family", "sans-serif");
+
+        /*other .attr() properties you might add to a text element
+        could be "font-family", "font-size", "fill" 
+        (where values might be "sans-serif", "12px", and "white")*/
+
+    </script>
+</body>
+
+</html>
