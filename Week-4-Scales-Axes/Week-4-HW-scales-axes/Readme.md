@@ -31,5 +31,16 @@ This week we learned about scales, axes, and loading data.
 3. d3.axisLeft (common)
 4. d3.axisRight
 
+# Loading data
+- d3 can accept different types of data (ex; json)
+- Use d3.csv to load data as a promise so it doesn't have to wait
+- Then give the dataset a variable name
+- Console log the data to ensure it loaded properly
+- Format if needed
 
+
+# Homework
+- Create a simple dataset and either construct a bar chart or scatter plot based on the data
+- Style and format
+- Try to add a title to chart
 
