@@ -19,7 +19,7 @@
         const margin = 30;
         const width = 500;
         const height = 500;
-        const padding = .05; //space b/w bars
+        const padding = .2; //space b/w bars
 
 
         //LOAD EXTERNAL DATA & RELATED VARIABLES
@@ -60,7 +60,8 @@
             const svg = d3.select("body")
                 .append("svg")
                 .attr("width", width)
-                .attr("height", height);
+                .attr("height", height)
+                .attr("transform", "translate(" + margin + ",10)");
 
 
             //AXES - CREATE & IMPLEMENT X-AXIS
@@ -101,20 +102,21 @@
                 .enter()
                 .append("text")
                 .text(d=>d)
+                //.attr("text-anchor", "middle")
                 .attr("x", (d, i) =>  xScale(d.quality))
                 //.attr("x", d => xScale(d.quality) + width)
                 .attr("y", d => (height - margin) - yScale(d.sleep) + 140)
                 //.attr("y", d =>  yScale(d.sleep) + margin)
-                .attr("fill", "purple");
+                .attr("fill", "indigo");
 
-            //CREATE AXES LABELS
-            
-
-
-
-
-
-
+            //CREATE AXES LABELS - NOT WORKING
+            // svg
+            //     .append("label")
+            //     .attr("fill", "orange")
+            //     .style("font-weight", "bold")
+            //     .attr("transform", "translate(" + margin + ",280)")
+            //     .style("font-size", "14px")
+            //     .text("Sleep quality");
 
 
         });
