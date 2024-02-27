@@ -24,8 +24,8 @@
                             .attr("y", 100)
                             .attr("width", 50)
                             .attr("height", 70)
-                            //.attr("rx", 15)//corner curve radius x (optional)
-                            //.attr("ry", 15);//corner curve radius y (optional)
+                            //.attr("rx", 15)//corner curve radius x rounds corners
+                            //.attr("ry", 15);//corner curve radius y rounds corners
                             //.attr("transform", "translate(0, 100)");
                             //.attr("transform", "translate(0, 200)");
                             //.attr("transform", "translate(0, 300)")
@@ -72,7 +72,7 @@
                                 .attr("font-size", "16px")
                                 .attr("fill", "red")
                                 //.attr("text-anchor", "end")
-                                //.attr("transform", "rotate(-90, 350, 50)")
+                                .attr("transform", "rotate(-90, 350, 50)") //rotates around a point
                                 .text("hello world");    
 
         </script>

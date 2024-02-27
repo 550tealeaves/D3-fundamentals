@@ -11,8 +11,10 @@
     <body>
     <!--Lets make a heart with SVG path-->
 	<svg width="400" height="400">
+    <!--Path has attribute d (not the d for data). Attribute has series of commands (M##, L##, C##). SVG path commands control drawing-->
+    <!--M = move to (always start w/ this), L = line to - draws straight line, C = curve to (Bezier curve) controls shape, Z = close path ends shape-->
   	<path d="M200,200 C200,100 350,150, 297,230 L200,350 L101,230 C50,150 200,100 200,200" 
-  	stroke="red" stroke-width="2" fill="red"/>
+  	stroke="pink" stroke-width="2" fill="red"/>
 	</svg>
 
     </body>

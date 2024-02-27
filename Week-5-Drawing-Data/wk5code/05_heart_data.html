@@ -16,8 +16,8 @@
         const svgW = 800;
         const svgH = 600;
         const heart = ["M100,100 C100,50 175,75 148.5,115 L100,175 L50.5,115 C25,75 100,50 100,100"];
-        const size = 150;
-        const sizeY = 100;//
+        const size = 150; //random size created
+        const sizeY = 100;// random size created
         
         //Load data and related variables
         d3.csv("heart-data.csv").then(data => {
@@ -25,16 +25,16 @@
           //format data
           data.forEach(d => { 
               d.day = d.day;
-              d.love = +d.love; 
+              d.love = +d.love; //convert string to integer
           });
 
-        const maxData = d3.max(data, d=>d.love);
-        const minData = d3.min(data, d=>d.love);
-        const rowLength = data.length;//
+        const maxData = d3.max(data, d=>d.love); //d3 will find max
+        const minData = d3.min(data, d=>d.love); //d3 will find min
+        const rowLength = data.length;// rowlength = data length (5) - this is okay b/c data is small, but if you have lots of data, will have to adjust
         const myColor = d3.scaleLinear()
                           .domain([minData, maxData])
-                          //.domain([0, maxData])
-                          .range(["white", "red"]);
+                          //.domain([0, maxData]) //this is incorrect domain - it skews the data
+                          .range(["white", "red"]); //can include color as range - since it's a scale, the color can change gradually 
 
         //SVG
         const svg = d3.select("body")
@@ -42,31 +42,32 @@
                 .attr("width", svgW) 
                 .attr("height", svgH);
 
-        //group    
+        //GROUP - want the hearts and labels to move together   
         const g = svg.selectAll("g")//our group! 
                     .data(data)
                     .enter()
                     .append("g")
-                    .attr("transform", (d,i)=>{
+                    //place items on screen in a grid layout
+                    .attr("transform", (d,i)=>{  
                           const x = (i % rowLength) * size; 
-                          const y = (Math.floor(i/rowLength)+1) * sizeY;
+                          const y = (Math.floor(i/rowLength)+1) * sizeY; //position things according to size
                           console.log("xy", [x,y])
                           return "translate(" + [x,y] + ")";})
         //hearts                  
-        g.append("path")
-        .attr("d", heart)
-        .attr("fill", d=> myColor(d.love))
+        g.append("path") //append path b/c it's not a trad SVG shape
+        .attr("d", heart) //"d" is just an adder - it's the d of the path
+        .attr("fill", d=> myColor(d.love)) //this is the d of the data - give it myColor scale with the data - use d.love so it returns #s
         .attr("stroke", "red")
         .attr("stroke-width", "1px");
 
-        //labels
+        //labels - 
         g.append("text")
         .attr("x", size/2 + 20) //x coordinate
         .attr("y", size + 40) //y coordinate
         .attr("text-anchor", "middle") //text alignment 
         .attr("font-family", "sans-serif")
         .attr("dy", "5px") //y coordinate offset
-        .text(d=>d.day); //the text 
+        .text(d=>d.day); //the text - must include the d.day - if you just do d=>d then it's not sure which data to return - will return [object, object] 
 
         });    
         </script>

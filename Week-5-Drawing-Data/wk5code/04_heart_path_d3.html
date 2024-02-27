@@ -16,7 +16,7 @@
         const svgW = 800;
         const svgH = 800;
 
-        //Original SVG path points for our heart--mind the commas!        
+        //Original SVG path points for our heart--mind the commas You must get hte spacing and the commas right! All are x/y coordinates        
         const heart = ["M200,200 C200,100 350,150 297,230 L200,350 L101,230 C50,150 200,100 200,200"];
         
         //SVG
@@ -26,15 +26,15 @@
                 .attr("height", svgH);
         
         //Heart        
-        svg.append("path")
-          .attr("d", heart)//this is NOT our data d, but path
+        svg.append("path") //adding a path
+          .attr("d", heart)//this is NOT our data d, but path - the d is an adder in quotes, no data
           .attr("stroke", "pink")
-          .attr("stroke-width", 3)
-          .attr("fill", "none");
+          .attr("stroke-width", 4)
+          .attr("fill", "none") //only see the outline b/c no fill
           //.attr ("fill", "red");
           //.attr("transform", "translate(100,100)rotate(90, 200,200)")
           //.attr("transform", "scale(.5)");
-          //.attr("transform", "translate(100,100)rotate(90, 100,100)scale(.5)");
+          .attr("transform", "translate(100,100)rotate(90, 100,100)scale(.3)"); //must concatenate when doing multiple transformation - this rotates it 90 to right and scales it down in size
           
         </script>
     </body>

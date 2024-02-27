@@ -101,11 +101,11 @@
                 .data(data)
                 .enter()
                 .append("text")
-                .text(d => d)
+                .text(d => d.sleep)
                 //.attr("text-anchor", "middle")
                 .attr("x", (d, i) => xScale(d.quality))
                 //.attr("x", d => xScale(d.quality) + width)
-                .attr("y", d => (height - margin) - yScale(d.sleep) + 140)
+                .attr("y", d => (height - margin) - yScale(d.sleep) + 40)
                 //.attr("y", d =>  yScale(d.sleep) + margin)
                 .attr("fill", "magenta");
 
