@@ -109,15 +109,16 @@
                 //.attr("y", d =>  yScale(d.sleep) + margin)
                 .attr("fill", "indigo");
 
-            //CREATE AXES LABELS - NOT WORKING
-            // svg
-            //     .append("label")
-            //     .attr("fill", "orange")
-            //     .style("font-weight", "bold")
-            //     .attr("transform", "translate(" + margin + ",280)")
-            //     .style("font-size", "14px")
-            //     .text("Sleep quality");
-
+            //CREATE CHART TITLE
+            svg.append("text")
+                .attr("x", width / 2) //start it at 1/2 of width
+                .attr("y", [height - margin] - 450) // -#s move it up
+                .attr("text-anchor", "middle") //position in middle
+                .attr("fill", "magenta") //color
+                .style("font-size", "20px") //font-size
+                .style("font-weight", 550) //add boldness
+                .style("text-decoration", "underline") //underline
+                .text("SLEEP HOURS & QUALITY"); //capitalized title
 
         });
     </script>

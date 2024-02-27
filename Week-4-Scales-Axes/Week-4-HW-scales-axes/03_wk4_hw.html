@@ -107,7 +107,16 @@
                 .attr("fill", "purple");
 
 
-
+            //CREATE CHART TITLE
+            svg.append("text")
+                .attr("x", width / 2)
+                .attr("y", [height - margin] - 450)
+                .attr("text-anchor", "middle")
+                .attr("fill", "indigo")
+                .style("font-size", "20px")
+                .style("font-weight", 600)
+                .style("text-decoration", "underline")
+                .text("SLEEP HOURS & QUALITY");
 
 
 
