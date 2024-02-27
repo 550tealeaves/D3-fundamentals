@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Heart with D3 and Path</title>
+        <script src= "https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css"> 
+        /*TBD*/
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript">
+        
+        //Consts
+        const svgW = 800;
+        const svgH = 800;
+
+        //Original SVG path points for our heart--mind the commas!        
+        const heart = ["M200,200 C200,100 350,150 297,230 L200,350 L101,230 C50,150 200,100 200,200"];
+        
+        //SVG
+        const svg = d3.select("body")
+                .append("svg")
+                .attr("width", svgW) 
+                .attr("height", svgH);
+        
+        //Heart        
+        svg.append("path")
+          .attr("d", heart)//this is NOT our data d, but path
+          .attr("stroke", "pink")
+          .attr("stroke-width", 3)
+          .attr("fill", "none");
+          //.attr ("fill", "red");
+          //.attr("transform", "translate(100,100)rotate(90, 200,200)")
+          //.attr("transform", "scale(.5)");
+          //.attr("transform", "translate(100,100)rotate(90, 100,100)scale(.5)");
+          
+        </script>
+    </body>
+  </html>
