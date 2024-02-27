@@ -96,17 +96,17 @@
             .attr("fill", "limegreen");
             
 
-            //CREATE CIRCLE LABELS
+            //CREATE CIRCLE LABELS - USE SAME X/Y ATTRIBUTE AS CIRCLES & ADD LITTLE MOVEMENT
             svg.selectAll("text")
                 .data(data)
                 .enter()
                 .append("text")
                 .text(d => d.sleep)
                 //.attr("text-anchor", "middle")
-                .attr("x", (d, i) => xScale(d.quality))
-                //.attr("x", d => xScale(d.quality) + width)
-                .attr("y", d => (height - margin) - yScale(d.sleep) + 40)
-                //.attr("y", d =>  yScale(d.sleep) + margin)
+                //.attr("x", (d, i) => xScale(d.quality))
+                .attr("x", d => xScale(d.quality) + 70) //this puts the labels next to circle
+                //.attr("y", d => (height - margin) - yScale(d.sleep) + 40)
+                .attr("y", d =>  yScale(d.sleep)) //this puts the labels next to circle
                 .attr("fill", "magenta");
 
 

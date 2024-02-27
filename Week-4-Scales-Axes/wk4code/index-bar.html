@@ -96,16 +96,16 @@
                 .attr("fill", "pink");
 
 
-            //CREATE BAR LABELS
+            //CREATE BAR LABELS - USE THE SAME X/Y ATTRIBUTE AS RECTANGLE AND ADD A LITTLE SPACING
             svg.selectAll("text")
                 .data(data)
                 .enter()
                 .append("text")
-                .text(d=>d)
+                .text(d=>d.sleep)
                 //.attr("text-anchor", "middle")
-                .attr("x", (d, i) =>  xScale(d.quality))
+                .attr("x", d => xScale(d.quality) + 30)
                 //.attr("x", d => xScale(d.quality) + width)
-                .attr("y", d => (height - margin) - yScale(d.sleep) + 140)
+                .attr("y", d => yScale(d.sleep) - 2)
                 //.attr("y", d =>  yScale(d.sleep) + margin)
                 .attr("fill", "indigo");
 
