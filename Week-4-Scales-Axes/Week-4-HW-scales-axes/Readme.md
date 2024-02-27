@@ -45,8 +45,17 @@ This week we learned about scales, axes, and loading data.
 - Try to add a title to chart
 
 
+## Dataset
+I compiled a dataset of my poor sleep habits. My sleep has deteriorated since the start of the pandemic and has only worsened. I tracked days, hours slept, and quality rating. I then visualized the data as a scatter plot. 
+
+![picture of scatterplot of sleep data](sleep_data.jpg)  
+
+
 ## What worked and what didn't for the hw
 - Was able to load the data, create a chart, and create the axis
 - Was able to move the SVG over a bit so the left axis wasn't smushed against the left side of the screen
 - Was able to add a chart title
-- Was not able to add the data labels - it only shows as [object, object]
+- Was able to create both a bar and scatter plot - little hard to decide which is better. Opted for scatter because it display the data more than the bar. 
+- Unable to add the data labels - it only shows as [object, object]
+- Unable to order the bars correctly - Very bad should have been the first category, followed by Bad - graph looks weird
+ 
