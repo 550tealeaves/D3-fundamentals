@@ -44,3 +44,9 @@ This week we learned about scales, axes, and loading data.
 - Style and format
 - Try to add a title to chart
 
+
+## What worked and what didn't for the hw
+- Was able to load the data, create a chart, and create the axis
+- Was able to move the SVG over a bit so the left axis wasn't smushed against the left side of the screen
+- Was able to add a chart title
+- Was not able to add the data labels - it only shows as [object, object]

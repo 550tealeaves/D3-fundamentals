@@ -37,7 +37,7 @@
             //data is an object - have to use .notation to access the data from the columns - .day & .emails = col headers
             //have to convert string numbers into integers
             data.forEach(d => {
-                d.sleep = +d.sleep_hours; //use + to convert to integers
+                d.sleep = +d.sleep_hours; //use "+" to convert to integers
                 d.quality = d.sleep_quality; //store col as diff name
             });
 

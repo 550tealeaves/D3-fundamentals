@@ -60,7 +60,8 @@
             const svg = d3.select("body")
                 .append("svg")
                 .attr("width", width)
-                .attr("height", height);
+                .attr("height", height)
+                .attr("transform", "translate(" + margin + ",10)");;
 
 
             //AXES - CREATE & IMPLEMENT X-AXIS
@@ -100,11 +101,13 @@
                 .data(data)
                 .enter()
                 .append("text")
-                .text(d=>d)
-                .attr("x", d => xScale(d.quality) + width)
-                //.attr("x", (d, i) => i * (width))
-                .attr("y", d =>  yScale(d.sleep) - [height-margin])
-                .attr("fill", "purple");
+                .text(d => d)
+                //.attr("text-anchor", "middle")
+                .attr("x", (d, i) => xScale(d.quality))
+                //.attr("x", d => xScale(d.quality) + width)
+                .attr("y", d => (height - margin) - yScale(d.sleep) + 140)
+                //.attr("y", d =>  yScale(d.sleep) + margin)
+                .attr("fill", "crimson");
 
 
             //CREATE CHART TITLE
@@ -117,10 +120,6 @@
                 .style("font-weight", 600)
                 .style("text-decoration", "underline")
                 .text("SLEEP HOURS & QUALITY");
-
-
-
-
 
 
         });
