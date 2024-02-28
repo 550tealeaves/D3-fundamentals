@@ -89,6 +89,17 @@
             .attr("stroke", "brown")
             .attr("fill", "pink");
 
+        //CREATE BAR LABELS - NOT WORKING
+        svg.selectAll("text")
+            .data(data)
+            .enter()
+            .append("text")
+            .text(d => d.emails)
+            .attr("x", d => xScale(d.day) - 80)
+            .attr("y", d => yScale(d.emails))
+            .attr("fill", "blue")
+            .style("font-size", "16px");
+
                 
     });
         </script>
