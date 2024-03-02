@@ -92,7 +92,7 @@
             .data(data)
             .enter()
             .append("circle")
-            .attr("cx", d => xScale(d.quality) + 45) //moved the dots to the right so it aligns with axis ticks
+            .attr("cx", d => xScale(d.quality) + 55) //moved the dots to the right so it aligns with axis ticks
             .attr("cy", d => yScale(d.sleep))
             .attr("r", 6)
             .attr("stroke", "navy")
