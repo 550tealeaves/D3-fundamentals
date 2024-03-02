@@ -16,7 +16,7 @@
     <script type="text/javascript">
 
         //Declare consts/global variables
-        const margin = 30;
+        const margin = 60;
         const width = 500;
         const height = 500;
         const padding = .05; //space b/w bars
@@ -60,8 +60,8 @@
             const svg = d3.select("body")
                 .append("svg")
                 .attr("width", width)
-                .attr("height", height);
-                //.attr("transform", "translate(" + margin + ",10)");
+                .attr("height", height)
+                .attr("transform", "translate(" + margin + ",10)"); //moves the chart slightly away from the edge
 
 
             //AXES - CREATE & IMPLEMENT X-AXIS
@@ -69,17 +69,21 @@
                 .scale(xScale); //give it the x-scale
 
             //APPEND X-SCALE
+            //move axis b/c labels are too close and disappear outside the bounds of margin
             svg.append("g")
-                .attr("transform", "translate(0," + (height - margin) + ")") //position
+                //.attr("transform", "translate(0," + (height - margin) + ")") //original position - puts right at margin
+                .attr("transform", "translate(15," + 430 + ")") //(x,y) coordinate for axis 15 to right and 430 down (15,430)
                 .call(xAxis); //must call axes for it to display
 
             //AXES - CREATE & IMPLEMENT Y-AXIS
             const yAxis = d3.axisLeft()
                 .scale(yScale); //give it y-scale
 
-            //APPEND Y-SCALE
+            //APPEND Y-SCALE - 
+            //move axis b/c labels are too close and disappear outside the bounds of margin
             svg.append("g")
-                .attr("transform", "translate(" + margin + ",0)")
+                //.attr("transform", "translate(" + margin + ",0)") //orig position - puts it right at the margin
+                .attr("transform", "translate(" + 75 + ",-10)") //moves the axis 
                 .call(yAxis); //call axes so it shows
 
 
@@ -104,7 +108,7 @@
                 .text(d => d.sleep)
                 //.attr("text-anchor", "middle")
                 //.attr("x", (d, i) => xScale(d.quality))
-                .attr("x", d => xScale(d.quality) + 70) //this puts the labels next to circle
+                .attr("x", d => xScale(d.quality) + 70) //this puts the labels 70px to right of circle
                 //.attr("y", d => (height - margin) - yScale(d.sleep) + 40)
                 .attr("y", d =>  yScale(d.sleep)) //this puts the labels next to circle
                 .attr("fill", "magenta");
@@ -112,8 +116,8 @@
 
             //CREATE CHART TITLE
             svg.append("text")
-                .attr("x", width / 2)
-                .attr("y", [height - margin] - 450)
+                .attr("x", width / 2) //x-coordinate is at 250
+                .attr("y", [height - margin] - 400) // y-coordinate is at (500-60) - 400 = 40 
                 .attr("text-anchor", "middle")
                 .attr("fill", "indigo")
                 .style("font-size", "20px")
@@ -125,11 +129,27 @@
 
             //ADD X-AXIS LABEL
             svg.append("text")
-            .attr("transform", "translate(" + (width/2) + " ," + (height + 5) + ")")
-            .style("text-anchor", "middle")
+            .attr("transform", "translate(" + (width/2) + " ," + (height-10) + ")") //moves it to coordinates that are middle of the width, height + 5 = (250, 505)
+            .style("text-anchor", "middle") //puts in the middle
+            .attr("fill", "navy")
             .text("Sleep Quality");
 
+
+            //ADD Y-AXIS LABEL
+            svg.append("text")
+            .attr("transform", "rotate(-90)") //will rotate the label 90 degrees pointed up
+            .attr("x", - (height/2)) //x coordinate is middle of height (-250)
+            .attr("y", 15) //y coordinate = 15
+            .style("text-anchor", "middle") //positions in middle
+            .attr("fill", "navy")
+            .text("Hours of Sleep");
+
+
+
+
         });
+
+
     </script>
 </body>
 

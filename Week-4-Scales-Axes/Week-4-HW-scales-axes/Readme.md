@@ -56,6 +56,8 @@ I compiled a dataset of my poor sleep habits. My sleep has deteriorated since th
 - Was able to move the SVG over a bit so the left axis wasn't smushed against the left side of the screen
 - Was able to add a chart title
 - Was able to create both a bar and scatter plot - little hard to decide which is better. Opted for scatter because it display the data more than the bar. 
-- Unable to add the data labels - it only shows as [object, object]
+- Shifted the axes up and to the right because they were too close to the margins, so the axes labels would disappear when you added some spacing
+  
+- Unable to add all data labels - it only shows some
 - Unable to order the bars correctly - Very bad should have been the first category, followed by Bad - graph looks weird
  
