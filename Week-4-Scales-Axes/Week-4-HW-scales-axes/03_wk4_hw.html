@@ -60,8 +60,8 @@
             const svg = d3.select("body")
                 .append("svg")
                 .attr("width", width)
-                .attr("height", height)
-                .attr("transform", "translate(" + margin + ",10)");;
+                .attr("height", height);
+                //.attr("transform", "translate(" + margin + ",10)");
 
 
             //AXES - CREATE & IMPLEMENT X-AXIS
@@ -120,6 +120,14 @@
                 .style("font-weight", 600)
                 .style("text-decoration", "underline")
                 .text("SLEEP HOURS & QUALITY");
+
+
+
+            //ADD X-AXIS LABEL
+            svg.append("text")
+            .attr("transform", "translate(" + (width/2) + " ," + (height + 5) + ")")
+            .style("text-anchor", "middle")
+            .text("Sleep Quality");
 
         });
     </script>
