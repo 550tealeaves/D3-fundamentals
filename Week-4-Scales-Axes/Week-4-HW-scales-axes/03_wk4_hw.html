@@ -93,7 +93,7 @@
             .enter()
             .append("circle")
             .attr("cx", d => xScale(d.quality) + 55) //moved the dots to the right so it aligns with axis ticks
-            .attr("cy", d => yScale(d.sleep))
+            .attr("cy", d => yScale(d.sleep) - 10) //had to move the circles up a bit so they match the ticks
             .attr("r", 6)
             .attr("stroke", "navy")
             .attr("stroke-width", 3)
@@ -117,7 +117,7 @@
             //CREATE CHART TITLE
             svg.append("text")
                 .attr("x", width / 2) //x-coordinate is at 250
-                .attr("y", [height - margin] - 400) // y-coordinate is at (500-60) - 400 = 40 
+                .attr("y", [height - margin] - 415) // y-coordinate is at (500-60) - 400 = 40 
                 .attr("text-anchor", "middle")
                 .attr("fill", "indigo")
                 .style("font-size", "20px")
