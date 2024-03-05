@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Simple Color</title>
+        <script src= "https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css">
+        </style>
+    </head>
+    <body>
+
+        <script type="text/javascript">
+        //consts
+        const width = 800;
+        const height = 800;
+        const w = 500;
+        
+        //data
+        const data = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+        
+        //svg
+        const svg = d3.select("body")
+                .append("svg")
+                .attr("width", width) 
+                .attr("height", height);
+        
+
+        //color swatches, with data and fill 
+        /* Note: the named color & hex examples below are
+        just for your reference, but are not using the data. 
+        Please do not confuse them with a data driven vis. */
+          svg.selectAll("rect")
+               .data(data)
+               .enter()
+               .append("rect")
+               .attr("x", (d,i) => i * (w/data.length) + 20)
+               .attr("y", 100)
+               .attr("width", 40)
+               .attr("height", 40)
+               //.style("fill", "blueviolet");//named color example
+              //.style("fill", "#DC143C");//hex code example
+               .style("fill", d => d >= 55 ? "#808080" : "gold");//our conditional operator! condition ? exprIfTrue : exprIfFalse
+              // .style("opacity", .4);// opacity!
+
+       
+        </script>
+    </body>
+</html>

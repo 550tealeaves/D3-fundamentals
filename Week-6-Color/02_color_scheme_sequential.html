@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Sequential Color Scale</title>
+        <script src= "https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css">
+        </style>
+    </head>
+    <body>
+
+        <script type="text/javascript">
+        //consts
+        const width = 800;
+        const height = 800;
+        const w = 500;
+        
+        //data
+        const data = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+        const maxData = d3.max(data);
+        const minData = d3.min(data);
+        
+        //scales
+        /*Note: use d3.scaleSequential for continuous color schemes
+        -- maps continous domain to continuous range with 
+        .interpolator() see: https://d3js.org/d3-scale-chromatic*/
+        const  myColor = d3.scaleSequential()
+        				   .domain([minData,maxData])
+                           //.domain([0,maxData])//note fill difference!
+        				   .interpolator(d3.interpolateInferno);
+        				   //.interpolator(d3.interpolateTurbo);
+       					   //.interpolator(d3.interpolateGreens);
+       					   //.interpolator(d3.interpolateBuPu);
+       					   //.interpolator(d3.interpolateWarm);
+       					   //.interpolator(d3.interpolate("red", "yellow"));
+
+        //svg
+        const svg = d3.select("body")
+                .append("svg")
+                .attr("width", width) 
+                .attr("height", height);
+        
+        //Create color swatches, with scale 
+          svg.selectAll("rect")
+               .data(data)
+               .enter()
+               .append("rect")
+               .attr("x", (d,i) => i * (w/data.length) + 20)
+               .attr("y", 100)
+               .attr("width", 40)
+               .attr("height", 40)
+               .style("fill", d => myColor(d));
+               //.style("opacity", .4);// opacity!
+
+       
+        </script>
+    </body>
+</html>
