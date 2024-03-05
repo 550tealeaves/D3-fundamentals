@@ -25,7 +25,7 @@
                 .attr("height", height);
         
 
-        //color swatches, with data and fill 
+        //COLOR SWATCHES, with data and fill 
         /* Note: the named color & hex examples below are
         just for your reference, but are not using the data. 
         Please do not confuse them with a data driven vis. */
@@ -39,8 +39,9 @@
                .attr("height", 40)
                //.style("fill", "blueviolet");//named color example
               //.style("fill", "#DC143C");//hex code example
-               .style("fill", d => d >= 55 ? "#808080" : "gold");//our conditional operator! condition ? exprIfTrue : exprIfFalse
-              // .style("opacity", .4);// opacity!
+               .style("fill", d => d >= 55 ? "#808080" : "gold")//our conditional operator! condition ? exprIfTrue : exprIfFals
+               //is the value >/= to 55? If true, use the hex code. If it's false, use gold
+              .style("opacity", .6); // opacity!
 
        
         </script>

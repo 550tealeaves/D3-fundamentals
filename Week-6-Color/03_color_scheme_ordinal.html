@@ -21,11 +21,13 @@
         //scales
         /*use d3.scaleOrdinal for discrete color schemes 
         -- maps a discrete domain to discrete colors; 
+        //DIVIDES SCALE INTO EVEN # OF BUCKETS
         see: https://d3js.org/d3-scale-chromatic*/
-        const  myColor = d3.scaleOrdinal().domain(data)
-                                          .range(d3.schemeSpectral[9]);
-                                          //.range(d3.schemeBlues[9]);//9 sequential but discrete blues
-                                          //.range(d3.schemeCategory10);
+        const  myColor = d3.scaleOrdinal()
+            .domain(data) //data is not #s
+            .range(d3.schemeSpectral[9]);
+            //.range(d3.schemeBlues[9]);//9 sequential but discrete blues
+            //.range(d3.schemeCategory10);
       
         //svg
         const svg = d3.select("body")
@@ -42,7 +44,7 @@
                .attr("y", 100)
                .attr("width", 40)
                .attr("height", 40)
-               .attr("fill", d => myColor(d));
+               .attr("fill", d => myColor(d)); //apply color scale to fill
                //.style("opacity", .4);//here we've added the opacity!
 
         </script>
