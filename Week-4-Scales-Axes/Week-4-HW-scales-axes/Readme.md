@@ -57,7 +57,9 @@ I compiled a dataset of my poor sleep habits. My sleep has deteriorated since th
 - Was able to add a chart title
 - Was able to create both a bar and scatter plot - little hard to decide which is better. Opted for scatter because it display the data more than the bar. 
 - Shifted the axes up and to the right because they were too close to the margins, so the axes labels would disappear when you added some spacing
-  
-- Unable to add all data labels - it only shows some
 - Had to reorder the csv file in order for the x-axis to order properly
+
+
+- Unable to add all data labels - it only shows some
+
  
