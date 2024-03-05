@@ -100,18 +100,18 @@
             .attr("fill", "limegreen");
             
 
-            //CREATE CIRCLE LABELS - USE SAME X/Y ATTRIBUTE AS CIRCLES & ADD LITTLE MOVEMENT
-            svg.selectAll("text")
-                .data(data)
-                .enter()
-                .append("text")
-                .text(d => d.sleep)
-                //.attr("text-anchor", "middle")
-                //.attr("x", (d, i) => xScale(d.quality))
-                .attr("x", d => xScale(d.quality) + 70) //this puts the labels 70px to right of circle
-                //.attr("y", d => (height - margin) - yScale(d.sleep) + 40)
-                .attr("y", d =>  yScale(d.sleep) - 5) //this puts the labels next to circle
-                .attr("fill", "magenta");
+            //CREATE CIRCLE LABELS - USE SAME X/Y ATTRIBUTE AS CIRCLES & ADD LITTLE MOVEMENT - hiding code b/c the data labels do not show properly
+            // svg.selectAll("text")
+            //     .data(data)
+            //     .enter()
+            //     .append("text")
+            //     .text(d => d.sleep)
+            //     //.attr("text-anchor", "middle")
+            //     //.attr("x", (d, i) => xScale(d.quality))
+            //     .attr("x", d => xScale(d.quality) + 70) //this puts the labels 70px to right of circle
+            //     //.attr("y", d => (height - margin) - yScale(d.sleep) + 40)
+            //     .attr("y", d =>  yScale(d.sleep) - 5) //this puts the labels next to circle
+            //     .attr("fill", "magenta");
 
 
             //CREATE CHART TITLE

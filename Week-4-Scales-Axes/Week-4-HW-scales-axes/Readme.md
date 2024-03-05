@@ -59,5 +59,5 @@ I compiled a dataset of my poor sleep habits. My sleep has deteriorated since th
 - Shifted the axes up and to the right because they were too close to the margins, so the axes labels would disappear when you added some spacing
   
 - Unable to add all data labels - it only shows some
-- Unable to order the bars correctly - Very bad should have been the first category, followed by Bad - graph looks weird
+- Had to reorder the csv file in order for the x-axis to order properly
  
