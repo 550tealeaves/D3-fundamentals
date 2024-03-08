@@ -16,7 +16,8 @@
         const w = 500;
 
         //data
-        const data = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
+        const data = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]; //use this for .schemeBlues[9]
+        //const data = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
         
         //scales
         /*use d3.scaleOrdinal for discrete color schemes 
@@ -25,9 +26,9 @@
         see: https://d3js.org/d3-scale-chromatic*/
         const  myColor = d3.scaleOrdinal()
             .domain(data) //data is not #s
-            .range(d3.schemeSpectral[9]);
-            //.range(d3.schemeBlues[9]);//9 sequential but discrete blues
-            //.range(d3.schemeCategory10);
+            .range(d3.schemeSpectral[9]); // 9 discrete colors (repeats on 10th+ item)
+            //.range(d3.schemeBlues[9]);// 9 sequential but discrete blues (light-dark)
+            //.range(d3.schemeCategory10); // 10 discrate colors (repeats on 11th+ & up)
       
         //svg
         const svg = d3.select("body")
