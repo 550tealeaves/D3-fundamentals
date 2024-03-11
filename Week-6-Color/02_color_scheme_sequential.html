@@ -31,12 +31,12 @@
         const  myColor = d3.scaleSequential()
                         .domain([minData,maxData]) //#s represented as variables
                         //.domain([0,maxData])//note fill difference!
-                        //.interpolator(d3.interpolateInferno);
-                        //.interpolator(d3.interpolateTurbo);
+                        //.interpolator(d3.interpolateInferno); //discrete colors of black, purple, pink, orange, & yellow
+                        .interpolator(d3.interpolateTurbo); //discrete colors of black, blue, green, yellow, orange, red
                         //.interpolator(d3.interpolateGreens); //discrete shades of green
                         //.interpolator(d3.interpolateBuPu); //discrete blues transition to purple
                         //.interpolator(d3.interpolateWarm); //discrete warm colors 
-                        .interpolator(d3.interpolate("red", "yellow")); //discrete shades of red/yellow
+                        //.interpolator(d3.interpolate("red", "yellow")); //discrete shades of red/yellow
 
         
         //SVG
