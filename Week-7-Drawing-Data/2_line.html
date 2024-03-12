@@ -19,10 +19,10 @@
             
             .line {
                 fill: none; 
-                stroke: steelblue; 
-                stroke-width: 2px;
-                /*stroke-dasharray: 4 3;*/ /*dashes and gaps*/
-                /*stroke-dasharray: 4 3 2 1;*/
+                stroke: rgb(29, 191, 88); 
+                stroke-width: 4px;
+                /* stroke-dasharray: 4 3; dashes and gaps  - creates dashes and gaps. If you give it 1 # - then equal size dashes/gaps.*/
+                stroke-dasharray: 4 3 2 1; /*add distinction to lines*/
   
             }
 
@@ -35,15 +35,17 @@
             const w = 500;
             const h = 500;
             const margin = 50;//rename to margin
-            const parseTime = d3.timeParse("%Y-%m");//time parser
+            const parseTime = d3.timeParse("%Y-%m");//time parser - apply time parser & use the year/month abbreviation to tell D3 to parse the data like that (year-month)
 
             /* Data (2023 monthly summarized weather data for
             "NY-Central Park" area. Includes avg, max, min temps.
             Source: NWS, https://www.weather.gov/wrh/Climate?wfo=okx)*/
+
+            //D3 “d3.timeFormat( )” and “d3.timeParse( )”https://d3js.org/d3-time-format//
             
             d3.csv("nyc-2023.csv").then(data => {
             console.log("data", data)
-                
+                //uniary operator
                 data.forEach(d => { 
                 d.date = parseTime(d.date);//parse this time data
                 d.max = +d.max;
@@ -51,13 +53,13 @@
                 d.avg = +d.avg;    
                 });
             
-            //scales - with Scale Time
-            const xScale = d3.scaleTime()
-                             .domain(d3.extent(data, d => d.date)) 
+            //SCALES - with Scale Time
+            const xScale = d3.scaleTime() //time scale
+                             .domain(d3.extent(data, d => d.date)) //domain is dates on the x-axis that fit w/in the margin
                              .range([margin, w-margin]); 
 
-            const yScale = d3.scaleLinear()
-                             .domain([0, d3.max(data, d => d.avg)]) 
+            const yScale = d3.scaleLinear() //linear scale
+                             .domain([0, d3.max(data, d => d.avg)]) //0 to max avg col
                              .range([h-margin, margin]); 
 
             //SVG
@@ -67,20 +69,22 @@
                     .attr("height", h);
 
 
-            //bottom axis with tick time formatting
+            //BOTTOM AXIS W/ TICK TIME FORMATTING 
             const bottomAxis = d3.axisBottom()
                                 .scale(xScale)
-                                .tickFormat(d3.timeFormat("%b"));
-                                //.tickFormat(d3.timeFormat("%b-%Y"))
-                                //.ticks(d3.timeMonth.every(2));
-                                //.ticks(4);
+                                //.tickFormat(d3.timeFormat("%b")); //formatted ticks w/ shorthand for month
+                                //.tickFormat(d3.timeFormat("%b-%Y")) //formatted ticks w/ shorthand for month & year
+                                .tickFormat(d3.timeFormat("%b %Y")) //formatted ticks w/ shorthand for month & year
+                                //.ticks(d3.timeMonth.every(2)); //every 2 months
+                                .ticks(d3.timeMonth.every(5)); //every 5 months
+                                //.ticks(4); //can specify # of ticks
              
             svg.append("g")
                 .attr("class", "axis") 
                 .attr("transform", "translate(0," + (h-margin) + ")") 
                 .call(bottomAxis);
             
-            //left axis
+            //LEFT AXIS
             const leftAxis = d3.axisLeft()
                              .scale(yScale);
                              //.ticks(4);
@@ -91,21 +95,22 @@
                .call(leftAxis);
 
 
-            //line generator with optional curves
-            const line = d3.line()
-                            //.curve(d3.curveStepAfter)
+            //LINE GENERATOR W/ OPTIONAL CURVES - CREATES PATH BY USING DATA THAT WE ID'ED AS X/Y COORDINATES
+            const line = d3.line() //needs an x/y
+                            //can apply line interpolation - D3 “curves” https://d3js.org/d3-shape/curve
+                            .curve(d3.curveStepAfter) //line interpolation that creates steps like building
                             //.curve(d3.curveBasis)
                             //.curve(d3.curveNatural)
-                            .x(d=>xScale(d.date))
-                            .y(d=>yScale(d.avg));
+                            .x(d=>xScale(d.date)) //x coordinates
+                            .y(d=>yScale(d.avg)); //y coordinates
            
-            //line
+            //APPLY LINE GENERATOR
             svg.append("path")
                 //.data([data])
                 //.attr("d", line)
-                .attr("d", line(data))
+                .attr("d", line(data)) //can directly join data w/ line generator & d simultaneously 
                 .attr("class", "line")
-                //.style("stroke", "green");//inline styling vs CSS
+                //.style("stroke", "green");//inline styling vs CSS - takes precedence over CSS & .attr
                //.attr("stroke", "purple");
                 console.log("path",line(data))
             

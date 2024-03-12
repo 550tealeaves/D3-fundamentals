@@ -10,7 +10,8 @@
             
             .axis path, 
             .axis line{
-                stroke: midnightblue;
+                /* stroke: midnightblue; */
+                stroke: forestgreen;
             }
             
             .axis text{
@@ -22,7 +23,7 @@
             
             .stars {
                 fill: gold;
-                stroke: midnightblue;
+                stroke: indigo;
                 stroke-width: 1px;
             }
 
@@ -94,26 +95,27 @@
             /* Other common shapes: d3.symbolDiamond,d3.symbolTriangle, 
             d3.symbolWye, d3.symbolCross, and d3.symbolSquare
             see: https://d3js.org/d3-shape/symbol#symbol for list*/
+            //Symbol generator creates a path string with data 
             const symbolData = d3.symbol()
                              .type(d3.symbolStar);
                              //.type(d3.symbolDiamond);
                              //.size(150); //64 is default            
              
             //stars with labels
-            const stars = svg.selectAll("g.stars")
+            const stars = svg.selectAll("g.stars") //created a group
                               .data(data)
                               .enter().append("g");
             
-            stars.append("path")
-                .attr("class", "stars")
-                .attr("d", symbolData)
+            stars.append("path") //append the path 
+                .attr("class", "stars") //give a class name
+                .attr("d", symbolData) 
                 .attr("transform", d => "translate(" + xScale(d.x) + "," + yScale(d.y) + ")");
 
             stars.append("text")
-                .attr("class", "labels")
-                .attr("x", d=> xScale(d.x)+8)
-                .attr("y",d=> yScale(d.y) +3)
-                .text(d=>d.item);
+                .attr("class", "labels") //give it class
+                .attr("x", d=> xScale(d.x)+8) //give it a x (x-value + 8 to right)
+                .attr("y",d=> yScale(d.y) +3) //give it a y (y-value + 3 down)
+                .text(d=>d.item); //this is the col that we want to display
             });
         </script>
     </body>
