@@ -43,6 +43,7 @@
 
             //D3 “d3.timeFormat( )” and “d3.timeParse( )”https://d3js.org/d3-time-format//
             
+            //PARSING THE DATA - have to tell D3 how to interpret the dates
             d3.csv("nyc-2023.csv").then(data => {
             console.log("data", data)
                 //uniary operator
@@ -53,7 +54,7 @@
                 d.avg = +d.avg;    
                 });
             
-            //SCALES - with Scale Time
+            //SCALES - W/ TIME SCALE
             const xScale = d3.scaleTime() //time scale
                              .domain(d3.extent(data, d => d.date)) //domain is dates on the x-axis that fit w/in the margin
                              .range([margin, w-margin]); 

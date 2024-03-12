@@ -38,23 +38,23 @@
     <body>
         <script type="text/javascript">
             
-            //Consts/global variables  
+            //CONSTS/GLOBALS  
             const w = 500;
             const h = 500;
             const margin = 50;//rename to margin
 
-            //Data 
+            //IMPORT DATA 
             d3.csv("stars.csv").then(data => {
             console.log("data", data)
         
-                //format data
+                //FORMAT DATA
                 data.forEach(d => { 
                 d.item = d.item;
                 d.x = +d.x;
                 d.y = +d.y;  
                 });
             
-            //scales - with d3.max()
+            //SCALES W/ d3.max()
             const xScale = d3.scaleLinear()
                              .domain([0, d3.max(data, d => d.x)]) 
                              .range([margin, w-margin]); 
@@ -69,39 +69,41 @@
                     .attr("width", w)
                     .attr("height", h);
 
-            //axes 
+            //AXES 
+            //X-AXIS
             const bottomAxis = d3.axisBottom()
                                 .scale(xScale)
                                 .ticks(10);
             
-            //implement 
+            //IMPLEMENT - PUT AXIS IN GROUP SO THEY CAN BE MOVED EASILY
             svg.append("g")
                 .attr("class", "axis") 
                 .attr("transform", "translate(0," + (h-margin) + ")") 
                 .call(bottomAxis);
 
+            //Y-AXIS
             const leftAxis = d3.axisLeft()
                              .scale(yScale)
                              .ticks(10);
             
-            //implement 
+            //PUT Y-AXIS IN GROUP SO IT CAN BE MOVED EASILY  
             svg.append("g")
                .attr("class", "axis") 
                .attr("transform", "translate(" + margin + ",0)")
                .call(leftAxis);
 
 
-            //symbol generator 
+            //SYMBOL GENERATOR - CREATES PATH STRING W/ DATA 
             /* Other common shapes: d3.symbolDiamond,d3.symbolTriangle, 
             d3.symbolWye, d3.symbolCross, and d3.symbolSquare
             see: https://d3js.org/d3-shape/symbol#symbol for list*/
-            //Symbol generator creates a path string with data 
+             
             const symbolData = d3.symbol()
                              .type(d3.symbolStar);
                              //.type(d3.symbolDiamond);
                              //.size(150); //64 is default            
              
-            //stars with labels
+            //CREATE STARS - AND PLACE IN A GROUP TO MOVE
             const stars = svg.selectAll("g.stars") //created a group
                               .data(data)
                               .enter().append("g");
@@ -111,6 +113,7 @@
                 .attr("d", symbolData) 
                 .attr("transform", d => "translate(" + xScale(d.x) + "," + yScale(d.y) + ")");
 
+            //STAR LABELS
             stars.append("text")
                 .attr("class", "labels") //give it class
                 .attr("x", d=> xScale(d.x)+8) //give it a x (x-value + 8 to right)
