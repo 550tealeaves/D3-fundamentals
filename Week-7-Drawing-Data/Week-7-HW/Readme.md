@@ -13,3 +13,6 @@
 
 ### Drawing
 - Tried to create a group for the lines but did not know how to create new set of lines - tried a x1, y1, but did not work
+
+
+![Number 1 NBA pick stats](NBA-stats.jpg)
