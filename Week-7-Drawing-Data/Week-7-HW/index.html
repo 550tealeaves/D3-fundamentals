@@ -121,7 +121,6 @@
             const line = d3.line() //requires x & y
                            //.curve(d3.curveBasis)
                            .x(d=> xScale(d.DraftYear))
-                           //.y(d=> yScale(d.MPG))
                            .y(d=> yScale(d.TOTMP));
 
 
@@ -142,7 +141,7 @@
 
             //ADD X-AXIS LABEL
             svg.append("text")
-                .attr("transform", "translate(" + (width / 2) + " ," + (height - 10) + ")") //moves it to coordinates that are middle of the width, height + 5 = (250, 505)
+                .attr("transform", "translate(" + (width / 2) + " ," + (height - 10) + ")") 
                 .attr("class", "label")
                 .text("Year");
 
@@ -150,7 +149,7 @@
             //ADD Y-AXIS LABEL
             svg.append("text")
                 .attr("transform", "rotate(-90)") //will rotate the label 90 degrees pointed up
-                .attr("x", - (height / 2)) //x coordinate is middle of height (-250)
+                .attr("x", - (height / 2)) //x coordinate is middle of height (-300)
                 .attr("y", 15) //y coordinate = 15
                 .attr("class", "label")
                 .text("Total Minutes Played");

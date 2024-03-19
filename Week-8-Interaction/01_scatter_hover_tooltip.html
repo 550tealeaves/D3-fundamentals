@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Scatter Symbols</title>
+        <script src= "https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css">
+            /* We are adding our CSS up here in <style> but
+            referencing our classes in the D3 code below*/
+            
+            .axis path, 
+            .axis line{
+                stroke: midnightblue;
+            }
+            
+            .axis text{
+                font-family: sans-serif;
+                font-size: 10px;
+                font-weight: bold;
+                fill: midnightblue;
+            }
+            
+            .stars {
+                fill: gold;
+                stroke: midnightblue;
+                stroke-width: 1px;
+            }
+        
+        /*NEW: use CSS to create highlight using hover*/
+            .stars:hover{
+                fill: midnightblue;
+                stroke: gold;
+                stroke-width: 1px;
+            }
+
+        /*NEW: style your tooltip*/
+          .tooltip{
+            position: absolute;
+            width: 50px;
+            height: 24px;
+            padding: 2px;    
+            text-align: center; 
+            font-family:sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            background: crimson; 
+            border-radius: 8px;
+          }
+
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript">
+            
+            //Consts/global variables  
+            const w = 500;
+            const h = 500;
+            const margin = 50;//rename to margin
+
+            //Data 
+            d3.csv("stars.csv").then(data => {
+            console.log("data", data)
+        
+                //format data
+                data.forEach(d => { 
+                d.item = d.item;
+                d.x = +d.x;
+                d.y = +d.y;  
+                });
+            
+            //scales - with d3.max()
+            const xScale = d3.scaleLinear()
+                             .domain([0, d3.max(data, d => d.x)]) 
+                             .range([margin, w-margin]); 
+
+            const yScale = d3.scaleLinear()
+                             .domain([0, d3.max(data, d => d.y)]) 
+                             .range([h-margin, margin]); 
+            
+            //NEW: tooltip (positioned outside of SVG)
+            const tooltip =d3.select("body")
+                         .append("div")
+                         .attr("class", "tooltip")
+                         .style("opacity", 0);//opacity set to 0 is invisible
+            
+            //NEW: tooltip functions
+            const mouseover = function(event, d) {
+                    tooltip
+                    .html("Item: " + "<br>" + d.item)//setting the html here for the <br>
+                    //.text("Item: " + d.item)  // note: you could just do the .text() per usual
+                    .style("opacity", 1) //opacity set to 1 is visible
+                    .style("left", (event.pageX + 3) + "px")//x coordinate of mouse
+                    .style("top", (event.pageY + 3) + "px");//y coordinate of mouse
+                    }     
+
+            const mousemove = function(event, d) {
+                    tooltip
+                    .style("left", (event.pageX + 3) + "px")
+                    .style("top", (event.pageY + 3) + "px")
+                    }
+            
+            const mouseout = function(event, d) {
+                    tooltip
+                    .style("opacity", 0);
+                    }
+
+            //SVG
+            const svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+
+            //axes 
+            const bottomAxis = d3.axisBottom()
+                                .scale(xScale)
+                                .ticks(10);
+            
+            //implement 
+            svg.append("g")
+                .attr("class", "axis") 
+                .attr("transform", "translate(0," + (h-margin) + ")") 
+                .call(bottomAxis);
+
+            const leftAxis = d3.axisLeft()
+                             .scale(yScale)
+                             .ticks(10);
+            
+            //implement 
+            svg.append("g")
+               .attr("class", "axis") 
+               .attr("transform", "translate(" + margin + ",0)")
+               .call(leftAxis);
+
+            //symbol generator 
+            const symbolData = d3.symbol()
+                             .type(d3.symbolStar);
+                                        
+            //scatter with tooltip events attributed
+            const stars = svg.selectAll("stars")
+                    .data(data)
+                    .enter()
+                    .append("path")
+                    .attr("class", "stars")
+                    .attr("d", symbolData)
+                    .attr("transform", d => "translate(" + xScale(d.x) + "," + yScale(d.y) + ")")
+                    .on("mouseover", mouseover) //NEW: .on() 
+                    .on("mousemove", mousemove)
+                    .on("mouseout", mouseout);
+
+            });
+        </script>
+    </body>
+</html>

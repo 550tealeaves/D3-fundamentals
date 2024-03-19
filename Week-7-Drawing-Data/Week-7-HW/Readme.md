@@ -10,3 +10,6 @@
 3. Renamed some of the columns because I did not know all the acronyms. 
 4. After importing the data, used unary operator to convert desired columns to string
 5. Parsed draft year
+
+### Drawing
+- Tried to create a group for the lines but did not know how to create new set of lines - tried a x1, y1, but did not work
