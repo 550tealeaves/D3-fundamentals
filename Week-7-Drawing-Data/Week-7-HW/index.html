@@ -17,10 +17,25 @@
         const width = 600;
         const height = 800;
         const margin = 60;
+        const parseTime = d3.timeParse("%Y"); //will parse it using full year
 
         //IMPORT DATA
         d3.csv("top5-NBA-draft-20yrs.csv").then(data =>{
             console.log("nba", data)
+
+
+            //FORMAT THE DATA - create a loop
+            data.forEach(d=> {
+                d.Pick = +d.Pick;
+                d.Games = +d.Games;
+                d.Years = +d.Years; //years played
+                d.MPG = +d.MPG; 
+                d.PPG = +d.PPG;
+                d.RPG = +d.RPG;
+                d.APG = +d.APG;
+                d.DraftYear = parseTime(d.DraftYear);
+            })
+
 
 
 
