@@ -2,7 +2,7 @@
 
 ## Dataset
 - Obtained dataset from Kaggle that looks at all NBA draft picks from 1990-2021
-- [Dataset](https://www.kaggle.com/datasets/benwieland/nba-draft-data)
+- [Dataset](https://www.kaggle.com/datasets/benwieland/nba-draft-data) by Ben Wieland
 
 ### Cleaning data
 1. Filtered out any players that never played after being drafted (NA in Years column)
