@@ -13,6 +13,7 @@
 
 ### Drawing
 - Tried to create a group for the lines but did not know how to create new set of lines - tried a x1, y1, but did not work
+- I had wanted to label lebron's total minutes played in 2023 (51563), the most of any #1 pick. 
 
 
 ![Number 1 NBA pick stats](NBA-stats.jpg)
