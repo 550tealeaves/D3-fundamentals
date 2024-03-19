@@ -23,7 +23,7 @@
         
         .line {
             fill: none; 
-            stroke: rgb(204, 129, 16); 
+            stroke: rgb(204, 60, 16); 
             stroke-width: 4px;
             /* stroke-dasharray: 4 3; dashes and gaps  - creates dashes and gaps. If you give it 1 # - then equal size dashes/gaps.*/
             stroke-dasharray: 4 3 8 2; /*add distinction to lines*/
@@ -67,6 +67,10 @@
                 d.Pick = +d.Pick;
                 d.Games = +d.Games;
                 d.Years = +d.Years; //years played
+                d.TOTMP = +d.TOTMP;
+                d.TOTPS = +d.TOTPS;
+                d.TOTTRB = +d.TOTTRB;
+                d.TOTAST = +d.TOTAST;
                 d.MPG = +d.MPG;
                 d.PPG = +d.PPG;
                 d.RPG = +d.RPG;
@@ -117,7 +121,7 @@
 
             //CREATE LINES USING D3.LINE GENERATOR
             const line = d3.line() //requires x & y
-                //.curve(d3.curveBasis)
+                .curve(d3.curveNatural)
                 .x(d => xScale(d.DraftYear))
                 .y(d => yScale(d.Games))
                 // .x1(d=> xScale(d.DraftYear))
@@ -135,7 +139,7 @@
                 .attr("x", width / 2) //x-coordinate is at 300
                 .attr("y", [height - margin] - 510)
                 .attr("class", "title")
-                .text("Number of NBA games played by the #1 draft pick");
+                .text("#1 NBA draft pick stats from 1990-2021");
 
 
             //ADD X-AXIS LABEL
