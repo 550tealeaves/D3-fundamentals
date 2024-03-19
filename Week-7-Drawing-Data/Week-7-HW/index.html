@@ -18,8 +18,7 @@
         const height = 800;
         const margin = 60;
         const parseTime = d3.timeParse("%Y"); //will parse it using full year
-        const maxData = d3.max(data); //create var to find max of the data 
-        const minData = d3.min(data); //create var to find min of the data  
+        
 
         //IMPORT DATA
         d3.csv("top5-NBA-draft-20yrs.csv").then(data =>{
@@ -64,7 +63,7 @@
             //APPEND X-AXIS TO SVG
             svg.append("g")
                 .attr("class", "axis")
-                .attr("transform", "translate(0," + (height-margin) + ")")
+                .attr("transform", "translate(0," + (height - margin) + ")") 
                 .call(xAxis); //don't forget to call the axis
 
 
@@ -76,7 +75,7 @@
             //APPEND Y-AXIS TO SVG
             svg.append("g")
                 .attr("class", "axis")
-                .attr("transform", "translate(" + margin + ",0")
+                .attr("transform", "translate(" + margin + ",0)")
                 .call(yAxis); //call axis
 
             
