@@ -44,7 +44,7 @@
                 .range([margin, width-margin]);
 
             const yScale = d3.scaleLinear() //use linear scale for other bball metrics
-                .domain(d3.extent(data, d => d.Games))
+                .domain(d3.extent(data, d => d.MPG))
                 .range([height-margin, margin]);
 
 
@@ -81,9 +81,11 @@
             
             //CREATE LINES USING D3.LINE GENERATOR
             const line = d3.line() //requires x & y
-                           .curve(d3.curveBasis)
+                           //.curve(d3.curveBasis)
                            .x(d=> xScale(d.DraftYear))
+                           //.y(d=> yScale(d.MPG))
                            .y(d=> yScale(d.MPG));
+
 
             //APPLY LINE GENERATOR USING PATH
             svg.append("path")
