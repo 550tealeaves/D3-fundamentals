@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,33 +11,35 @@
             background-color: rgb(255, 215, 221);
         }
 
-        .axis path,.axis line{
-                stroke: rgb(39, 1, 1);
-            }
+        .axis path,
+        .axis line {
+            stroke: rgb(39, 1, 1);
+        }
 
-        .axis text{
+        .axis text {
             font-family: sans-serif;
             font-size: 10px;
             fill: rgb(36, 9, 42);
-            }
-        
+        }
+
         .line {
-            fill: none; 
-            stroke: rgb(204, 60, 16); 
+            fill: none;
+            stroke: rgb(204, 60, 16);
             stroke-width: 4px;
             /* stroke-dasharray: 4 3; dashes and gaps  - creates dashes and gaps. If you give it 1 # - then equal size dashes/gaps.*/
-            stroke-dasharray: 4 3 8 2; /*add distinction to lines*/
+            stroke-dasharray: 4 3 8 2;
+            /*add distinction to lines*/
 
         }
 
-        .title{
+        .title {
             text-decoration: underline wavy;
             fill: rgb(186, 94, 252);
             font-size: 18px;
             text-anchor: middle;
         }
 
-        .label{
+        .label {
             text-anchor: middle;
             fill: rgb(64, 6, 77);
             font-weight: 600;
@@ -44,6 +47,7 @@
         }
     </style>
 </head>
+
 <body>
     <script type="text/javascript">
         //CONSTANTS & GLOBALS
@@ -51,20 +55,20 @@
         const height = 600;
         const margin = 60;
         const parseTime = d3.timeParse("%Y"); //will parse it using full year
-        
+
 
         //IMPORT DATA
-        d3.csv("top-pick-NBA-draft-20yrs.csv").then(data =>{
+        d3.csv("/top-pick-NBA-draft-20yrs.csv").then(data => {
             console.log("nba", data)
 
 
             //FORMAT THE DATA - create a loop
-            data.forEach(d=> {
+            data.forEach(d => {
                 //Use unary operator (+) to convert the strings to numbers
                 d.Pick = +d.Pick;
                 d.Games = +d.Games;
                 d.Years = +d.Years; //years played
-                d.MPG = +d.MPG; 
+                d.MPG = +d.MPG;
                 d.PPG = +d.PPG;
                 d.RPG = +d.RPG;
                 d.APG = +d.APG;
@@ -75,14 +79,19 @@
                 d.DraftYear = parseTime(d.DraftYear);
             });
 
+
+
+
+            
             //SCALES WITH TIME
             const xScale = d3.scaleTime() //must use the time scale 
                 .domain(d3.extent(data, d => d.DraftYear))
-                .range([margin, width-margin]);
+                .range([margin, width - margin]);
+
 
             const yScale = d3.scaleLinear() //use linear scale for other bball metrics
                 .domain(d3.extent(data, d => d.TOTMP))
-                .range([height-margin, margin]);
+                .range([height - margin, margin]);
 
 
             //CREATE SVG
@@ -91,47 +100,78 @@
                 .attr("width", width)
                 .attr("height", height);
 
+            
             //X-AXIS WITH TICKS
             const xAxis = d3.axisBottom()
-                        .scale(xScale)
-                        .tickFormat(d3.timeFormat("%Y"))
-                        .ticks(d3.timeYear.every(5)); //show ticks for every 5 years
+                .scale(xScale)
+                .tickFormat(d3.timeFormat("%Y"))
+                .ticks(d3.timeYear.every(5)); //show ticks for every 5 years
 
-            
-            //APPEND X-AXIS TO SVG
-            svg.append("g")
+            const xAxisGroup = svg.append("g")
                 .attr("class", "axis")
-                .attr("transform", "translate(0," + (height - margin) + ")") 
-                .call(xAxis); //don't forget to call the axis
+                .attr("transform", "translate(0," + (height - margin) + ")")
+                .call(xAxis)
+
+            // xAxisGroup.append("text")
+            //     .attr("class", 'xLabel')
+            //     .attr("transform", "translate(0," + (height - margin) + ")")
+
+
+
+
+            // //APPEND X-AXIS TO SVG
+            // svg.append("g")
+            //     .attr("class", "axis")
+            //     .attr("transform", "translate(0," + (height - margin) + ")")
+            //     .call(xAxis); //don't forget to call the axis
 
 
             //Y-AXIS WITH TICKS
             const yAxis = d3.axisLeft()
-                        .scale(yScale)
+                .scale(yScale)
 
 
-            //APPEND Y-AXIS TO SVG
-            svg.append("g")
+            const yAxisGroup = svg.append("g")
                 .attr("class", "axis")
                 .attr("transform", "translate(" + margin + ",0)")
-                .call(yAxis); //call axis
+                .call(yAxis)
 
-            
+            // yAxisGroup.append("text")
+            //     .attr("class", 'yLabel')
+            //     .attr("transform", "translate(" + margin + ",0)")
+
+    
+
+            // //APPEND Y-AXIS TO SVG
+            // svg.append("g")
+            //     .attr("class", "axis")
+            //     .attr("transform", "translate(" + margin + ",0)")
+            //     .call(yAxis); //call axis
+
+
             //CREATE LINES USING D3.LINE GENERATOR
             const line = d3.line() //requires x & y
-                           //.curve(d3.curveBasis)
-                           .x(d=> xScale(d.DraftYear))
-                           //.y(d=> yScale(d.MPG))
-                           .y(d=> yScale(d.TOTMP));
+                //.curve(d3.curveBasis)
+                .x(d => xScale(d.DraftYear))
+                //.y(d=> yScale(d.MPG))
+                .y(d => yScale(d.TOTMP))
 
 
             //APPLY LINE GENERATOR USING PATH
-            svg.append("path")
-                .attr("d", line(data))
-                .attr("class", "line")
-                console.log('line', line(data))
+            // svg.append("path")
+            //     .attr("d", line(data))
+            //     .attr("class", "line")
+            // console.log('line', line(data))
 
-               
+
+            svg.selectAll(".line")
+                .data([data]) // data needs to take an []
+                .join("path")
+                .attr("class", 'line')
+                //.attr("fill", "none")
+                //.attr("stroke", "black")
+                .attr("d", d => line(d))
+
             //ADD CHART TITLE
             svg.append("text")
                 .attr("x", width / 2) //x-coordinate is at 300
@@ -159,4 +199,5 @@
         });
     </script>
 </body>
+
 </html>
