@@ -18,6 +18,8 @@
         const height = 800;
         const margin = 60;
         const parseTime = d3.timeParse("%Y"); //will parse it using full year
+        const maxData = d3.max(data); //create var to find max of the data 
+        const minData = d3.min(data); //create var to find min of the data  
 
         //IMPORT DATA
         d3.csv("top5-NBA-draft-20yrs.csv").then(data =>{
@@ -35,7 +37,53 @@
                 d.RPG = +d.RPG;
                 d.APG = +d.APG;
                 d.DraftYear = parseTime(d.DraftYear);
-            })
+            });
+
+            //SCALES WITH TIME
+            const xScale = d3.scaleTime() //must use the time scale 
+                .domain(d3.extent(data, d => d.DraftYear))
+                .range([margin, width-margin]);
+
+            const yScale = d3.scaleLinear() //use linear scale for other bball metrics
+                .domain(d3.extent(data, d => d.Games))
+                .range([height-margin, margin]);
+
+
+            //CREATE SVG
+            const svg = d3.select("body")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            //X-AXIS WITH TICKS
+            const xAxis = d3.axisBottom()
+                        .scale(xScale)
+                        .tickFormat(d3.timeFormat("%Y"))
+                        .ticks(d3.timeYear.every(5)); //show ticks for every 5 years
+
+            //APPEND X-AXIS TO SVG
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (height-margin) + ")")
+                .call(xAxis); //don't forget to call the axis
+
+
+            //Y-AXIS WITH TICKS
+            const yAxis = d3.axisLeft()
+                        .scale(yScale)
+
+
+            //APPEND Y-AXIS TO SVG
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + margin + ",0")
+                .call(yAxis); //call axis
+
+            
+            //CREATE LINES USING D3.LINE GENERATOR
+
+
+                        
 
 
 
