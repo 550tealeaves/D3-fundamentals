@@ -26,14 +26,14 @@
                 stroke-width: 1px;
             }
         
-        /*NEW: use CSS to create highlight using hover*/
+        /*NEW: USE CSS TO CRATE HIGHLIGHT USING HOVER*/
             .stars:hover{
                 fill: midnightblue;
                 stroke: gold;
                 stroke-width: 1px;
             }
 
-        /*NEW: style your tooltip*/
+        /*NEW: STYLE TOOLTIP*/
           .tooltip{
             position: absolute;
             width: 50px;
@@ -52,23 +52,23 @@
     <body>
         <script type="text/javascript">
             
-            //Consts/global variables  
+            //CONSTANTS/GLOBALS  
             const w = 500;
             const h = 500;
             const margin = 50;//rename to margin
 
-            //Data 
+            //IMPORT DATA 
             d3.csv("stars.csv").then(data => {
             console.log("data", data)
         
-                //format data
+                //FORMAT DATA
                 data.forEach(d => { 
                 d.item = d.item;
                 d.x = +d.x;
                 d.y = +d.y;  
                 });
             
-            //scales - with d3.max()
+            //SCALES - W/  d3.max()
             const xScale = d3.scaleLinear()
                              .domain([0, d3.max(data, d => d.x)]) 
                              .range([margin, w-margin]); 
@@ -77,31 +77,44 @@
                              .domain([0, d3.max(data, d => d.y)]) 
                              .range([h-margin, margin]); 
             
-            //NEW: tooltip (positioned outside of SVG)
-            const tooltip =d3.select("body")
+
+            //NEW: CREATE TOOLTIP (positioned outside of SVG)
+            //d3. not an svg. b/c it's outside
+            const tooltip = d3.select("body") 
                          .append("div")
-                         .attr("class", "tooltip")
-                         .style("opacity", 0);//opacity set to 0 is invisible
+                         .attr("class", "tooltip") //class for styling in CSS
+                         .style("opacity", 0); //opacity set to 0 is invisible until used
             
-            //NEW: tooltip functions
-            const mouseover = function(event, d) {
-                    tooltip
-                    .html("Item: " + "<br>" + d.item)//setting the html here for the <br>
-                    //.text("Item: " + d.item)  // note: you could just do the .text() per usual
-                    .style("opacity", 1) //opacity set to 1 is visible
-                    .style("left", (event.pageX + 3) + "px")//x coordinate of mouse
-                    .style("top", (event.pageY + 3) + "px");//y coordinate of mouse
+
+            //NEW: TOOLTIP FUNCTIONS (3 - mouseover, mousemove, mouseout)
+            //bind event listener and pass current event to the current datum (d)
+            //.on helps tell what to do when the event happens
+            
+            //1ST TOOLTIP FUNCTION - MOUSEOVER
+            const mouseover = function(event, d) {  //listen for events being triggered on done elements
+                    tooltip  //give things to the tooltip
+                    .html("Item: " + "<br>" + d.item)//setting the html here for the <br> - can add HTML features, like line break
+                    //give it the feature of the data to reference - this is item col to reference
+                    //.text("Item: " + d.item)  // note: you could just do the .text() per usual - all the text will appear on same line b/c cannot add line break
+                    .style("opacity", 1) //opacity set to 1 is visible - mouse hovers & you can see it
+                    //Give absolute position of the mouse on the screen NOT the SVG - tooltip follows the mouse
+                    .style("left", (event.pageX + 3) + "px")//x coordinate of mouse - higher the # further away tooltip moves
+                    .style("top", (event.pageY + 3) + "px");//y coordinate of mouse - higher the # further away tooltip moves
                     }     
 
+            //2nd TOOLTIP FUNCTION - MOUSEMOVE
+            //must use event & d
             const mousemove = function(event, d) {
                     tooltip
-                    .style("left", (event.pageX + 3) + "px")
-                    .style("top", (event.pageY + 3) + "px")
+                    .style("left", (event.pageX + 3) + "px") //higher the # further away tooltip moves
+                    .style("top", (event.pageY + 3) + "px") //higher the # further away tooltip moves
                     }
             
+            //3rd TOOLTIP FUNCTION - MOUSEOUT
+            //must use event & d
             const mouseout = function(event, d) {
                     tooltip
-                    .style("opacity", 0);
+                    .style("opacity", 0); //invisible when cursor leaves
                     }
 
             //SVG
@@ -110,32 +123,34 @@
                     .attr("width", w)
                     .attr("height", h);
 
-            //axes 
+            //AXES
+            //CREATE BOTTOM AXIS
             const bottomAxis = d3.axisBottom()
                                 .scale(xScale)
                                 .ticks(10);
             
-            //implement 
+            //APPEND & CALL BOTTOM AXIS 
             svg.append("g")
                 .attr("class", "axis") 
                 .attr("transform", "translate(0," + (h-margin) + ")") 
                 .call(bottomAxis);
 
+            //CREATE LEFT AXIS
             const leftAxis = d3.axisLeft()
                              .scale(yScale)
                              .ticks(10);
             
-            //implement 
+            //APPEND & CALL LEFT AXIS 
             svg.append("g")
                .attr("class", "axis") 
                .attr("transform", "translate(" + margin + ",0)")
                .call(leftAxis);
 
-            //symbol generator 
+            //SYMBOL GENERATOR
             const symbolData = d3.symbol()
                              .type(d3.symbolStar);
                                         
-            //scatter with tooltip events attributed
+            //SCATTER W/ TOOLTIP EVENTS ATTRIBUTED
             const stars = svg.selectAll("stars")
                     .data(data)
                     .enter()
@@ -143,8 +158,9 @@
                     .attr("class", "stars")
                     .attr("d", symbolData)
                     .attr("transform", d => "translate(" + xScale(d.x) + "," + yScale(d.y) + ")")
-                    .on("mouseover", mouseover) //NEW: .on() 
-                    .on("mousemove", mousemove)
+                    //ADD THE 3 .on() - they attribute the 3 tooltip functions
+                    .on("mouseover", mouseover) //NEW: .on() - this is event
+                    .on("mousemove", mousemove) //tells it what to do 
                     .on("mouseout", mouseout);
 
             });
