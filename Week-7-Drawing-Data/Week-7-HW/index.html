@@ -6,8 +6,10 @@
     <title>HW 7</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Jacques+Francois+Shadow&family=Jomhuria&family=Nunito:wght@300&family=Pattaya&family=Yuji+Mai&display=swap');
+
         body {
-            background-color: rgb(255, 215, 221);
+            background-color: rgb(255, 231, 235);
         }
 
         .axis path,.axis line{
@@ -30,10 +32,13 @@
         }
 
         .title{
-            text-decoration: underline wavy;
-            fill: rgb(186, 94, 252);
+            text-decoration: underline;
+            fill: rgb(145, 69, 199);
             font-size: 18px;
             text-anchor: middle;
+            font-family: "Jacques Francois Shadow", serif;
+            font-weight: 500px;
+            
         }
 
         .label{
@@ -143,7 +148,7 @@
             //APPLY 2ND LINE GENERATOR USING PATH - DOESN'T SHOW
             svg.append("path")
             .attr("d", line2(data))
-            .attr("class", "line-two")
+            .attr("class", "line")
             .attr("stroke", "blue")
             //.attr("fill", "white")
              console.log('line2', line2(data));
