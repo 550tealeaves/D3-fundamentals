@@ -22,7 +22,7 @@
         
         .line {
             fill: none; 
-            stroke: rgb(204, 60, 16); 
+            stroke: rgb(91, 204, 16); 
             stroke-width: 4px;
             /* stroke-dasharray: 4 3; dashes and gaps  - creates dashes and gaps. If you give it 1 # - then equal size dashes/gaps.*/
             stroke-dasharray: 4 3 8 2; /*add distinction to lines*/
@@ -41,6 +41,10 @@
             fill: rgb(64, 6, 77);
             font-weight: 600;
 
+        }
+
+        .line-label{
+            color: red;
         }
     </style>
 </head>
@@ -117,18 +121,41 @@
                 .call(yAxis); //call axis
 
             
-            //CREATE LINES USING D3.LINE GENERATOR
+            //CREATE 1st LINE USING D3.LINE GENERATOR
             const line = d3.line() //requires x & y
                            //.curve(d3.curveBasis)
-                           .x(d=> xScale(d.DraftYear))
-                           .y(d=> yScale(d.TOTMP));
+                           .x(d => xScale(d.DraftYear))
+                           .y(d => yScale(d.TOTMP));
+
+            //CREATE 2ND LINE USING D3.LINE GENERATOR - DOESN'T SHOW
+            const line2 = d3.line()
+                            .curve(d3.curveBasis)
+                            .x(d => xScale(d.DraftYear))
+                            .y(d => yScale(d.TOTPS));
 
 
-            //APPLY LINE GENERATOR USING PATH
+            //APPLY 1ST LINE GENERATOR USING PATH
             svg.append("path")
-                .attr("d", line(data))
+                .attr("d", line(data)) //joins line to data
                 .attr("class", "line")
-                console.log('line', line(data))
+                console.log('line', line(data));
+
+            //APPLY 2ND LINE GENERATOR USING PATH - DOESN'T SHOW
+            svg.append("path")
+            .attr("d", line2(data))
+            .attr("class", "line-two")
+            .attr("stroke", "blue")
+            //.attr("fill", "white")
+             console.log('line2', line2(data));
+
+            //ADD LINE LABEL - DOESN'T SHOW
+            svg.append("text")
+                .attr("transform", "translate(" + (width + 3) + ", " + yScale(data[0].TOTMP) + ")")
+                .attr("class", "line-label")
+                .attr("x", 100)
+                .attr("y", -133)
+                .attr("stroke", "purple")
+                .text("Tot min played");
 
                
             //ADD CHART TITLE
@@ -153,6 +180,7 @@
                 .attr("y", 15) //y coordinate = 15
                 .attr("class", "label")
                 .text("Total Minutes Played");
+
 
 
         });
