@@ -12,8 +12,11 @@
 5. Parsed draft year
 
 ### Drawing
-- Tried to create a group for the lines but did not know how to create new set of lines - tried a x1, y1, but did not work
-- I had wanted to label lebron's total minutes played in 2023 (51563), the most of any #1 pick. 
+- Was able to create the second line - had a spelling mistake while formatting the data
+- Wanted to draw a line that pointed to the line peak but was unsuccessful
+
+### Chart
+Graph shows the total minutes played (green) and total points scored (burgundy) for the #1 NBA draft picks, from 1990-2021. Lebron James, drafted in 2003, leads in both categories at 51,563 minutes & 36,559 points scored, respectively.  
 
 
 ![Number 1 NBA pick stats](NBA-stats.jpg)
