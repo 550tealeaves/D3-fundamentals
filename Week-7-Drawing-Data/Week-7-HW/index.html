@@ -157,13 +157,13 @@
                 .attr("class", "line")
                 console.log('line', line(data));
 
-            //APPLY 2ND LINE GENERATOR USING PATH - DOESN'T SHOW
+            //APPLY 2ND LINE GENERATOR USING PATH 
             svg.append("path")
                 .attr("d", line2(data))
                 .attr("class", "linetwo")
                 console.log('line2', line2(data));
 
-             //APPLY 3RD LINE GENERATOR USING PATH - DOESN'T SHOW
+             //APPLY 3RD LINE GENERATOR USING PATH
             svg.append("path")
                 .attr("d", line3(data))
                 .attr("class", "linethree")
