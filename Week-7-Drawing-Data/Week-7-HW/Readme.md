@@ -13,10 +13,10 @@
 
 ### Drawing
 - Was able to create the second line - had a spelling mistake while formatting the data
-- Wanted to draw a line that pointed to the line peak but was unsuccessful
+- Wanted to draw a line that pointed to the line peaks but was unsuccessful
 
 ### Chart
-Graph shows the total minutes played (green) and total points scored (blue) for the #1 NBA draft picks, from 1990-2021. Lebron James, drafted in 2003, leads in both categories at 51,563 minutes & 36,559 points scored, respectively.  
+Graph shows the total minutes played (green), total points scored (blue), and total rebounds (red) for the #1 NBA draft picks, from 1990-2021. Lebron James, drafted in 2003, leads in the first two categories at 51,563 minutes & 36,559 points scored, respectively.  
 
 
 ![Number 1 NBA pick stats](NBA-stats.jpg)
