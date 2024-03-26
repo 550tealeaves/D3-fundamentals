@@ -6,7 +6,7 @@
         <script src= "https://d3js.org/d3.v7.min.js"></script>
         <style type="text/css"> 
             
-            /*align your SVG to the center of the screen to match the center aligned text*/
+            /*ALIGN SVG TO CENTER OF SCREEN TO MATCH CENTER ALIGNED TEXT*/
             svg{
             width:1000px;
             height:500px;
@@ -15,7 +15,7 @@
             display: block;
           }
 
-          /*use CSS to create highlight using hover*/
+          /*CREATE HIGHLIGHT USING HOVER*/
           .circles:hover{
             fill: #FFC100;
           }
@@ -25,9 +25,11 @@
     <body>
         <script type="text/javascript">
 
+        //CONSTANTS
         const w = 1000;
         const h = 500;
         
+        //DATASET
         let dataset = 
         [{"name": "A", "val": 500}, 
         {"name": "B", "val": 200}, 
@@ -38,7 +40,8 @@
         {"name": "G", "val": 300}];
 
         console.log(dataset);
-        //colorscale and radius scale 
+
+        //COLORSCALE & RADIUS SCALE 
         const myColor = d3.scaleSequential()
                           .domain(d3.extent(dataset, d => d.val))
                           .interpolator(d3.interpolateBlues);
@@ -47,10 +50,10 @@
                            .domain(d3.extent(dataset, d => d.val))
                            .range([10, 40]);
         
-        //svg 
+        //SVG 
         const svg = d3.select("body").append("svg");
         
-        //Create circles, append data and colors, and .sort() ascending/descending 
+        //CREATE CIRCLES, APPEND DATA & COLORS, & .SORT() ASCENDING/DESCENDING  
         svg.selectAll("circle")
            .data(dataset)
            .join("circle")
@@ -61,23 +64,26 @@
            .attr("fill", d=> myColor(d.val))
            .attr("stroke",  "#08306B")
            .attr("stroke-width", ".4px")
+           //CREATE .ON EVENT LISTENER - ON CLICK, IT WILL SELECT CIRCLES
            .on("click", (event,d) => {
             svg.selectAll("circle")
-               .data(dataset.sort((a,b)=>d3.ascending(a.val, b.val)))
+               .data(dataset.sort((a,b)=>d3.ascending(a.val, b.val))) //sorts data ascending
                .transition()
                .duration(2000)
                .attr("r", d => radScale(d.val))
                .attr("fill", d=> myColor(d.val));
                console.log(dataset);
           })
+          //.ON() DOUBLE CLICK TRIGGERS EVENT THAT SELECTS ALL CIRCLES, THEN SORTS DATA IN DESCENDING ORDER, AND ADDS TRANSITION, GIVE IT RADIUS & COLOR SCALES
+          //shape changes it's size based on the data value - can be any shape - circles, rectangles, any shape
           .on("dblclick", (event,d) => {
             svg.selectAll("circle")
-               .data(dataset.sort((a,b)=>d3.descending(a.val, b.val)))
+               .data(dataset.sort((a,b)=>d3.descending(a.val, b.val))) //loops through data & sorts it in ascending/descending orders
                .transition()
                .duration(2000)
                .attr("r", d => radScale(d.val))
                .attr("fill", d=> myColor(d.val));
-               console.log(dataset);
+               console.log(dataset); //see how dataset changes
           });  
 
         </script>

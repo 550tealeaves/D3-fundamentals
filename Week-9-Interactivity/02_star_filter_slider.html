@@ -39,7 +39,7 @@
             border-radius: 8px;
           }
 
-          /*NEW: style your slider*/
+          /*NEW: STYLE SLIDER*/
           .slider{
             -webkit-appearance: none;  /* Override default CSS styles */
               width: 25%;
@@ -50,7 +50,7 @@
               opacity: 0.8;
             }
             
-            /*NEW: style your slider*/
+            /*NEW: STYLE SLIDER*/
             .slider::-moz-range-thumb{
               width: 14px;
               height: 14px;
@@ -59,7 +59,7 @@
               cursor: pointer;
             }    
             
-            /*NEW: style your slider*/
+            /*NEW: STYLE SLIDER*/
             datalist{
               display: flex;
               width: 25%;
@@ -68,7 +68,7 @@
               padding-top: 0px;
             }
             
-            /*NEW: style your slider*/
+            /*NEW: STYLE SLIDER*/
             option{
               width: 23ex;
               display: flex;
@@ -81,7 +81,7 @@
               color: midnightblue
             }
             
-            /*NEW: style the h1*/
+            /*NEW: STYLE H1*/
             h1{
               font-family: sans-serif;
               font-size: 28px;
@@ -90,7 +90,7 @@
         </style>
     </head>
     <body>
-      <!-- NEW: a slider and <h1>! -->
+      <!-- NEW: A SLIDER & <h1>! -->
       <h1>Change Star Color on X-Values</h1>  
       <div id="container">
             <input id="mySlider" type="range" min="0" max="600" step="50" value="0" class="slider" list="list">
@@ -106,23 +106,23 @@
             </div>
         <script type="text/javascript">
             
-            //Consts/global variables  
+            //CONSTS/GLOBAL VARIABLES  
             const w = 500;
             const h = 500;
             const margin = 50;//rename to margin
 
-            //Data 
+            //DATA 
             d3.csv("stars.csv").then(data => {
             console.log("data", data)
         
-                //format data
+                //FORMAT
                 data.forEach(d => { 
                 d.item = d.item;
                 d.x = +d.x;
                 d.y = +d.y;  
                 });
             
-            //scales - with d3.max()
+            //SCALES W/ D3.MAX()
             const xScale = d3.scaleLinear()
                              .domain([0, d3.max(data, d => d.x)]) 
                              .range([margin, w-margin]); 
@@ -131,13 +131,13 @@
                              .domain([0, d3.max(data, d => d.y)]) 
                              .range([h-margin, margin]); 
             
-            //tooltip (positioned outside of SVG)
+            //TOOLTIP (POSITIONED OUTSIDE SVG)
             const tooltip =d3.select("body")
                          .append("div")
                          .attr("class", "tooltip")
                          .style("opacity", 0);//opacity set to 0 is invisible
             
-            //tooltip functions
+            //TOOLTIP FUNCTIONS
             const mouseover = function(event, d) {
                     tooltip
                     .html("Item: " + "<br>" + d.item)//setting the html here for the <br>
@@ -163,12 +163,12 @@
                     .attr("width", w)
                     .attr("height", h);
 
-            //axes 
+            //AXES 
             const bottomAxis = d3.axisBottom()
                                 .scale(xScale)
                                 .ticks(10);
             
-            //implement 
+            //IMPLEMENT 
             svg.append("g")
                 .attr("class", "axis") 
                 .attr("transform", "translate(0," + (h-margin) + ")") 
@@ -178,17 +178,17 @@
                              .scale(yScale)
                              .ticks(10);
             
-            //implement 
+            //IMPLEMENT 
             svg.append("g")
                .attr("class", "axis") 
                .attr("transform", "translate(" + margin + ",0)")
                .call(leftAxis);
 
-            //symbol generator 
+            //SYMBOL GENERATOR
             const symbolData = d3.symbol()
                              .type(d3.symbolStar);
                                         
-            //scatter with tooltip events attributed
+            //SCATTER W/ TOOLTIP EVENTS ATTRIBUTED
             const stars = svg.selectAll("stars")
                     .data(data)
                     .enter()
@@ -200,14 +200,16 @@
                     .on("mousemove", mousemove)
                     .on("mouseout", mouseout);
             
-            /*NEW: on a change to the slider change the fill with
-            .on() and .filter()*/
+            /*NEW: ON A CHANGE TO THE SLIDER CHANGE THE FILL W/
+            .on() & .filter()*/
             d3.select("input").on("change", (event, d) => {
               const selected = event.currentTarget; 
-              const filtered = stars.filter(d => d.x <= selected.value)
-                 .style("fill", "midnightblue");  
+              //filter the original data & set it to the value of x
+              const filtered = stars.filter(d => d.x <= selected.value) //looking for value instead of id - create variable that contains filter
+              //filter returns a new array
+                 .style("fill", "midnightblue"); //style the filtered things this color
 
-                 console.log("filtered",filtered); //view the console!
+                 console.log("filtered",filtered); //view the console of the filtered data variable, which is now an array
           });
 
             });

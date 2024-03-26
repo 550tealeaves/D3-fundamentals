@@ -23,7 +23,7 @@
                 stroke-width: 2px;
             }
             
-        /* NEW: styling the buttons we add below*/
+        /* NEW: STYLING THE BUTTONS ADDED BELOW*/
             button {
                 display: inline-block;
                 background-color: midnightblue;
@@ -38,14 +38,18 @@
             button:hover {
                 background-color: mediumvioletred;
             }
+
+            button:active {
+                background-color: blueviolet;
+            }
             
-            /*NEW: style the h1*/
+            /*NEW: STYLE H1*/
             h1 {
                 font-family: sans-serif;
                 font-size: 28px;
                 color: midnightblue;
             }
-            /*NEW (optional) style each button by its id*/
+            /*NEW (optional) STYLE EACH BUTTON BY ID*/
             /*#buttonAvg{
                 background-color: gold;
             }*/
@@ -53,7 +57,7 @@
         </style>
     </head>
     <body>
-        <!-- NEW: three buttons with ids and <h1> a <br>! -->
+        <!-- NEW: 3 BUTTONS W/ IDS & <h1> a <br>! -->
         <h1>2023 NYC Weather Data</h1>
         <button id="buttonAvg">Avg Temp</button>
         <button id="buttonMin">Min Temp</button>
@@ -61,7 +65,7 @@
         <br>
         <script type="text/javascript">
             
-            //Consts/global variables  
+            //CONSTS/GLOBAL VARIABLES   
             const w = 500;
             const h = 500;
             const margin = 50;//rename to margin
@@ -74,6 +78,7 @@
             d3.csv("nyc-2023.csv").then(data => {
             console.log("data", data)
                 
+                //FORMAT DATA
                 data.forEach(d => { 
                 d.date = parseTime(d.date);//parse this time data
                 d.max = +d.max;
@@ -81,13 +86,13 @@
                 d.avg = +d.avg;    
                 });
             
-            //scales - with Scale Time
+            //SCALES - W/ SCALE TIME
             const xScale = d3.scaleTime()
                              .domain(d3.extent(data, d => d.date)) 
                              .range([margin, w-margin]); 
 
             const yScale = d3.scaleLinear()
-                             .domain([0, d3.max(data, d => Math.max(d.min, d.max))]) 
+                             .domain([0, d3.max(data, d => Math.max(d.min, d.max))]) //gave it to 2 diff columns (min/max) & let D3 find the max # for scale 
                              .range([h-margin, margin]); 
 
             //SVG
@@ -96,7 +101,7 @@
                     .attr("width", w)
                     .attr("height", h);
 
-            //bottom axis 
+            //BOTTOM AXIS
             const bottomAxis = d3.axisBottom()
                                 .scale(xScale)
                                 .tickFormat(d3.timeFormat("%b"));
@@ -106,7 +111,7 @@
                 .attr("transform", "translate(0," + (h-margin) + ")") 
                 .call(bottomAxis);
             
-            //left axis
+            //LEFT AXIS
             const leftAxis = d3.axisLeft()
                              .scale(yScale);
             
@@ -115,48 +120,57 @@
                .attr("transform", "translate(" + margin + ",0)")
                .call(leftAxis);
             
-            //NEW(ish) create a function in which we make our line
-            function drawData(which){
+            //NEW - CREATE A FUNCTION IN WHICH WE MAKE OUR LINE
+            function drawData(which){ //name of function could be anything - pass word which - is a placeholder - could be any word
                 
-                //NEW(ish)line generator a function to change y
+                //NEW - LINE GENERATOR A FUNCTION TO CHANGE Y
                 const coords = d3.line()
-                .x(d=>xScale(d.date))
-                .y(function(d){
-                 if (which == "min"){ return yScale(d.min)}
-                 else if (which == "max"){return yScale(d.max)}
-                 else if (which == "avg"){return yScale(d.avg)}
+                .x(d=>xScale(d.date)) //create x-coord
+                .y(function(d){ //create y-coord
+                    //function says that you need to generate a line w/ different y-coordinates for each chart
+                    //if else if are parameters
+                    //which is the placeholder that is being passed into the function
+                 if (which == "min"){ return yScale(d.min)} //if passed in is min, return min col
+                 else if (which == "max"){return yScale(d.max)} //if "which" passed in is max, return max
+                 else if (which == "avg"){return yScale(d.avg)} //if "which" passed in is avg, return avg
                  else {return yScale(d.avg)}   
                 });
                 
 
-                //NEW(ish) line with join, transition, and optional easing!
+                //NEW - LINE W/ JOIN, TRANSITION, & OPTIONAL EASING
                 const line = svg.selectAll(".line")
-                .data([data])    
-                .join("path")//join!!
-                //.transition() //to animate transitions
-                //.duration(2000) //determines how long transition takes in milliseconds. Include after transition. (1000ms = 1s)
+                .data([data]) //pass in data as an array    
+                .join("path")//join - instead of enter & append
+
+                //TRANSITIONS & EASE - ANIMATE CHANGES
+                //transitions are added per element
+                //.duration(), .ease() must come after .transition()
+                .transition() //to animate transitions //smoother move when changing
+                .duration(2000) //determines how long transition takes in milliseconds. Include after transition. (1000ms = 1s)
                 //.delay(400)
                 //.ease(d3.easeLinear) 
                 //.ease(d3.easeBounceIn)
-                //.ease(d3.easeElasticIn)
+                .ease(d3.easeElasticIn) 
                 .attr("d", coords)
                 .attr("class", "line");
             }
             
-            //NEW: buttons with .on and data change
+            //NEW: BUTTONS W/ .ON & DATA CHANGE
+            //(1) Select all buttons
+            //(2) on click, pass in event in d & then have parameters
             d3.selectAll("button").on("click", (event,d)=>{
-                const selected = event.currentTarget;
-                    if (selected.id == "buttonMin"){
+                const selected = event.currentTarget; //the selected thing 
+                    if (selected.id == "buttonMin"){ //if selected thing has id button min, pass in the data for min
                     drawData("min")
-                    } else if (selected.id == "buttonMax"){
+                    } else if (selected.id == "buttonMax"){ //if selected thing has id button max, pass in data for max
                     drawData("max")
-                    } else if (selected.id == "buttonAvg"){
+                    } else if (selected.id == "buttonAvg"){ //if selected thing has id button avg, pass in data for avg
                     drawData("avg")
                     } else {
                     drawData("avg")
                     }})
             
-            drawData("avg")
+            drawData("avg") //must call the function
             });
 
         </script>
