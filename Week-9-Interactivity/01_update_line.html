@@ -92,7 +92,7 @@
                              .range([margin, w-margin]); 
 
             const yScale = d3.scaleLinear()
-                             .domain([0, d3.max(data, d => Math.max(d.min, d.max))]) //gave it to 2 diff columns (min/max) & let D3 find the max # for scale 
+                             .domain([0, d3.max(data, d => Math.max(d.min, d.max))]) //gave it 2 diff columns (min/max) & let D3 find the max # for scale 
                              .range([h-margin, margin]); 
 
             //SVG
