@@ -56,11 +56,14 @@
             text-anchor: middle;
             fill: rgb(90, 8, 108);
             font-weight: 600;
-
         }
 
         .line-label{
             color: red;
+        }
+
+        .svg{
+            margin-left: 20px;
         }
     </style>
 </head>
@@ -109,6 +112,7 @@
             //CREATE SVG
             const svg = d3.select("body")
                 .append("svg")
+                .attr("class", "svg")
                 .attr("width", width)
                 .attr("height", height);
 
@@ -197,7 +201,7 @@
 
             //ADD X-AXIS LABEL
             svg.append("text")
-                .attr("transform", "translate(" + (width / 2) + " ," + (height - 10) + ")") 
+                .attr("transform", "translate(" + (width / 2) + " ," + (height - 15) + ")") // coords = 300,585
                 .attr("class", "label")
                 .text("Year");
 
