@@ -60,7 +60,7 @@
 
         //SELECT CIRCLES
         const circles = svg.selectAll("circle")
-                           .data(dataset, d=>+d.val)
+                           .data(dataset, d=> +d.val)
 				           .join("circle") //join() not .enter().append() for updates and/or exits(remove)
 				           .attr("r", d => +d.val)
 				           .attr("cx", (d,i) => i * (w/dataset.length) + 20)
