@@ -1,198 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Wk 9 HW</title>
-        <script src= "https://d3js.org/d3.v7.min.js"></script>
-        <style type="text/css">
-            
-            .axis path, 
-            .axis line{
-                stroke: purple;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HW 7</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Jacques+Francois+Shadow&family=Jomhuria&family=Nunito:wght@300&family=Pattaya&family=Yuji+Mai&display=swap');
+
+        body {
+            background-color: rgb(255, 231, 235);
+        }
+
+        .axis path,.axis line{
+                stroke: rgb(39, 1, 1);
             }
 
-            .axis text{
-                font-family: sans-serif;
-                font-size: 10px;
-                fill: purple;
-                }
-            
-            .line {
-                fill: none; 
-                stroke: #1D428A; 
-                stroke-width: 2px;
+        .axis text{
+            font-family: sans-serif;
+            font-size: 10px;
+            fill: rgb(36, 9, 42);
             }
-            
-            button {
-                padding: 10px;
-                margin-left: 30px;
-                display: inline-block;
-                background-color: #C8102E;
-                border: none;
-                color: white;
-                text-align: center;
-                text-decoration: none;
-                border-radius: 10px; 
-                font-size: 12px;   
-            }
+        
+        .line {
+            fill: none; 
+            stroke: rgb(91, 204, 16); 
+            stroke-width: 4px;
+            /* stroke-dasharray: 4 3; dashes and gaps  - creates dashes and gaps. If you give it 1 # - then equal size dashes/gaps.*/
+            stroke-dasharray: 7 3 10 2; /*add distinction to lines*/
 
-            button:hover {
-                background-color: orange;
-            }
+        }
 
-            button:active {
-                background-color: blueviolet;
-            }
-            
-            h1 {
-                font-family: sans-serif;
-                font-size: 28px;
-                /* color: #C8102E; */
-                margin-left: 60px;
-                color: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c);
-            }
-            
-            .svg{
-                margin-left: 20px;
-            }
+        .linetwo{
+            fill: none;
+            stroke: rgb(44, 117, 185);
+            stroke-width: 4px;
+            stroke-dasharray: 4 8 8 10;
+        }
 
-            .label{
+        .linethree{
+            stroke-width: 6px;
+            stroke-dasharray: 12 3 1 4;
+        }
+
+        .title{
+            text-decoration: underline;
+            fill: rgb(145, 69, 199);
+            font-size: 18px;
+            text-anchor: middle;
+            font-family: "Jacques Francois Shadow", serif;
+            font-weight: 500px;
+        }
+
+        .label{
             text-anchor: middle;
             fill: rgb(90, 8, 108);
             font-weight: 600;
         }
 
-        </style>
-    </head>
-    <body>
-        <h1>#1 NBA Draft Pick Stats </h1>
-        <button id="btnTOTMP">Total Minutes</button>
-        <button id="btnTOTPTS">Total Points</button>
-        <button id="btnTOTTRB">Total Rebounds</button>
-        <button id="btnTOTAST">Total Assists</button>
-        <br>
-        <script type="text/javascript">
-            
-            //CONSTS/GLOBAL VARIABLES   
-            const width = 500;
-            const height = 500;
-            const margin = 50;//rename to margin
-            const parseTime = d3.timeParse("%Y");//time parser
+        .line-label{
+            color: red;
+        }
 
-            
-            d3.csv("top-pick-NBA-draft-20yrs.csv").then(data => {
-            console.log("data", data)
-                
-                //FORMAT THE DATA - create a loop
-                data.forEach(d => {
-                    //Use unary operator (+) to convert the strings to numbers
-                    d.Pick = +d.Pick;
-                    d.Games = +d.Games;
-                    d.Years = +d.Years; //years played
-                    d.MPG = +d.MPG;
-                    d.PPG = +d.PPG;
-                    d.RPG = +d.RPG;
-                    d.APG = +d.APG;
-                    d.TOTMP = +d.TOTMP;
-                    d.TOTPTS = +d.TOTPTS;
-                    d.TOTTRB = +d.TOTTRB;
-                    d.TOTAST = +d.TOTAST;
-                    d.DraftYear = parseTime(d.DraftYear);
-                });
-
-
-            //SCALES - W/ SCALE TIME
-            const xScale = d3.scaleTime()
-                             .domain(d3.extent(data, d => d.DraftYear)) 
-                             .range([margin, width-margin]); 
-
-            const yScale = d3.scaleLinear()
-                             .domain([0, d3.max(data, d => Math.max(d.TOTPTS, d.TOTMP))]) //gave it 2 diff columns (min/max) & let D3 find the max # for scale 
-                             .range([height-margin, margin]); 
-
+        .svg{
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+        //CONSTANTS & GLOBALS
+        const width = 600;
+        const height = 600;
+        const margin = 60;
+        const parseTime = d3.timeParse("%Y"); //will parse it using full year
         
 
-            //SVG
+        //IMPORT DATA
+        d3.csv("top-pick-NBA-draft-20yrs.csv").then(data =>{
+            console.log("nba", data)
+
+
+            //FORMAT THE DATA - create a loop
+            data.forEach(d=> {
+                //Use unary operator (+) to convert the strings to numbers
+                d.Pick = +d.Pick;
+                d.Games = +d.Games;
+                d.Years = +d.Years; //years played
+                d.MPG = +d.MPG; 
+                d.PPG = +d.PPG;
+                d.RPG = +d.RPG;
+                d.APG = +d.APG;
+                d.TOTMP = +d.TOTMP;
+                d.TOTPTS = +d.TOTPTS;
+                d.TOTTRB = +d.TOTTRB;
+                d.TOTAST = +d.TOTAST;
+                d.DraftYear = parseTime(d.DraftYear);
+            });
+
+            //SCALES WITH TIME
+            const xScale = d3.scaleTime() //must use the time scale 
+                .domain(d3.extent(data, d => d.DraftYear))
+                .range([margin, width-margin]);
+
+            const yScale = d3.scaleLinear() //use linear scale for other bball metrics
+                .domain([0, 55000])    
+            //.domain(d3.extent(data, d => d.TOTMP))
+                .range([height-margin, margin]);
+
+
+            //CREATE SVG
             const svg = d3.select("body")
-                    .append("svg")
-                    .attr("class", "svg")
-                    .attr("width", width)
-                    .attr("height", height);
+                .append("svg")
+                .attr("class", "svg")
+                .attr("width", width)
+                .attr("height", height);
 
-            //X-AXIS
+            //X-AXIS WITH TICKS
             const xAxis = d3.axisBottom()
-                                .scale(xScale)
-                                .tickFormat(d3.timeFormat("%Y"))
-                                .ticks(d3.timeYear.every(5));
-             
-            svg.append("g")
-                .attr("class", "axis") 
-                .attr("transform", "translate(0," + (height-margin) + ")") 
-                .call(xAxis);
+                        .scale(xScale)
+                        .tickFormat(d3.timeFormat("%Y"))
+                        .ticks(d3.timeYear.every(5)); //show ticks for every 5 years
+
             
-            //Y-AXIS
+            //APPEND X-AXIS TO SVG
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (height - margin) + ")") 
+                .call(xAxis); //don't forget to call the axis
+
+
+            //Y-AXIS WITH TICKS
             const yAxis = d3.axisLeft()
-                             .scale(yScale);
-            
+                        .scale(yScale)
+
+
+            //APPEND Y-AXIS TO SVG
             svg.append("g")
-               .attr("class", "axis") 
-               .attr("transform", "translate(" + margin + ",0)")
-               .call(yAxis);
-            
-            //NEW - CREATE A FUNCTION IN WHICH WE MAKE OUR LINE
-            function draw(which){ //name of function could be anything - pass word which - is a placeholder - could be any word
-                
-                //NEW - LINE GENERATOR A FUNCTION TO CHANGE Y
-                const coords = d3.line()
-                .x(d=>xScale(d.DraftYear)) //create x-coord
-                .y(function(d){ //create y-coord
-                    //Generate a line w/ different y-coordinates for each chart
-                    //if else if are parameters
-                    //which is the placeholder that is being passed into the function
-                 if (which == "TOTAST"){ return yScale(d.TOTAST)} //if passed in is TOTAST, return TOTAST col
-                 else if (which == "TOTTRB"){return yScale(d.TOTTRB)} //if "which" passed in is TOTTRB, return TOTTRB
-                 else if (which == "TOTPTS"){return yScale(d.TOTPTS)} //if "which" passed in is TOTPTS, return TOTPTS
-                 else if (which == "TOTMP"){return yScale(d.TOTMP)}
-                 else {return yScale(d.TOTMP)}  //default yScale  
-                });
-                
+                .attr("class", "axis")
+                .attr("transform", "translate(" + margin + ",0)")
+                .call(yAxis); //call axis
 
-                //NEW - LINE W/ JOIN, TRANSITION, & OPTIONAL EASING
-                const line = svg.selectAll(".line")
-                .data([data]) //pass in data as an array    
-                .join("path")//join - instead of enter & append
+            
+            //CREATE 1st LINE USING D3.LINE GENERATOR
+            const line = d3.line() //requires x & y
+                           .x(d => xScale(d.DraftYear))
+                           .y(d => yScale(d.TOTMP));
 
-                //TRANSITIONS & EASE - ANIMATE CHANGES
-                //ADD TRANSITIONS PER ELEMENT
-                //.duration(), .ease() COME AFTER .transition()
-                .transition() //to animate transitions
-                .duration(4500) //determines how long transition takes in milliseconds. (1000ms = 1s)
-                //.ease(d3.easeLinear) 
-                .ease(d3.easeBounceIn)
-                .attr("d", coords)
-                .attr("class", "line");
-            }
+            //CREATE 2ND LINE USING D3.LINE GENERATOR - DOESN'T SHOW
+            const line2 = d3.line()
+                            .curve(d3.curveBumpX)
+                            .x(d => xScale(d.DraftYear))
+                            .y(d => yScale(d.TOTPTS));
+
+            //CREATE 3RD LINE USING D3.LINE GENERATOR - DOESN'T SHOW
+            const line3 = d3.line()
+                            .curve(d3.curveCardinal)
+                            .x(d => xScale(d.DraftYear))
+                            .y(d => yScale(d.TOTTRB));
+
+
+            //APPLY 1ST LINE GENERATOR USING PATH
+            svg.append("path")
+                .attr("d", line(data)) //joins line to data
+                .attr("class", "line")
+                console.log('line', line(data));
+
+            //APPLY 2ND LINE GENERATOR USING PATH 
+            svg.append("path")
+                .attr("d", line2(data))
+                .attr("class", "linetwo")
+                console.log('line2', line2(data));
+
+             //APPLY 3RD LINE GENERATOR USING PATH
+            svg.append("path")
+                .attr("d", line3(data))
+                .attr("class", "linethree")
+                .attr("stroke", "red")
+                .attr("stroke-width", 2)
+                .attr("fill", "none")
+                console.log('line2', line3(data));
+
+            //ADD THE POINTS - for TOTMP - works
+            svg.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("class", "circle")
+                .attr("cx", d => xScale(d.DraftYear))
+                .attr("cy", d => yScale(d.TOTMP))
+                .attr("r", 4)
+                .attr("fill", "orange")
+                .attr("stroke", "indigo");
+
+            //ADD THE POINTS FOR TOTPTS - does not work 
+            svg.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("class", "circle")
+                .attr("cx", d => xScale(d.DraftYear))
+                .attr("cy", d => yScale(d.TOTPTS))
+                .attr("r", 5)
+                .attr("fill", "white")
+                .attr("stroke", "indigo");
+
+
+            //ADD THE POINTS FOR TOTTRB - does not work 
+            svg.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("class", "circle")
+                .attr("cx", d => xScale(d.DraftYear))
+                .attr("cy", d => yScale(d.TOTTRB))
+                .attr("r", 5)
+                .attr("fill", "pink")
+                .attr("stroke", "indigo");
+                
             
-            //NEW: BUTTONS W/ .ON & DATA CHANGE
-            //(1) Select all buttons
-            //(2) on click, pass in event in d & then have parameters
-            d3.selectAll("button").on("click", (event,d)=>{
-                const selected = event.currentTarget; //the selected thing 
-                    if (selected.id == "btnTOTMP"){ //if selected thing has id btn TOTMP, pass in the data for TOTMP
-                    draw("TOTMP")
-                    } else if (selected.id == "btnTOTPTS"){ //if selected thing has id btn TOTPTS, pass in data for TOTPTS
-                    draw("TOTPTS")
-                    } else if (selected.id == "btnTOTTRB"){ //if selected thing has id btn TOTTRB, pass in data for TOTTRB
-                    draw("TOTTRB")
-                    } else if (selected.id == "btnTOTAST"){
-                    draw("TOTAST")
-                    } else {
-                    draw("avg")
-                    }})
-            
-            draw("TOTMP") //must call the function
-        
+            //ADD LINE LABEL - DOESN'T SHOW
+            svg.append("text")
+                .attr("transform", "translate(" + (width + 3) + ", " + yScale(data[0].TOTMP) + ")")
+                .attr("class", "line-label")
+                .attr("x", 100)
+                .attr("y", -133)
+                .attr("stroke", "purple")
+                .text("Tot min played");
+
+               
+            //ADD CHART TITLE
+            svg.append("text")
+                .attr("x", width / 2) //x-coordinate is at 300
+                .attr("y", [height - margin] - 510)
+                .attr("class", "title")
+                .text("#1 NBA draft pick stats from 1990-2021");
+
+
+            //ADD X-AXIS LABEL
+            svg.append("text")
+                .attr("transform", "translate(" + (width / 2) + " ," + (height - 15) + ")") // coords = 300,585
+                .attr("class", "label")
+                .text("Year");
+
+
+            //ADD Y-AXIS LABEL
+            svg.append("text")
+                .attr("transform", "rotate(-90)") //will rotate the label 90 degrees pointed up
+                .attr("x", - (height / 2)) //x coordinate is middle of height (-300)
+                .attr("y", 15) //y coordinate = 15
+                .attr("class", "label")
+                .text("Total Minutes Played");
+
+
+
         });
-        </script>
-    </body>
+    </script>
+</body>
 </html>
