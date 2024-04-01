@@ -60,7 +60,7 @@
             text-anchor: middle;
             fill: rgb(90, 8, 108);
             font-weight: 600;
-        }
+            }
 
         </style>
     </head>
@@ -117,7 +117,8 @@
                     .append("svg")
                     .attr("class", "svg")
                     .attr("width", width)
-                    .attr("height", height);
+                    .attr("height", height)
+                    .attr("transform", "translate(" + margin + ", 5)");
 
             //X-AXIS
             const xAxis = d3.axisBottom()
@@ -191,6 +192,23 @@
                     }})
             
             draw("TOTMP") //must call the function
+
+
+            //ADD X-AXIS LABEL
+            svg.append("text")
+                .attr("transform", "translate(" + (width / 2) + " ," + (height - 15) + ")") // coords = 300,585
+                .attr("class", "label")
+                .text("Year");
+
+
+            //ADD Y-AXIS LABEL
+            svg.append("text")
+                .attr("transform", "rotate(-90)") //will rotate the label 90 degrees pointed up
+                .attr("x", - (height / 2)) //x coordinate is middle of height (-250)
+                .attr("y", 15) //y coordinate = 15
+                .attr("class", "label")
+                //.attr("transform", "translate(" + 100 , " + (height / 2) + 10)")
+                .text("Stats");
         
         });
         </script>
