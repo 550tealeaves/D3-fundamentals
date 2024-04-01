@@ -5,7 +5,7 @@
         <title>Wk 9 HW</title>
         <script src= "https://d3js.org/d3.v7.min.js"></script>
         <style type="text/css">
-        /* Our chart styling with CSS as before*/
+            
             .axis path, 
             .axis line{
                 stroke: purple;
@@ -23,15 +23,16 @@
                 stroke-width: 2px;
             }
             
-        /* NEW: STYLING THE BUTTONS ADDED BELOW*/
             button {
+                padding: 10px;
+                margin-left: 30px;
                 display: inline-block;
                 background-color: #C8102E;
                 border: none;
                 color: white;
                 text-align: center;
                 text-decoration: none;
-                border-radius: 2px; 
+                border-radius: 10px; 
                 font-size: 12px;   
             }
 
@@ -43,11 +44,12 @@
                 background-color: blueviolet;
             }
             
-            /*NEW: STYLE H1*/
             h1 {
                 font-family: sans-serif;
                 font-size: 28px;
-                color: #C8102E;
+                /* color: #C8102E; */
+                margin-left: 60px;
+                color: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c);
             }
             
             .svg{
@@ -63,7 +65,6 @@
         </style>
     </head>
     <body>
-        <!-- NEW: 3 BUTTONS W/ IDS & <h1> a <br>! -->
         <h1>#1 NBA Draft Pick Stats </h1>
         <button id="btnTOTMP">Total Minutes</button>
         <button id="btnTOTPTS">Total Points</button>
