@@ -22,6 +22,11 @@
                 stroke: #1D428A; 
                 stroke-width: 2px;
             }
+
+            .line:hover{
+                stroke: rgb(39, 153, 24);
+                stroke-width: 1.5px;
+            }
             
         /* NEW: STYLING THE BUTTONS ADDED BELOW*/
             button {
@@ -137,7 +142,7 @@
             //1ST TOOLTIP FUNCTION - MOUSEOVER
             const mouseover = function (event, d) {  //listen for events being triggered on done elements
                 tooltip  //give things to the tooltip
-                    .html("Player: " + "<br>" + d.Games)//setting the html here for the <br> - can add HTML features, like line break
+                    .html("Player: " + "<br>" + d.DraftYear)//setting the html here for the <br> - can add HTML features, like line break
                     //give it the feature of the data to reference - this is item col to reference
                     //.text("Item: " + d.item)  // note: you could just do the .text() per usual - all the text will appear on same line b/c cannot add line break
                     .style("opacity", 1) //opacity set to 1 is visible - mouse hovers & you can see it
@@ -197,7 +202,7 @@
                 const coords = d3.line()
                 .x(d=>xScale(d.DraftYear)) //create x-coord
                 .y(function(d){ //create y-coord
-                    //function says that you need to generate a line w/ different y-coordinates for each chart
+                    //Generate a line w/ different y-coordinates for each chart
                     //if else if are parameters
                     //which is the placeholder that is being passed into the function
                  if (which == "TOTAST"){ return yScale(d.TOTAST)} //if passed in is TOTAST, return TOTAST col
@@ -214,18 +219,16 @@
                 .join("path")//join - instead of enter & append
 
                 //TRANSITIONS & EASE - ANIMATE CHANGES
-                //transitions are added per element
-                //.duration(), .ease() must come after .transition()
-                .transition() //to animate transitions //smoother move when changing
-                .duration(1500) //determines how long transition takes in milliseconds. Include after transition. (1000ms = 1s)
-                //.delay(400)
-                .ease(d3.easeLinear) 
-                //.ease(d3.easeBounceIn)
-                //.ease(d3.easeElasticIn) 
+                //ADD TRANSITIONS PER ELEMENT
+                //.duration(), .ease() COME AFTER .transition()
+                .transition() //to animate transitions
+                .duration(4500) //determines how long transition takes in milliseconds. (1000ms = 1s)
+                //.ease(d3.easeLinear) 
+                .ease(d3.easeBounceIn)
                 .attr("d", coords)
                 .attr("class", "line")
-                .on("mouseover", mouseover) //NEW: .on() - this is event
-                .on("mousemove", mousemove) //tells it what to do 
+                .on("mouseover", mouseover) 
+                .on("mousemove", mousemove) 
                 .on("mouseout", mouseout);
             }
             
