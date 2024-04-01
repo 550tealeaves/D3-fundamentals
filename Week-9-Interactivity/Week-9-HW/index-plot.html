@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Wk 9 HW</title>
+        <script src= "https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css">
+            
+            .axis path, 
+            .axis line{
+                stroke: purple;
+            }
+
+            .axis text{
+                font-family: sans-serif;
+                font-size: 10px;
+                fill: purple;
+                }
+            
+            .line {
+                fill: none; 
+                stroke: #1D428A; 
+                stroke-width: 2px;
+            }
+            
+            button {
+                padding: 10px;
+                margin-left: 30px;
+                display: inline-block;
+                background-color: #C8102E;
+                border: none;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 10px; 
+                font-size: 12px;   
+            }
+
+            button:hover {
+                background-color: orange;
+            }
+
+            button:active {
+                background-color: blueviolet;
+            }
+            
+            h1 {
+                font-family: sans-serif;
+                font-size: 28px;
+                /* color: #C8102E; */
+                margin-left: 60px;
+                color: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c);
+            }
+            
+            .svg{
+                margin-left: 20px;
+            }
+
+            .label{
+            text-anchor: middle;
+            fill: rgb(90, 8, 108);
+            font-weight: 600;
+        }
+
+        </style>
+    </head>
+    <body>
+        <h1>#1 NBA Draft Pick Stats </h1>
+        <button id="btnTOTMP">Total Minutes</button>
+        <button id="btnTOTPTS">Total Points</button>
+        <button id="btnTOTTRB">Total Rebounds</button>
+        <button id="btnTOTAST">Total Assists</button>
+        <br>
+        <script type="text/javascript">
+            
+            //CONSTS/GLOBAL VARIABLES   
+            const width = 500;
+            const height = 500;
+            const margin = 50;//rename to margin
+            const parseTime = d3.timeParse("%Y");//time parser
+
+            
+            d3.csv("top-pick-NBA-draft-20yrs.csv").then(data => {
+            console.log("data", data)
+                
+                //FORMAT THE DATA - create a loop
+                data.forEach(d => {
+                    //Use unary operator (+) to convert the strings to numbers
+                    d.Pick = +d.Pick;
+                    d.Games = +d.Games;
+                    d.Years = +d.Years; //years played
+                    d.MPG = +d.MPG;
+                    d.PPG = +d.PPG;
+                    d.RPG = +d.RPG;
+                    d.APG = +d.APG;
+                    d.TOTMP = +d.TOTMP;
+                    d.TOTPTS = +d.TOTPTS;
+                    d.TOTTRB = +d.TOTTRB;
+                    d.TOTAST = +d.TOTAST;
+                    d.DraftYear = parseTime(d.DraftYear);
+                });
+
+
+            //SCALES - W/ SCALE TIME
+            const xScale = d3.scaleTime()
+                             .domain(d3.extent(data, d => d.DraftYear)) 
+                             .range([margin, width-margin]); 
+
+            const yScale = d3.scaleLinear()
+                             .domain([0, d3.max(data, d => Math.max(d.TOTPTS, d.TOTMP))]) //gave it 2 diff columns (min/max) & let D3 find the max # for scale 
+                             .range([height-margin, margin]); 
+
+        
+
+            //SVG
+            const svg = d3.select("body")
+                    .append("svg")
+                    .attr("class", "svg")
+                    .attr("width", width)
+                    .attr("height", height);
+
+            //X-AXIS
+            const xAxis = d3.axisBottom()
+                                .scale(xScale)
+                                .tickFormat(d3.timeFormat("%Y"))
+                                .ticks(d3.timeYear.every(5));
+             
+            svg.append("g")
+                .attr("class", "axis") 
+                .attr("transform", "translate(0," + (height-margin) + ")") 
+                .call(xAxis);
+            
+            //Y-AXIS
+            const yAxis = d3.axisLeft()
+                             .scale(yScale);
+            
+            svg.append("g")
+               .attr("class", "axis") 
+               .attr("transform", "translate(" + margin + ",0)")
+               .call(yAxis);
+            
+            //NEW - CREATE A FUNCTION IN WHICH WE MAKE OUR LINE
+            function draw(which){ //name of function could be anything - pass word which - is a placeholder - could be any word
+                
+                //NEW - LINE GENERATOR A FUNCTION TO CHANGE Y
+                const coords = d3.line()
+                .x(d=>xScale(d.DraftYear)) //create x-coord
+                .y(function(d){ //create y-coord
+                    //Generate a line w/ different y-coordinates for each chart
+                    //if else if are parameters
+                    //which is the placeholder that is being passed into the function
+                 if (which == "TOTAST"){ return yScale(d.TOTAST)} //if passed in is TOTAST, return TOTAST col
+                 else if (which == "TOTTRB"){return yScale(d.TOTTRB)} //if "which" passed in is TOTTRB, return TOTTRB
+                 else if (which == "TOTPTS"){return yScale(d.TOTPTS)} //if "which" passed in is TOTPTS, return TOTPTS
+                 else if (which == "TOTMP"){return yScale(d.TOTMP)}
+                 else {return yScale(d.TOTMP)}  //default yScale  
+                });
+                
+
+                //NEW - LINE W/ JOIN, TRANSITION, & OPTIONAL EASING
+                const line = svg.selectAll(".line")
+                .data([data]) //pass in data as an array    
+                .join("path")//join - instead of enter & append
+
+                //TRANSITIONS & EASE - ANIMATE CHANGES
+                //ADD TRANSITIONS PER ELEMENT
+                //.duration(), .ease() COME AFTER .transition()
+                .transition() //to animate transitions
+                .duration(4500) //determines how long transition takes in milliseconds. (1000ms = 1s)
+                //.ease(d3.easeLinear) 
+                .ease(d3.easeBounceIn)
+                .attr("d", coords)
+                .attr("class", "line");
+            }
+            
+            //NEW: BUTTONS W/ .ON & DATA CHANGE
+            //(1) Select all buttons
+            //(2) on click, pass in event in d & then have parameters
+            d3.selectAll("button").on("click", (event,d)=>{
+                const selected = event.currentTarget; //the selected thing 
+                    if (selected.id == "btnTOTMP"){ //if selected thing has id btn TOTMP, pass in the data for TOTMP
+                    draw("TOTMP")
+                    } else if (selected.id == "btnTOTPTS"){ //if selected thing has id btn TOTPTS, pass in data for TOTPTS
+                    draw("TOTPTS")
+                    } else if (selected.id == "btnTOTTRB"){ //if selected thing has id btn TOTTRB, pass in data for TOTTRB
+                    draw("TOTTRB")
+                    } else if (selected.id == "btnTOTAST"){
+                    draw("TOTAST")
+                    } else {
+                    draw("avg")
+                    }})
+            
+            draw("TOTMP") //must call the function
+        
+        });
+        </script>
+    </body>
+</html>
