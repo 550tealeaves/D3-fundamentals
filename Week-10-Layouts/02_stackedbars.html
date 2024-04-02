@@ -13,40 +13,42 @@
     <body>
         <script type="text/javascript">
             
-            //consts
+            //CONSTANTS
             const w = 600;
             const h = 600;
             const margin = 50;
             const parseTime = d3.timeParse("%Y-%m"); 
-            const myColor = d3.scaleOrdinal(d3.schemeTableau10);
+            const myColor = d3.scaleOrdinal(d3.schemeTableau10); 
 
-            //data
+            //DATA
             d3.csv("stacks.csv").then(data => {
                 console.log("data", data)
                 
-                    //format data
+                    //FORMAT DATA
                     data.forEach(d => { 
-                    d.month = parseTime(d.month);
+                    d.month = parseTime(d.month); //parse month data
                     d.rent = +d.rent;
                     d.utilities = +d.utilities;
                     d.food = +d.food;
                     d.other = +d.other;
                     });
             
-            //stack layout params
+            //STACK LAYOUT PARAMETERS - D3.STACK()
+            //MUST FEED IT .KEYS - SPECIFIES WHICH CATEGORIES WILL BE DISPLAYED
             const stack = d3.stack()
-                            .keys(["rent", "utilities", "food", "other"])
+                            .keys(["rent", "utilities", "food", "other"]) //4 arrays
                             //.keys(["food", "utilities", "rent", "other"]);
-                            //.keys(["rent", "food"]);
+                            //.keys(["rent", "food"]); //shows rent/food
                            //keys(["food", "rent"]);
-                            //.order(d3.stackOrderDescending);
-                            //.order(d3.stackOrderAscending); 
+                           //CAN ADD ORDER OF THE KEYS
+                            //.order(d3.stackOrderDescending); //sorts keys descending
+                            //.order(d3.stackOrderAscending); //sorts keys ascending
 
-            //stacking the data
+            //STACKING THE DATA
             const series = stack(data);
                 console.log("stacked data", series); 
 
-            //barchart scales - d3.scaleBand() and d3.scaleLinear()
+            //BARCHART SCALES - d3.scaleBand() & d3.scaleLinear()
             const xScale = d3.scaleBand()
                              .domain(data.map(d=>d.month))
                              .range([margin, w - margin])
@@ -62,7 +64,7 @@
                     .attr("width", w)
                     .attr("height", h);
             
-            //data groups
+            //DATA GROUPS
             const groups = svg.selectAll("g.stacks")
                               .data(series)
                               .enter()
@@ -70,7 +72,7 @@
                               .attr("class", "stacks") 
                               .style("fill", (d,i)=> myColor(i));
 
-            //rects
+            //RECTS AKA BARS
             const bars = groups.selectAll("rect")
                                .data(d=>d)
                                .enter()
@@ -80,7 +82,7 @@
                                .attr("height", d=> yScale(d[0])-yScale(d[1]))
                                .attr("width", xScale.bandwidth());
             
-            //bottom axis 
+            //BOTTOM AXIS 
             const bottomAxis = d3.axisBottom()
                                 .scale(xScale)
                                 .tickFormat(d3.timeFormat("%b"));;
@@ -90,7 +92,7 @@
                 .attr("transform", "translate(0," + (h-margin) + ")") 
                 .call(bottomAxis);
             
-            //left axis
+            //LEFT AXIS
             const leftAxis = d3.axisLeft()
                              .scale(yScale);
                             
@@ -101,7 +103,8 @@
         
             /* other relevant charts:
             horizontal stacked bar chart, 100% stacked bar chart, 
-            or stacked areas (a hybrid bewteen this and a line chart)*/
+            //TRY TO MAKE IT HORIZONTAL - SWITCH THE X/Y
+            or stacked areas (a hybrid between this and a line chart)*/
             });
         </script>
     </body>

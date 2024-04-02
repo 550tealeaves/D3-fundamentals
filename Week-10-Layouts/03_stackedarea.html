@@ -13,17 +13,20 @@
     <body>
         <script type="text/javascript">
            
+            //MOST CODE SIMILAR TO STACKED BAR CHART
+
+           //CONSTANTS
             const w = 600;
             const h = 600;
             const myColor = d3.scaleOrdinal(d3.schemeTableau10);
             const margin = 50;
             const parseTime = d3.timeParse("%Y-%m"); 
 
-            //data
+            //DATA
             d3.csv("stacks.csv").then(data => {
                 console.log("data", data)
                 
-                    //format data
+                    //FORMAT
                     data.forEach(d => { 
                     d.month = parseTime(d.month);
                     d.rent = +d.rent;
@@ -32,17 +35,17 @@
                     d.other = +d.other;
                     });
 
-            //using d3.stack() to set up or stack layout parameteres
+            //USING D3.STACK() TO SET UP OR STACK LAYOUT PARAMETERS
             const stack = d3.stack()
                             .keys(["rent", "utilities", "food", "other"])
                             //.order(d3.stackOrderDescending);
                            //.order(d3.stackOrderReverse);
                           
-            //stacking the data
+            //STACKING DATA 
             const series = stack(data);
             console.log("stacked data", series);
 
-            //line/area scales -- d3.scaleTime() and d3.scaleLinear
+            //LINE/AREA SCALES -- d3.scaleTime() & d3.scaleLinear
             const xScale = d3.scaleTime()
                              .domain(d3.extent(data, d=>d.month))
                              .range([margin, w-margin]); 
@@ -57,13 +60,15 @@
                     .attr("width", w)
                     .attr("height", h);
             
-            //NEW: area generator 
+
+            //NEW: AREA GENERATOR - 2 PARAMETERS - BASELINE/TOPLINE - NEEDS TO KNOW WHERE TO FILL TO
             const area = d3.area()
-            			   .x(d=> xScale(d.data.month)) //x-coordinate (see "stacked data" in console)
+            			   .x(d=> xScale(d.data.month)) //x-coordinate (see "stacked data" in console) - USE DATA.MONTH TO REFERENCE DATA
             			   .y0(d=>yScale(d[0])) //baseline
             			   .y1(d=>yScale(d[1])); //topine
 
-            //NEW: making our areas
+            //NEW: MAKING AREAS
+            //CAN BE HARDER TO SEE SMALL STACKS
             svg.selectAll(".area")
                .data(series)//stacked data
                .enter()
@@ -72,7 +77,7 @@
                .attr("class", "area")
                .style("fill", (d,i)=> myColor(i));      
             
-            //bottom axis 
+            //BOTTOM AXIS 
             const bottomAxis = d3.axisBottom()
                                 .scale(xScale)
                                 .tickFormat(d3.timeFormat("%b"));;
@@ -82,7 +87,7 @@
                 .attr("transform", "translate(0," + (h-margin) + ")") 
                 .call(bottomAxis);
             
-            //left axis
+            //LEFT AXIS
             const leftAxis = d3.axisLeft()
                              .scale(yScale);
                             

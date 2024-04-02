@@ -10,6 +10,7 @@
             font-size: 12px;
             font-weight: bold;
             font-family: sans-serif;
+            fill: aliceblue;
           }
 
         </style>
@@ -19,7 +20,7 @@
         
             //Data
             /*data fabricated using John Rich's "Pie Graphs of
-            Dogs" "Daschund" example as inspriation & guessing vals:
+            Dogs" "Dachshund" example as inspiration & guessing vals:
             https://johnrichtv.com/2022/06/14/pie-graphs-of-dogs/*/
              
             d3.csv("dog.csv").then(data => {
@@ -31,30 +32,34 @@
                     d.amount = +d.amount;
                     });
                 
-            //declare consts
+            //DECLARE CONSTANTS & ORDINAL COLOR SCALE
             const w = 600;
             const h = 600;
             //const myColor = d3.scaleOrdinal(d3.schemeSpectral[5]);
             const myColor = d3.scaleOrdinal(["royalblue", "darkorange", "darkgray", "goldenrod", "cornflowerblue"]);
 
-            //Radius information
+            //RADIUS INFORMATION
             const outerRadius = w/2;
             //const outerRadius = 200;
             const innerRadius = 0; 
             //const innerRadius = 150; //to make a doughnut!
            
-            //d3.arc()creates our wedges 
+
+            //TO CREATE A PIE, USE D3.ARC() & PIE GENERATOR
+
+            //D3.ARC()
+            //d3.arc() CREATES WEDGES 
             const arc = d3.arc()  
                            .innerRadius(innerRadius)//required 
                            .outerRadius(outerRadius) //required
                            //.cornerRadius(10);
-                           //.cornerRadius(100);
+                           .cornerRadius(100); //makes it more interesting looking
 
-            //pie generator
+            //PIE GENERATOR
             const pie = d3.pie().value(d=>d.amount)
-                            //.padAngle(.04);
-                            //.startAngle(-0.5 * Math.PI)
-                            //.endAngle(0.5 * Math.PI);
+                            //.padAngle(.04); //adds space b/w arcs - apply here so you don't add bias
+                            //.startAngle(-0.5 * Math.PI) //have to compute radians - changes shape [1 radian = (180/pi), 2pi = 90]
+                            //.endAngle(0.5 * Math.PI); //must include start/end angle 
                             //.startAngle(0 * Math.PI)
                             //.endAngle(1 * Math.PI);
                             //.startAngle(0 * Math.PI)
@@ -70,9 +75,9 @@
                     .attr("width", w)
                     .attr("height", h);
 
-            //groups to build our chart
+            //GROUPS TO BUILD CHART
             const groups = svg.selectAll("g.arc")
-                            .data(pie(data))//give data to our pie generator
+                            .data(pie(data))//give data to our pie generator - could also have created a separate constant instead
                             .enter()
                             .append("g")
                             .attr("class", "arc")
@@ -80,15 +85,15 @@
                             console.log("pie data", pie(data));
             
             groups.append("path")
-                .attr("fill", (d,i)=> myColor(i))
+                .attr("fill", (d,i)=> myColor(i)) //gave it the index (i)
                 .attr("d", arc); //d of our path 
 
-            //Labels
+            //LABELS
             groups.append("text")
-                  .attr("transform", d=> "translate(" + arc.centroid(d) + ")")
+                  .attr("transform", d=> "translate(" + arc.centroid(d) + ")") //arc.centroid figures out the math
                   .attr("text-anchor", "middle")
                   .attr("class", "labels")
-                  .text(d=>d.data.part);//in console look at "pie data" to see structure
+                  .text(d=>d.data.part);//in console look at "pie data" to see structure (data > part)
 
           /*Note: if you happen to like round / doughnut charts 
             another option is to think into how you might make a radial
