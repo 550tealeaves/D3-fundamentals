@@ -65,6 +65,21 @@
         .svg{
             margin-left: 20px;
         }
+
+         .tooltip{
+            position: absolute;
+            width: 200px;
+            height: 20px;
+            padding: 4px;    
+            text-align: center; 
+            font-family:sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            background: rgb(189, 217, 249);
+            color: black; 
+            border-radius: 16px;
+          }
+
     </style>
 </head>
 <body>
@@ -85,6 +100,8 @@
             data.forEach(d=> {
                 //Use unary operator (+) to convert the strings to numbers
                 d.Pick = +d.Pick;
+                d.Team = d.Team;
+                d.Player = d.Player;
                 d.Games = +d.Games;
                 d.Years = +d.Years; //years played
                 d.MPG = +d.MPG; 
@@ -96,6 +113,7 @@
                 d.TOTTRB = +d.TOTTRB;
                 d.TOTAST = +d.TOTAST;
                 d.DraftYear = parseTime(d.DraftYear);
+                d.YrPicked = +d.YrPicked;
             });
 
             //SCALES WITH TIME
@@ -107,6 +125,37 @@
                 .domain([0, 55000])    
             //.domain(d3.extent(data, d => d.TOTMP))
                 .range([height-margin, margin]);
+
+            //TOOLTIP - REQUIRES 3 FUNCTIONS
+            const tooltip = d3.select("body")
+                .append("div")
+                .attr("class", "tooltip") //class for styling in CSS
+                .style("opacity", 0); //opacity set to 0 is invisible until used
+
+            //1ST TOOLTIP FUNCTION - MOUSEOVER
+            const mouseover = function (event, d) {  //listen for events being triggered on done elements
+                tooltip  //give things to the tooltip
+                    .html(d.YrPicked + " - " + d.Player + ": " + d.TOTMP)//can add HTML features, like line break
+                    .style("opacity", 1) //opacity set to 1 is visible - mouse hovers & you can see it
+                    //Add absolute position of mouse b/c tooltip follows mouse
+                    .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
+                    .style("top", (event.pageY + 8) + "px");//mouse y coordinate - higher the # further away tooltip moves
+            }
+
+            //2nd TOOLTIP FUNCTION - MOUSEMOVE
+            //Use event & d
+            const mousemove = function (event, d) {
+                tooltip
+                    .style("left", (event.pageX + 8) + "px") //higher the # further away tooltip moves
+                    .style("top", (event.pageY + 8) + "px") //higher the # further away tooltip moves
+            }
+
+            //3rd TOOLTIP FUNCTION - MOUSEOUT
+            //Use event & d
+            const mouseout = function (event, d) {
+                tooltip
+                    .style("opacity", 0); //invisible when cursor leaves
+            }
 
 
             //CREATE SVG
@@ -189,9 +238,14 @@
                 .attr("class", "circle")
                 .attr("cx", d => xScale(d.DraftYear))
                 .attr("cy", d => yScale(d.TOTMP))
-                .attr("r", 4)
-                .attr("fill", "orange")
-                .attr("stroke", "indigo");
+                .attr("r", 5)
+                .attr("fill", "#f58426")
+                .attr("stroke", "indigo")
+                .on("mouseover", mouseover) //NEW: .on() - this is event
+                .on("mousemove", mousemove) //tells it what to do 
+                .on("mouseout", mouseout);
+
+
 
             //ADD THE POINTS FOR TOTPTS - does not work 
             svg.selectAll("circle")
