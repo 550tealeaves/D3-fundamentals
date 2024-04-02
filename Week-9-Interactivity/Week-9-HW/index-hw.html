@@ -25,22 +25,22 @@
         .line {
             fill: none; 
             stroke: rgb(91, 204, 16); 
-            stroke-width: 4px;
+            stroke-width: 3px;
             /* stroke-dasharray: 4 3; dashes and gaps  - creates dashes and gaps. If you give it 1 # - then equal size dashes/gaps.*/
-            stroke-dasharray: 7 3 10 2; /*add distinction to lines*/
+            /* stroke-dasharray: 7 3 10 2; add distinction to lines */
 
         }
 
         .linetwo{
             fill: none;
             stroke: rgb(44, 117, 185);
-            stroke-width: 4px;
-            stroke-dasharray: 4 8 8 10;
+            stroke-width: 3px;
+            /* stroke-dasharray: 4 8 8 10; */
         }
 
         .linethree{
-            stroke-width: 6px;
-            stroke-dasharray: 12 3 1 4;
+            stroke-width: 3px;
+            /* stroke-dasharray: 12 3 1 4; */
         }
 
         .title{
@@ -135,7 +135,7 @@
             //1ST TOOLTIP FUNCTION - MOUSEOVER
             const mouseover = function (event, d) {  //listen for events being triggered on done elements
                 tooltip  //give things to the tooltip
-                    .html(d.YrPicked + " - " + d.Player + ": " + d.TOTMP)//can add HTML features, like line break
+                    .html(d.YrPicked + " - " + d.Player + ": " + d.TOTMP + " min")//can add HTML features, like line break
                     .style("opacity", 1) //opacity set to 1 is visible - mouse hovers & you can see it
                     //Add absolute position of mouse b/c tooltip follows mouse
                     .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
@@ -158,12 +158,71 @@
             }
 
 
+
             //CREATE 2ND TOOLTIP
+            //TOOLTIP - REQUIRES 3 FUNCTIONS
+            const tooltipTwo = d3.select("body")
+                .append("div")
+                .attr("class", "tooltip") //class for styling in CSS
+                .style("opacity", 0); //opacity set to 0 is invisible until used
+
+            //1ST TOOLTIP FUNCTION - MOUSEOVER
+            const mouseoverTwo = function (event, d) {  //listen for events being triggered on done elements
+                tooltip  //give things to the tooltip
+                    .html(d.YrPicked + " - " + d.Player + ": " + d.TOTPTS + " pts")//can add HTML features, like line break
+                    .style("opacity", 1) //opacity set to 1 is visible - mouse hovers & you can see it
+                    //Add absolute position of mouse b/c tooltip follows mouse
+                    .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
+                    .style("top", (event.pageY + 8) + "px");//mouse y coordinate - higher the # further away tooltip moves
+            }
+
+            //2nd TOOLTIP FUNCTION - MOUSEMOVE
+            //Use event & d
+            const mousemoveTwo = function (event, d) {
+                tooltip
+                    .style("left", (event.pageX + 8) + "px") //higher the # further away tooltip moves
+                    .style("top", (event.pageY + 8) + "px") //higher the # further away tooltip moves
+            }
+
+            //3rd TOOLTIP FUNCTION - MOUSEOUT
+            //Use event & d
+            const mouseoutTwo = function (event, d) {
+                tooltip
+                    .style("opacity", 0); //invisible when cursor leaves
+            }
 
 
+            //CREATE 3RD TOOLTIP
+            //TOOLTIP - REQUIRES 3 FUNCTIONS
+            const tooltipThree = d3.select("body")
+                .append("div")
+                .attr("class", "tooltip") //class for styling in CSS
+                .style("opacity", 0); //opacity set to 0 is invisible until used
 
+            //1ST TOOLTIP FUNCTION - MOUSEOVER
+            const mouseoverThree = function (event, d) {  //listen for events being triggered on done elements
+                tooltip  //give things to the tooltip
+                    .html(d.YrPicked + " - " + d.Player + ": " + d.TOTTRB + " rebs")//can add HTML features, like line break
+                    .style("opacity", 1) //opacity set to 1 is visible - mouse hovers & you can see it
+                    //Add absolute position of mouse b/c tooltip follows mouse
+                    .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
+                    .style("top", (event.pageY + 8) + "px");//mouse y coordinate - higher the # further away tooltip moves
+            }
 
+            //2nd TOOLTIP FUNCTION - MOUSEMOVE
+            //Use event & d
+            const mousemoveThree = function (event, d) {
+                tooltip
+                    .style("left", (event.pageX + 8) + "px") //higher the # further away tooltip moves
+                    .style("top", (event.pageY + 8) + "px") //higher the # further away tooltip moves
+            }
 
+            //3rd TOOLTIP FUNCTION - MOUSEOUT
+            //Use event & d
+            const mouseoutThree = function (event, d) {
+                tooltip
+                    .style("opacity", 0); //invisible when cursor leaves
+            }
 
 
 
@@ -268,12 +327,12 @@
                 .attr("class", "circle")
                 .attr("d", symbolData)
                 .attr("transform", d => "translate(" + xScale(d.DraftYear) + "," + yScale(d.TOTPTS) + ")")
-                .attr("fill", "#DA5929")
+                .attr("fill", "white")
                 .attr("stroke", "black")
                 //ADD THE 3 .on() - they attribute the 3 tooltip functions
-                .on("mouseover", mouseover) //NEW: .on() - this is event
-                .on("mousemove", mousemove) //tells it what to do 
-                .on("mouseout", mouseout);
+                .on("mouseover", mouseoverTwo) //NEW: .on() - this is event
+                .on("mousemove", mousemoveTwo) //tells it what to do 
+                .on("mouseout", mouseoutTwo);
 
 
             //CRETE CIRCLES FOR TOTTRB
@@ -284,39 +343,13 @@
                 .attr("class", "circle")
                 .attr("d", symbolData)
                 .attr("transform", d => "translate(" + xScale(d.DraftYear) + "," + yScale(d.TOTTRB) + ")")
-                .attr("fill", "#DA5929")
+                .attr("fill", "gold")
                 .attr("stroke", "black")
                 //ADD THE 3 .on() - they attribute the 3 tooltip functions
-                .on("mouseover", mouseover) //NEW: .on() - this is event
-                .on("mousemove", mousemove) //tells it what to do 
-                .on("mouseout", mouseout);
+                .on("mouseover", mouseoverThree) //NEW: .on() - this is event
+                .on("mousemove", mousemoveThree) //tells it what to do 
+                .on("mouseout", mouseoutThree);
 
-
-
-            // //ADD THE POINTS FOR TOTPTS - does not work 
-            // svg.selectAll("circle")
-            //     .data(data)
-            //     .enter()
-            //     .append("circle")
-            //     .attr("class", "circle")
-            //     .attr("cx", d => xScale(d.DraftYear))
-            //     .attr("cy", d => yScale(d.TOTPTS))
-            //     .attr("r", 5)
-            //     .attr("fill", "white")
-            //     .attr("stroke", "indigo");
-
-
-            // //ADD THE POINTS FOR TOTTRB - does not work 
-            // svg.selectAll("circle")
-            //     .data(data)
-            //     .enter()
-            //     .append("circle")
-            //     .attr("class", "circle")
-            //     .attr("cx", d => xScale(d.DraftYear))
-            //     .attr("cy", d => yScale(d.TOTTRB))
-            //     .attr("r", 5)
-            //     .attr("fill", "pink")
-            //     .attr("stroke", "indigo");
                 
             
             //ADD LINE LABEL - DOESN'T SHOW
