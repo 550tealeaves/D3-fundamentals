@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Stacked Bars</title>
+        <script src= "https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css">
+        
+          	/*TBD*/
+
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript">
+            
+            //consts
+            const w = 600;
+            const h = 600;
+            const margin = 50;
+            const parseTime = d3.timeParse("%Y-%m"); 
+            const myColor = d3.scaleOrdinal(d3.schemeTableau10);
+
+            //data
+            d3.csv("stacks.csv").then(data => {
+                console.log("data", data)
+                
+                    //format data
+                    data.forEach(d => { 
+                    d.month = parseTime(d.month);
+                    d.rent = +d.rent;
+                    d.utilities = +d.utilities;
+                    d.food = +d.food;
+                    d.other = +d.other;
+                    });
+            
+            //stack layout params
+            const stack = d3.stack()
+                            .keys(["rent", "utilities", "food", "other"])
+                            //.keys(["food", "utilities", "rent", "other"]);
+                            //.keys(["rent", "food"]);
+                           //keys(["food", "rent"]);
+                            //.order(d3.stackOrderDescending);
+                            //.order(d3.stackOrderAscending); 
+
+            //stacking the data
+            const series = stack(data);
+                console.log("stacked data", series); 
+
+            //barchart scales - d3.scaleBand() and d3.scaleLinear()
+            const xScale = d3.scaleBand()
+                             .domain(data.map(d=>d.month))
+                             .range([margin, w - margin])
+                             .paddingInner(0.05);
+
+            const yScale = d3.scaleLinear()
+                             .domain([0, d3.max(data, d => d.rent + d.utilities + d.food + d.other)])
+                             .range([h - margin, margin]);
+            
+            //SVG
+            const svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+            
+            //data groups
+            const groups = svg.selectAll("g.stacks")
+                              .data(series)
+                              .enter()
+                              .append("g")
+                              .attr("class", "stacks") 
+                              .style("fill", (d,i)=> myColor(i));
+
+            //rects
+            const bars = groups.selectAll("rect")
+                               .data(d=>d)
+                               .enter()
+                               .append("rect")
+                               .attr("x", d=> xScale(d.data.month))//see "stacked data" in console
+                               .attr("y", d=> yScale(d[1])) 
+                               .attr("height", d=> yScale(d[0])-yScale(d[1]))
+                               .attr("width", xScale.bandwidth());
+            
+            //bottom axis 
+            const bottomAxis = d3.axisBottom()
+                                .scale(xScale)
+                                .tickFormat(d3.timeFormat("%b"));;
+             
+            svg.append("g")
+                .attr("class", "axis") 
+                .attr("transform", "translate(0," + (h-margin) + ")") 
+                .call(bottomAxis);
+            
+            //left axis
+            const leftAxis = d3.axisLeft()
+                             .scale(yScale);
+                            
+            svg.append("g")
+               .attr("class", "axis") 
+               .attr("transform", "translate(" + margin + ",0)")
+               .call(leftAxis);        
+        
+            /* other relevant charts:
+            horizontal stacked bar chart, 100% stacked bar chart, 
+            or stacked areas (a hybrid bewteen this and a line chart)*/
+            });
+        </script>
+    </body>
+</html>
