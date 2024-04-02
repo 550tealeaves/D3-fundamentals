@@ -158,6 +158,15 @@
             }
 
 
+            //CREATE 2ND TOOLTIP
+
+
+
+
+
+
+
+
             //CREATE SVG
             const svg = d3.select("body")
                 .append("svg")
@@ -230,16 +239,17 @@
                 .attr("fill", "none")
                 console.log('line2', line3(data));
 
-            //SYMBOL GENERATOR
+            
+            //SYMBOL GENERATOR - CREATE CIRCLES
             const symbolData = d3.symbol()
                 .type(d3.symbolCircle);
 
-            //SCATTER W/ TOOLTIP EVENTS ATTRIBUTED
-            const circle = svg.selectAll("stars")
+            //CREATE CIRCLES FOR TOTMP
+            const circle = svg.selectAll("circle")
                 .data(data)
                 .enter()
                 .append("path")
-                .attr("class", "stars")
+                .attr("class", "circle")
                 .attr("d", symbolData)
                 .attr("transform", d => "translate(" + xScale(d.DraftYear) + "," + yScale(d.TOTMP) + ")")
                 .attr("fill", "#DA5929")
@@ -249,32 +259,64 @@
                 .on("mousemove", mousemove) //tells it what to do 
                 .on("mouseout", mouseout);
 
-
-
-            //ADD THE POINTS FOR TOTPTS - does not work 
-            svg.selectAll("circle")
+            
+            //CREATE CIRCLES FOR TOTPTS
+            const circleTwo = svg.selectAll("circle")
                 .data(data)
                 .enter()
-                .append("circle")
+                .append("path")
                 .attr("class", "circle")
-                .attr("cx", d => xScale(d.DraftYear))
-                .attr("cy", d => yScale(d.TOTPTS))
-                .attr("r", 5)
-                .attr("fill", "white")
-                .attr("stroke", "indigo");
+                .attr("d", symbolData)
+                .attr("transform", d => "translate(" + xScale(d.DraftYear) + "," + yScale(d.TOTPTS) + ")")
+                .attr("fill", "#DA5929")
+                .attr("stroke", "black")
+                //ADD THE 3 .on() - they attribute the 3 tooltip functions
+                .on("mouseover", mouseover) //NEW: .on() - this is event
+                .on("mousemove", mousemove) //tells it what to do 
+                .on("mouseout", mouseout);
 
 
-            //ADD THE POINTS FOR TOTTRB - does not work 
-            svg.selectAll("circle")
+            //CRETE CIRCLES FOR TOTTRB
+            const circleThree = svg.selectAll("circle")
                 .data(data)
                 .enter()
-                .append("circle")
+                .append("path")
                 .attr("class", "circle")
-                .attr("cx", d => xScale(d.DraftYear))
-                .attr("cy", d => yScale(d.TOTTRB))
-                .attr("r", 5)
-                .attr("fill", "pink")
-                .attr("stroke", "indigo");
+                .attr("d", symbolData)
+                .attr("transform", d => "translate(" + xScale(d.DraftYear) + "," + yScale(d.TOTTRB) + ")")
+                .attr("fill", "#DA5929")
+                .attr("stroke", "black")
+                //ADD THE 3 .on() - they attribute the 3 tooltip functions
+                .on("mouseover", mouseover) //NEW: .on() - this is event
+                .on("mousemove", mousemove) //tells it what to do 
+                .on("mouseout", mouseout);
+
+
+
+            // //ADD THE POINTS FOR TOTPTS - does not work 
+            // svg.selectAll("circle")
+            //     .data(data)
+            //     .enter()
+            //     .append("circle")
+            //     .attr("class", "circle")
+            //     .attr("cx", d => xScale(d.DraftYear))
+            //     .attr("cy", d => yScale(d.TOTPTS))
+            //     .attr("r", 5)
+            //     .attr("fill", "white")
+            //     .attr("stroke", "indigo");
+
+
+            // //ADD THE POINTS FOR TOTTRB - does not work 
+            // svg.selectAll("circle")
+            //     .data(data)
+            //     .enter()
+            //     .append("circle")
+            //     .attr("class", "circle")
+            //     .attr("cx", d => xScale(d.DraftYear))
+            //     .attr("cy", d => yScale(d.TOTTRB))
+            //     .attr("r", 5)
+            //     .attr("fill", "pink")
+            //     .attr("stroke", "indigo");
                 
             
             //ADD LINE LABEL - DOESN'T SHOW
