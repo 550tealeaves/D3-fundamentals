@@ -85,6 +85,22 @@
             background: rgb(225, 253, 186); 
           }
 
+
+          .circle{
+            fill: #DA5929;
+            stroke: black;
+          }
+
+          .circle-two{
+            fill: #e7f4fd;
+            stroke: black;
+          }
+
+          .circle-three{
+            fill: #ffc72c;
+            stroke: black;
+          }
+
     </style>
 </head>
 <body>
@@ -328,8 +344,6 @@
                 .attr("class", "circle")
                 .attr("d", symbolData)
                 .attr("transform", d => "translate(" + xScale(d.DraftYear) + "," + yScale(d.TOTMP) + ")")
-                .attr("fill", "#DA5929")
-                .attr("stroke", "black")
                 //ADD THE 3 .on() - they attribute the 3 tooltip functions
                 .on("mouseover", mouseover) //NEW: .on() - this is event
                 .on("mousemove", mousemove) //tells it what to do 
@@ -341,11 +355,9 @@
                 .data(data)
                 .enter()
                 .append("path")
-                .attr("class", "circle")
+                .attr("class", "circle-two")
                 .attr("d", symbolData)
                 .attr("transform", d => "translate(" + xScale(d.DraftYear) + "," + yScale(d.TOTPTS) + ")")
-                .attr("fill", "white")
-                .attr("stroke", "black")
                 //ADD THE 3 .on() - they attribute the 3 tooltip functions
                 .on("mouseover", mouseoverTwo) //NEW: .on() - this is event
                 .on("mousemove", mousemoveTwo) //tells it what to do 
@@ -357,11 +369,9 @@
                 .data(data)
                 .enter()
                 .append("path")
-                .attr("class", "circle")
+                .attr("class", "circle-three")
                 .attr("d", symbolData)
                 .attr("transform", d => "translate(" + xScale(d.DraftYear) + "," + yScale(d.TOTTRB) + ")")
-                .attr("fill", "gold")
-                .attr("stroke", "black")
                 //ADD THE 3 .on() - they attribute the 3 tooltip functions
                 .on("mouseover", mouseoverThree) //NEW: .on() - this is event
                 .on("mousemove", mousemoveThree) //tells it what to do 
