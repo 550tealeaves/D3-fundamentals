@@ -56,6 +56,7 @@
                            .cornerRadius(170); //makes it more interesting looking
 
             //PIE GENERATOR
+            //EDIT THE padAngle, startAngle & endAngle TO MAKE A MORE INTERESTING LOOKING CHART
             const pie = d3.pie().value(d=>d.amount)
                             //.padAngle(.04); //adds space b/w arcs - apply here so you don't add bias
                             //.startAngle(-0.5 * Math.PI) //have to compute radians - changes shape [1 radian = (180/pi), 2pi = 90]
