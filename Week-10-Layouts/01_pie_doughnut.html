@@ -53,15 +53,15 @@
                            .innerRadius(innerRadius)//required 
                            .outerRadius(outerRadius) //required
                            //.cornerRadius(10);
-                           .cornerRadius(100); //makes it more interesting looking
+                           .cornerRadius(170); //makes it more interesting looking
 
             //PIE GENERATOR
             const pie = d3.pie().value(d=>d.amount)
                             //.padAngle(.04); //adds space b/w arcs - apply here so you don't add bias
                             //.startAngle(-0.5 * Math.PI) //have to compute radians - changes shape [1 radian = (180/pi), 2pi = 90]
                             //.endAngle(0.5 * Math.PI); //must include start/end angle 
-                            //.startAngle(0 * Math.PI)
-                            //.endAngle(1 * Math.PI);
+                            .startAngle(0 * Math.PI)
+                            .endAngle(1 * Math.PI);
                             //.startAngle(0 * Math.PI)
                             //.endAngle(0.5 * Math.PI);
                             // .startAngle(0.5 * Math.PI)
