@@ -18,7 +18,7 @@
            //CONSTANTS
             const w = 600;
             const h = 600;
-            const myColor = d3.scaleOrdinal(d3.schemeSet3);
+            const myColor = d3.scaleOrdinal(d3.schemeSet1);
             const margin = 50;
             const parseTime = d3.timeParse("%Y-%m"); 
 
@@ -38,7 +38,7 @@
             //USING D3.STACK() TO SET UP OR STACK LAYOUT PARAMETERS
             const stack = d3.stack()
                             .keys(["rent", "utilities", "food", "other"])
-                            //.order(d3.stackOrderDescending);
+                            .order(d3.stackOrderDescending);
                            //.order(d3.stackOrderReverse);
                           
             //STACKING DATA 
