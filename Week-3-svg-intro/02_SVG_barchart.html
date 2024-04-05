@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>SVG Example</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style type="text/css">
+            /*TBD*/
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript">
+           
+           //1. Include our data for our bar chart 
+           //const data = [10, 20, 30, 40, 50];
+           const data = [10, 20, 30, 40, 50, 60, 70, 80];
+
+
+            //2. Declare SVG width, height, and the space between bars, in pixels - have to add "canvas" size
+            const svgWidth = 500;
+            const svgHeight = 300;
+            const barPadding = 1; 
+
+            //3. Create our SVG element and append w/h
+            const svg = d3.select("body") //select body element
+                        .append("svg") //we are now appending our svg 
+                        .attr("width", svgWidth) //apply width and height specified  
+                        .attr("height", svgHeight);
+
+
+            // 4. Make rects and add them to SVG to visualize our data. 
+            // Need an x,y,width, and height. 
+            svg.selectAll("rect") //selectAll rects in the SVG not just one - these don't currently exist
+                .data(data) //our data! 
+                .enter() 
+                .append("rect") //adds rect
+
+                //ADD X ATTRIBUTE
+                .attr("x", (d,i) => i * (svgWidth / data.length)) // x for rects: making rects evenly spaced per the width of our canvas, remember: d is our data value and i is our index placeholder (position)
+
+                //MATH = 0(500/8) = 0, 1(500/8)=62.5, 2(500/8)=125, 3(500/8)=187.5, 4(500/8)=250, 5(500/8)=312.5, 6(500/8)=375, & 7(500/8)=437.5
+
+                //ADD Y ATTRIBUTE
+                .attr("y", d=> svgHeight - d) // y for rects: making the y for rects the height of the svg minus the data value --  remember SVG coordinates (x,y) for rect are for the upper-left corner!
+
+                //MATH - 300-10 = 290, 300-20 = 280, 300-30 = 270, 300-40 = 260, 300-50=250, 300-60=240, 300-70=230, 300-80=220
+
+
+                //X&Y POSITIONS FOR BARS
+                //i=0 - x=0, y=290
+                //i=1 - x=62.5, y=280
+                //i=2 - x=125, y=270
+                //i=3 - x=187.5, y=260
+                //i=4 - x=250, y=250
+                //i=5 - x=312.5, y=240
+                //i=6 - x=375, y=230
+                //i=7 - x=437.5, y=220
+
+
+                //ADD WIDTH ATTRIBUTE
+                //Take data, divide it by length of data, subtract space b/w bars
+                .attr("width", svgWidth / data.length - barPadding) //width of bars is determined by the width of our SVG divided by the length of our data set, minus the space between each bar
+
+                //ADD HEIGHT ATTRIBUTE
+                .attr("height", d=>d) //height of rects will be the value of the data
+                .attr("fill", "violet"); //only need the semicolon for the LAST LINE
+                
+
+            console.log(data.length); // to see what the length is you can always print to console
+
+            //5. Change the color of the bars
+                // .attr("fill", "red");
+
+            //6. Add data labels 
+            /*Note: This relies on basically the same code, 
+            but now we are making a text element which (like line, 
+            circle, ellipse, and rect) we can add to an SVG element. 
+            We are using .text() to return d, our data values. 
+            We then use the exact same x and y information).*/ 
+            svg.selectAll("text") //select all text elements that aren't created
+                .data(data) //use data
+                .enter()
+                .append("text") //adds text
+                .text(d=>d) //the text will be the CURRENT VALUE of the data
+                
+                //ATTRIBUTE X
+                //.attr("x", (d,i) => i * (svgWidth / data.length)) //you can always add a few pixels here...try adding + 40 to center the numbers) - defaults to the left corner of each bar
+                .attr("x", (d, i) => i * (svgWidth / data.length) + 30) //moves the numbers to the right
+
+                //MATH - 0(500/8)+30 = 30, 1(500/8)+30 = 92.5, 2(500/8)+30 = 155, 3(500/8)+30 = 217.5, 4(500/8)+30 = 280, 5(500/8)+30=342.5, 6(500/8)+30=405, & 7(500/8)+30=467.5
+
+                //ATTRIBUTE Y
+                //.attr("y", d => svgHeight - d) //try + or - 5 here to see what happens to the numbers - this code puts the #s right on top of the bar (no space)
+                .attr("y", d => svgHeight - d - 12) // this will move up the #s
+                .attr("fill", "forestgreen"); //change the colors of the data labels
+
+                //MATH - 300 - 10 - 12 = 278, 300 - 20 - 12 = 268, 300 - 30 - 12 = 258, 300 - 40 - 12 = 248, 300 - 50 - 12 = 238, 300 - 60 - 12 = 228, 300 - 70 - 12 = 218, 300 - 80 - 12 = 208
+
+
+                //X,Y COORDINATES FOR LABELS
+                //i=0, x=30, y=278 
+                //i=1, x=92.5, y=268
+                //i=2, x=155, y=258
+                //i=3, x=217.5, y=248
+                //i=4, x=280, y=238
+                //i=5, x=342.5, y=228
+                //i=6, x=405, y=218
+                //i=7, x=467.5, y=208
+
+
+            /*other .attr() properties you might add to a text element
+            could be "font-family", "font-size", "fill" 
+            (where values might be "sans-serif", "12px", and "white")*/
+
+        </script>
+    </body>
+</html>
