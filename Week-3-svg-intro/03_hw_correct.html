@@ -58,8 +58,30 @@
             //ADD CX ATTRIBUTE
             .attr("cx", d => d[0]) //index 1 of the data array
 
+            //X is just the first value of each data pair
+
             //ADD CY ATTRIBUTE
             .attr("cy", d => height - d[1]) // select index 1 of the data array - must include the height b/c flipped
+
+            //y is just the 2nd value of each data pair subtracted from height
+            //600-40=560
+            //600-100=500
+            //600-60=540
+            //600-150=450
+            //600-300=300
+            //600-220=380
+            //600-260=340
+            //600-110=490
+
+            //X/Y COORDS FOR CIRCLES
+            //[200, 560]
+            //[170, 500]
+            //[400, 540]
+            //[100, 450]
+            //[410. 300]
+            //[120, 380]
+            //[310, 340]
+            //[400, 490]
 
             //ADD RADIUS ATTRIBUTE
             .attr("r", 15) //(another required circle value, and a number: try 10)
@@ -93,9 +115,42 @@
 
             //ATTRIBUTE X
             .attr("x", d => d[0] + 20) //give text an x value which is the 0 index position - positive # moves text to right
+
+            //MATH 
+            //200+20=220
+            //170+20=190
+            //400+20=420
+            //100+20=120
+            //410+20=430
+            //120+20=140
+            //310+20=330
+            //400+20=420
             
             //ATTRIBUTE Y
             .attr("y", d => height - d[1] + 2) // give text a y value, which is the 1 index position  - must include the height b/c flipped - positive # moves text down
+
+            //MATH
+            //600-40+2=562
+            //600-100+2=502
+            //600-60+2=542
+            //600-150+2=452
+            //600-300+2=302
+            //600-220+2=382
+            //600-260+2=342
+            //600-110+2=492
+
+
+            
+
+            //X/Y COORDS FOR TEXT
+            //[220,562]
+            //[190, 502]
+            //[420, 542]
+            //[120, 452]
+            //[430, 302]
+            //[140, 382]
+            //[330, 342]
+            //[420, 492]
 
             //STYLING THE TEXT LABELS
             .attr("stroke", "forestgreen") //change the colors of the data labels
