@@ -65,7 +65,7 @@
             const area = d3.area()
             			   .x(d=> xScale(d.data.month)) //x-coordinate (see "stacked data" in console) - USE DATA.MONTH TO REFERENCE DATA
             			   .y0(d=>yScale(d[0])) //baseline
-            			   .y1(d=>yScale(d[1])); //topine
+            			   .y1(d=>yScale(d[1])); //topline
 
             //NEW: MAKING AREAS
             //CAN BE HARDER TO SEE SMALL STACKS
