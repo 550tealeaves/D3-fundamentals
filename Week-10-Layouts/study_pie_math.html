@@ -19,39 +19,37 @@
         d3.csv("study_performance.csv").then(data => {
             console.log('study', data)
             console.log(data.length); //1000
+            
 
 
             //FORMAT THE DATA - FOR SOME REASON FORMATTING THE DATA RETURNS EVERYTHING AS UNDEFINED OR NAN
-            // data.forEach(d => {
-            //     d.race_ethnicity = d.race;
-            //     d.parental_level_of_education = d.parent_edu;
-            //     d.test_preparation_course = d.test_prep;
-            //     d.math_score = +d.math;
-            //     d.reading_score = +d.reading;
-            //     d.writing_score = +d.writing;
-            // });
+            data.forEach(d => {
+                d.race_ethnicity = d.race_ethnicity;
+                d.parental_level_of_education = d.parental_level_of_education;
+                d.test_preparation_course = d.test_preparation_course;
+                d.math_score = +d.math_score;
+                d.reading_score = +d.reading_score;
+                d.writing_score = +d.writing_score;
+            });
+
+            console.log('scores', data.reading_score);
 
 
             //MATH - CALCULATE AVERAGE OF THE SCORES
-            let shortData = data.splice(1,4);
+            let shortData = data.splice(0,4);
             console.log('short', shortData);
-            // const makeAvg = (...nums) => nums.reduce((a, c) => a + c) / nums.length;
 
-            // console.log(makeAvg(data.reading_score));
+            function find_avg(shortData){
+                var total = shortData.reduce((a, b) => { return a + b }, 0)
+                var average = total / shortData.length;
+                return average;
+            }
 
-            // console.log("avg", makeAvg);
+            // let's test it out
 
-            // function find_avg(array) {
-            //     var total = array.reduce((a, b) => { return a + b }, 0)
-            //     var average = total / array.length;
-            //     return average;
-            // }
-
-            // // let's test it out
-
-            // const avg = find_avg([data[0,1000].reading_score]);
-            // // avg will be 3.5
-            // console.log('avg', avg);
+            const avg = find_avg([shortData.reading_score]);
+            // avg will be 3.5
+            console.log('avg', avg);
 
 
             //DECLARE CONSTANTS
@@ -88,12 +86,12 @@
 
             //MAKE GROUPS TO BUILD CHART
             const groups = svg.selectAll("g.arc")
-                            .data(pie(data)) //give data to pie generator
+                            .data(pie(shortData)) //give data to pie generator
                             .enter()
                             .append("g")
                             .attr("class", "arc")
                             .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")"); //moves according to radii measurements
-                            console.log("pie data", pie(data));
+                            console.log("pie data", pie(shortData));
 
 
             //APPEND THE GROUP
@@ -106,8 +104,10 @@
                     .attr("transform", d => "translate(" + arc.centroid(d) + ")") //arc.centroid computes the math
                     .attr("class", "labels")
                     .attr("text-anchor", "middle")
-                    .attr("fill", "navy")
-                    .text(d=>d.data.parental_level_of_education);
+                    .attr("fill", "crimson")
+                    .text(d=>d.data.parental_level_of_education); //shows the titles
+                    //.text(d => d.shortData.parental_level_of_education); //this shows all the slices from original dataset
+
                 
         })
     </script>

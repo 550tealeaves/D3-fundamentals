@@ -20,14 +20,14 @@
             console.log('study', data)
 
             //FORMAT THE DATA - FOR SOME REASON FORMATTING THE DATA RETURNS EVERYTHING AS UNDEFINED OR NAN
-            // data.forEach(d => {
-            //     d.race_ethnicity = d.race;
-            //     d.parental_level_of_education = d.parent_edu;
-            //     d.test_preparation_course = d.test_prep;
-            //     d.math_score = +d.math;
-            //     d.reading_score = +d.reading;
-            //     d.writing_score = +d.writing;
-            // });
+            data.forEach(d => {
+                d.race_ethnicity = d.race_ethnicity;
+                d.parental_level_of_education = d.parental_level_of_education;
+                d.test_preparation_course = d.test_preparation_course;
+                d.math_score = +d.math_score;
+                d.reading_score = +d.reading_score;
+                d.writing_score = +d.writing_score;
+            });
 
             //DECLARE CONSTANTS
             const width = 600;
