@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+    <script>
+        
+        //PROBLEMS WITH THIS CHART
+        //(1)CAN'T FORMAT THE DATA - THE CONSOLE LOG SHOWS THAT THE KEYS RETURN UNDEFINED OR NAN
+        //(2) TOO MANY SLICES - I THOUGHT I COULD GROUP ALL THE VALUES FOR THE SAME CATEGORY TOGETHER, LIKE TABLEAU, BUT REQUIRES MORE CODE
+        //IMPORT DATA
+        d3.csv("study_performance.csv").then(data => {
+            console.log('study', data)
+            console.log(data.length); //1000
+
+
+            //FORMAT THE DATA - FOR SOME REASON FORMATTING THE DATA RETURNS EVERYTHING AS UNDEFINED OR NAN
+            // data.forEach(d => {
+            //     d.race_ethnicity = d.race;
+            //     d.parental_level_of_education = d.parent_edu;
+            //     d.test_preparation_course = d.test_prep;
+            //     d.math_score = +d.math;
+            //     d.reading_score = +d.reading;
+            //     d.writing_score = +d.writing;
+            // });
+
+
+            //MATH - CALCULATE AVERAGE OF THE SCORES
+            let shortData = data.splice(1,4);
+            console.log('short', shortData);
+            // const makeAvg = (...nums) => nums.reduce((a, c) => a + c) / nums.length;
+
+            // console.log(makeAvg(data.reading_score));
+
+            // console.log("avg", makeAvg);
+
+            // function find_avg(array) {
+            //     var total = array.reduce((a, b) => { return a + b }, 0)
+            //     var average = total / array.length;
+            //     return average;
+            // }
+
+            // // let's test it out
+
+            // const avg = find_avg([data[0,1000].reading_score]);
+            // // avg will be 3.5
+            // console.log('avg', avg);
+
+
+            //DECLARE CONSTANTS
+            const width = 600;
+            const height = 600;
+            const myColor = d3.scaleOrdinal(["pink", "indigo", "skyblue", "limegreen", "gold", "crimson"]);
+
+            //DEFINE THE RADIUS BOTH OUTER/INNER RADII
+            const outerRadius = width/2;
+            const innerRadius = 25; //the bigger the IR then the more the chart will look like  doughnut - will become more hollow
+
+            //USE D3.ARC() & PIE GENERATOR TO CREATE A PIE CHART
+
+            //D3.ARC() CREATES THE PIE WEDGES
+            //REQUIRES INNER RADIUS & OUTER RADIUS
+            const arc = d3.arc()
+                        .innerRadius(innerRadius)
+                        .outerRadius(outerRadius)
+                        //.cornerRadius(27); //cornerRadius is optional and makes the shape more interesting
+            
+            //PIE GENERATOR
+            const pie = d3.pie().value(d=>d.reading_score)
+                                //.padAngle(0.03);
+
+
+            
+            //CREATE SVG
+            const svg = d3.select("body")
+                        .append("svg")
+                        .attr("class", "svg")
+                        .attr("width", width)
+                        .attr("height", height);
+
+
+            //MAKE GROUPS TO BUILD CHART
+            const groups = svg.selectAll("g.arc")
+                            .data(pie(data)) //give data to pie generator
+                            .enter()
+                            .append("g")
+                            .attr("class", "arc")
+                            .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")"); //moves according to radii measurements
+                            console.log("pie data", pie(data));
+
+
+            //APPEND THE GROUP
+            groups.append("path") //append to groups NOT svg
+                .attr("fill", (d,i)=> myColor(i)) //give it the color
+                .attr("d", arc); //d of our path
+
+            //LABEL ANGLES
+            groups.append("text") //append to groups NOT svg
+                    .attr("transform", d => "translate(" + arc.centroid(d) + ")") //arc.centroid computes the math
+                    .attr("class", "labels")
+                    .attr("text-anchor", "middle")
+                    .attr("fill", "navy")
+                    .text(d=>d.data.parental_level_of_education);
+                
+        })
+    </script>
+</body>
+</html>
