@@ -111,7 +111,7 @@
                 .attr("y", d => yScale(d.emails)) 
                 .attr("width", xScale.bandwidth()) 
                 .attr("height", d => (h-margin) - yScale(d.emails))
-                .attr("fill", "pink");
+                .attr("fill", "crimson");
 
             //CALL SVG1 AXES
             svg1.append("g")
@@ -167,7 +167,7 @@
                 .attr("cx", d => newXScale(d.x)) 
                 .attr("cy", d => newYScale(d.y)) 
                 .attr("r", 6) 
-                .attr("fill", "pink"); 
+                .attr("fill", "orange"); 
 
             //APPEND & CALL AXES TO SVG2
             svg2.append("g")
