@@ -6,7 +6,15 @@
     <title>Document</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
-
+        .svg{
+            padding: 25px;
+        }
+        .title{
+            fill: crimson;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding-left: 80px;
+        }
     </style>
 </head>
 <body>
@@ -54,12 +62,12 @@
 
             //DECLARE CONSTANTS
             const width = 600;
-            const height = 600;
+            const height = 700;
             const myColor = d3.scaleOrdinal(["pink", "indigo", "skyblue", "limegreen", "gold", "crimson"]);
 
             //DEFINE THE RADIUS BOTH OUTER/INNER RADII
             const outerRadius = width/2;
-            const innerRadius = 25; //the bigger the IR then the more the chart will look like  doughnut - will become more hollow
+            const innerRadius = 65; //the bigger the IR then the more the chart will look like  doughnut - will become more hollow
 
             //USE D3.ARC() & PIE GENERATOR TO CREATE A PIE CHART
 
@@ -68,11 +76,22 @@
             const arc = d3.arc()
                         .innerRadius(innerRadius)
                         .outerRadius(outerRadius)
-                        //.cornerRadius(27); //cornerRadius is optional and makes the shape more interesting
+                        //.cornerRadius(27); //cornerRadius is optional and makes the shape more interesting - 27 gives it slightly squared corners
+                        .cornerRadius(85);
             
             //PIE GENERATOR
             const pie = d3.pie().value(d=>d.reading_score)
                                 //.padAngle(0.03);
+                                .startAngle(-0.5 * Math.PI) //have to compute radians - changes shape [1 radian = (180/pi), 2pi = 90]
+                                .endAngle(0.5 * Math.PI); //must include start/end angle 
+                                //.startAngle(0 * Math.PI)
+                                //.endAngle(1 * Math.PI);
+                                //.startAngle(0 * Math.PI)
+                                //.endAngle(1 * Math.PI);
+                                //.startAngle(0.5 * Math.PI)
+                                //.endAngle(2 * Math.PI);
+                                //.startAngle(-0.5 * Math.PI)
+                                //.endAngle(0 * Math.PI);
 
 
             
@@ -90,7 +109,7 @@
                             .enter()
                             .append("g")
                             .attr("class", "arc")
-                            .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")"); //moves according to radii measurements
+                            .attr("transform", "translate(" + outerRadius + "," + [outerRadius+67] + ")"); //moves according to radii measurements
                             console.log("pie data", pie(shortData));
 
 
@@ -100,14 +119,21 @@
                 .attr("d", arc); //d of our path
 
             //LABEL ANGLES
-            groups.append("text") //append to groups NOT svg
+            groups.append("text") //append to groups NOT svg b/c needs to show on each arc
                     .attr("transform", d => "translate(" + arc.centroid(d) + ")") //arc.centroid computes the math
                     .attr("class", "labels")
                     .attr("text-anchor", "middle")
                     .attr("fill", "crimson")
+                    .attr("font-weight", "bold")
                     .text(d=>d.data.parental_level_of_education); //shows the titles
                     //.text(d => d.shortData.parental_level_of_education); //this shows all the slices from original dataset
 
+            //TITLE
+            svg.append("text") //append to groups NOT svg
+                .attr("x", [width / 4] - 80) //this helps center the text
+                .attr("y", (height - 650))
+                .attr("class", "title")
+                .text("Student reading scores and parental education");
                 
         })
     </script>
