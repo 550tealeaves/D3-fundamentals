@@ -44,12 +44,12 @@
         <p>Here is some conclusion/citation information for the project.</p>  
         <script type="text/javascript">
             
-        //Consts/global variables  
+        //CONSTANTS/GLOBAL VAR  
             const w = 500;
             const h = 500;
             const margin = 30;
             
-        //Data
+        //IMPORT MULTIPLE SETS OF DATA
 
             /* If your data is in multiple CSVs you could load them
             in with Promise.all. Below is one example. If your data is all
@@ -69,32 +69,38 @@
             /* Note: we will use data.bar or data.scatter below to
             reference the dataset we want*/
         
-        //Chart 1 - Bar chart
-            
-            //scales
-            const maxY = d3.max(data.bar, d => d.emails);
+        //CHART 1 - BAR CHART
+        //USE data.bar AS THE DATASET
+        
+            //SCALES
+            const maxY = d3.max(data.bar, d => d.emails); 
 
+            //X-SCALE
             const xScale = d3.scaleBand()
                             .domain(data.bar.map(d => d.day))
                             .range([margin, w - margin])
                             .paddingInner(.02);
             
+            //Y-SCALE
             const yScale = d3.scaleLinear()
                             .domain([0, maxY]) 
                             .range([h - margin, margin]);
             
-            //axes
+            //AXES
             const bottomAxis = d3.axisBottom().scale(xScale);
             const leftAxis = d3.axisLeft().scale(yScale);
 
+            
+            //CREATE MULTIPLE SVGs FOR EACH CHART TYPE
 
-            //Select SVG 1  
+            //SELECT SVG 1 - THIS WILL BE BAR CHART
+            //SELECT THE ID FOR THE DIV
             const svg1 = d3.select("#svg1")//to call an id be sure to use #
                     .append("svg")
                     .attr("width", w)
                     .attr("height", h);
 
-            //Bars
+            //BARS
             svg1.selectAll("rect") 
                 .data(data.bar) 
                 .enter()
@@ -105,21 +111,24 @@
                 .attr("height", d => (h-margin) - yScale(d.emails))
                 .attr("fill", "pink");
 
-            //call SVG1 axes
+            //CALL SVG1 AXES
             svg1.append("g")
                 .attr("class", "axis")
                 .attr("transform", "translate(0," + (h - margin) + ")") 
                 .call(bottomAxis); 
 
+            //APPEND AXES TO SVG1
             svg1.append("g")
                 .attr("class", "axis")
                 .attr("transform", "translate(" + margin + ",0)")
                 .call(leftAxis); 
 
 
-        //Chart 2 - Scatter plot
-                  
-            //scales
+        //CHART 2 - SCATTER PLOT 
+        //HAVE TO CREATE NEW VARIABLES FOR SCALES, AXES, MIN/MAX, SVG
+        //USE data.scatter AS DATASET
+
+            //SCALES - CREATE NEW VAR
             const maxX2 = d3.max(data.scatter, d => d.x);
             const maxY2 = d3.max(data.scatter, d => d.y);
 
@@ -132,7 +141,7 @@
                              .range([h-margin, margin]); 
 
 
-            //axes
+            //AXES - NEW VAR
             const bottomAxis2 = d3.axisBottom()
                                 .scale(newXScale)
                                 .ticks(10);
@@ -142,13 +151,13 @@
                              .ticks(10);                
 
             
-            //Select SVG 2 
+            //SELECT SVG 2 
             const svg2 = d3.select("#svg2")//to call an id be sure to use #
                     .append("svg")
                     .attr("width", w)
                     .attr("height", h);
 
-            //Circles 
+            //CIRCLES - PLACED ON SVG2 
             svg2.selectAll("circle") 
                 .data(data.scatter) 
                 .enter()
@@ -158,7 +167,7 @@
                 .attr("r", 6) 
                 .attr("fill", "pink"); 
 
-            //call SVG2 axes
+            //APPEND & CALL AXES TO SVG2
             svg2.append("g")
                 .attr("class", "axis") 
                 .attr("transform", "translate(0," + (h - margin) + ")") 
