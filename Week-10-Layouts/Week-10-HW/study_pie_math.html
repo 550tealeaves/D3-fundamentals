@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Student Scores</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         .svg{
@@ -30,7 +30,7 @@
             
 
 
-            //FORMAT THE DATA - FOR SOME REASON FORMATTING THE DATA RETURNS EVERYTHING AS UNDEFINED OR NAN
+            //FORMAT THE DATA 
             data.forEach(d => {
                 d.race_ethnicity = d.race_ethnicity;
                 d.parental_level_of_education = d.parental_level_of_education;
@@ -40,24 +40,71 @@
                 d.writing_score = +d.writing_score;
             });
 
-            console.log('scores', data.reading_score);
-
-
-            //MATH - CALCULATE AVERAGE OF THE SCORES
+            
+            //SPLICE THE ARRAY TO SHORTEN IT & ASSIGN IT TO NEW VARIABLE
             let shortData = data.splice(0,4);
             console.log('short', shortData);
 
-            function find_avg(shortData){
-                var total = shortData.reduce((a, b) => { return a + b }, 0)
-                var average = total / shortData.length;
-                return average;
-            }
+            //MATH - USE D3.MEAN TO CALCUATE TOTAL AVGS OF SCORES
+            //USE d3.format(".1f") TO ROUND VALUES TO NEAREST TENTH PLACE - https://stackoverflow.com/questions/68992663/d3-round-number-from-nest-and-sum
+            let readAvg = d3.format(".1f")(d3.mean(data, d=> d.reading_score));
+            let mathAvg = d3.format(".1f")(d3.mean(data, d=> d.math_score));
+            let writingAvg = d3.format(".1f")(d3.mean(data, d=> d.writing_score));
 
-            // let's test it out
+            console.log("readavg", readAvg); //UNSURE OF WHERE TO PLUG THEM IN TO SHOW ON CHART
+            console.log('mathavg', mathAvg);
+            console.log("writingavg", writingAvg);
 
-            const avg = find_avg([shortData.reading_score]);
-            // avg will be 3.5
-            console.log('avg', avg);
+            //MATH - USE D3.MEAN TO CALCULATE AVERAGE OF THE SCORES FROM THE SPLICED ARRAY
+            //USE d3.format(".1f") TO ROUND VALUES TO NEAREST TENTH PLACE
+            let newReadAvg = d3.format(".1f")(d3.mean(shortData, d => d.reading_score));
+            let newMathAvg = d3.format(".1f")(d3.mean(shortData, d => d.math_score));
+            let newWritingAvg = d3.format(".1f")(d3.mean(shortData, d => d.writing_score));
+
+            console.log("new readavg", newReadAvg); 
+            console.log("new mathAvg", newMathAvg);
+            console.log("new writingAvg", newWritingAvg);
+
+
+            //TRYING TO CALCULATE SUM - BUT NOT WORKING
+            let readSum = d3.sum(data, d=> d.reading_score);
+            console.log('readsum', readSum);
+
+
+            //GROUP DATA - https://d3js.org/d3-array/group
+            //BEST FOR DISCRETE VALUES, SHOWS THE TOTAL COUNT FOR EACH INDIVIDUAL CATEGORY
+            //VAR.GET DOESN'T WORK
+            //GENDER
+            const gender = d3.group(data, (d) => d.gender);
+            gender.get("female");
+            console.log("gender", gender);
+
+            //RACE/ETHNICITY
+            const race = d3.group(data, (d) => d.race_ethnicity);
+            race.get("group C");
+            console.log("race", race);
+
+            //PARENTAL EDUCATION
+            const parEdu = d3.group(data, (d) => d.parental_level_of_education);
+            parEdu.get("associate's degree");
+            console.log("parentEdu", parEdu);
+
+            //LUNCH
+            const lunch = d3.group(data, (d) => d.lunch);
+            lunch.get("standard");
+            console.log("lunch", lunch);
+
+            //TEST PREP
+            const test = d3.group(data, (d) => d.test_preparation_course);
+            test.get("none");
+            console.log("test", test);
+            
+
+            //GROUP W/ MORE THAN 1 KEY
+            const raceLunch = d3.group(data, (d) => d.race_ethnicity, (d) => d.lunch);
+            raceLunch.get("group A").get("standard"); //gets the rows that are group A race & have standard lunch
+            //returns elements in the order of the 1st instance of each key
+
 
 
             //DECLARE CONSTANTS
