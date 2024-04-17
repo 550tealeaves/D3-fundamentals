@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA stacked bar</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Jacques+Francois+Shadow&family=Jomhuria&family=Nunito:wght@300&family=Pattaya&family=Yuji+Mai&display=swap');
+
+        .title{
+            text-decoration: underline;
+            fill: rgb(145, 69, 199);
+            font-size: 20px;
+            font-family: "Jacques Francois Shadow", serif;
+            font-weight: 500px;
+        }
+
+        .label{
+            text-anchor: middle;
+            fill: rgb(90, 8, 108);
+            font-weight: 600;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+
+        //CONSTANTS & GLOBALS
+        const width = 1000;
+        const height = 600;
+        const margin = 67;
+        const parseTime = d3.timeParse("%Y"); //will parse it using full year
+        const myColor = d3.scaleOrdinal(d3.schemeDark2); 
+
+        //IMPORT DATASET
+        d3.csv("top-pick-NBA-draft-20yrs.csv").then(data => {
+            console.log('data', data)
+
+            //FORMAT DATA
+            data.forEach(d => {
+                d.Pick = +d.Pick;
+                d.Team = d.Team;
+                d.Player = d.Player;
+                d.Games = +d.Games;
+                d.Years = +d.Years; //years played
+                d.MPG = +d.MPG;
+                d.PPG = +d.PPG;
+                d.RPG = +d.RPG;
+                d.APG = +d.APG;
+                d.TOTMP = +d.TOTMP;
+                d.TOTPTS = +d.TOTPTS;
+                d.TOTTRB = +d.TOTTRB;
+                d.TOTAST = +d.TOTAST;
+                d.DraftYear = parseTime(d.DraftYear);
+                d.YrPicked = +d.YrPicked;
+                d.BoxPlusMinus = +d.BPM;
+                d.VORP = +d.VORP;
+                d.WinShares = +d.winshares;
+            });
+            
+            //MATH - USE D3.MEAN TO CALCULATE THE AVERAGES 
+            //ADD d3.format(".2f") TO ROUND THE VALUES TO NEAREST HUNDREDTH PLACE - https://stackoverflow.com/questions/68992663/d3-round-number-from-nest-and-sum
+            let meanGames = d3.format(".2f")(d3.mean(data, d=> d.Games)); //rounds the number to 2 decimal places 
+            let meanMpg = d3.format(".2f")(d3.mean(data, d=> d.MPG));
+            let meanPpg = d3.format(".2f")(d3.mean(data, d=> d.PPG));
+            let meanRpg = d3.format(".2f")(d3.mean(data, d=> d.RPG));
+            let meanApg = d3.format(".2f")(d3.mean(data, d=> d.APG));
+            let meanTotmp = d3.format(".2f")(d3.mean(data, d=> d.TOTMP));
+            let meanTotpts = d3.format(".2f")(d3.mean(data, d=> d.TOTPTS));
+            let meanTottrb = d3.format(".2f")(d3.mean(data, d=> d.TOTTRB));
+            let meanTotast = d3.format(".2f")(d3.mean(data, d=> d.TOTAST));
+            let meanBpm = d3.format(".2f")(d3.mean(data, d=> d.BPM)); //returns NaN
+            let meanWs = d3.format(".2f")(d3.mean(data, d=> d.winshares)); //returns NaN
+
+            console.log('meanGames', meanGames);
+            console.log('meanMpg', meanMpg);
+            console.log('meanPpg', meanPpg);
+            console.log('meanRpg', meanRpg);
+            console.log('meanApg', meanApg);
+            console.log('meanTotmp', meanTotmp);
+            console.log('meanTotpts', meanTotpts);
+            console.log('meanTottrb', meanTottrb);
+            console.log('meanTotast', meanTotast);
+            console.log('meanBpm', meanBpm);
+            console.log('meanWs', meanWs);
+
+            //GROUP DATA - GROUP COLLEGES - https://d3js.org/d3-array/group#indexes
+            const uni = d3.group(data, (d) => d.college);
+            console.log('uni', uni);
+
+
+            //USE D3.STACK() TO CREATE STACKED BAR CHART
+            //KEYS TELLS YOU WANT COLUMNS TO INCLUDE 
+            const stack = d3.stack()
+                            .keys(["MPG", "PPG", "RPG", "APG"]);
+                            
+
+
+            //USE SERIES TO STACK THE DATA
+            const series = stack(data);
+            console.log("stacked data", series);
+
+
+            //CREATE SCALES
+            //X-SCALE
+            const xScale = d3.scaleBand()
+                            .domain(data.map (d => d.DraftYear))
+                            .range([margin, width - margin])
+                            .paddingInner(0.3);
+            
+            //Y-SCALE
+            const yScale = d3.scaleLinear()
+                            .domain([0, d3.max(data, d => d.MPG + d.PPG + d.RPG + d.APG)])
+                            .range([height-margin, margin]);
+
+            //SVG
+            const svg = d3.select("body")
+                        .append("svg")
+                        .attr("class", "svg")
+                        .attr("width", width)
+                        .attr("height", height);
+
+
+            //CREATE DATA GROUPS
+            const groups = svg.selectAll("g.stacks")
+                                .data(series)
+                                .enter()
+                                .append("g")
+                                .attr("class", "stacks")
+                                .style("fill", (d, i) => myColor(i));
+
+
+            //CREATE BARS - MUST USE GROUPS INSTEAD OF SVG
+            const bars = groups.selectAll("rect")
+                                .data(d=>d)
+                                .enter()
+                                .append("rect")
+                                .attr("class", "rect") 
+                                .attr("x", d => xScale(d.data.DraftYear))
+                                .attr("y", d => yScale(d[1]))
+                                .attr("height", d => yScale(d[0]) - yScale(d[1]))
+                                .attr("width", xScale.bandwidth());
+
+
+            //CREATE AXES
+            //X-AXIS
+            const xAxis = d3.axisBottom()
+                            .scale(xScale)
+                            .tickFormat(d3.timeFormat("%Y"))
+                            .ticks(d3.timeYear.every(1));
+            
+            //APPEND X-AXIS TO SVG
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (height - margin) + ")")
+                .call(xAxis);
+
+            
+            //Y-AXIS
+            const yAxis = d3.axisLeft()
+                            .scale(yScale);
+
+            
+            //APPEND Y-AXIS TO SVG
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + margin + ",0)")
+                .call(yAxis);
+        
+            
+            //ADD CHART TITLE
+            svg.append("text")
+                .attr("x", width / 3.5) //this helps center the text
+                .attr("y", [height - margin] - 510)
+                .attr("class", "title")
+                .text("#1 NBA draft pick MPG, PPG, RPG, and APG");
+
+
+            //ADD X-AXIS LABEL
+            svg.append("text")
+                .attr("transform", "translate(" + (width / 2) + " ," + (height - 10) + ")") 
+                .attr("class", "label")
+                .text("Draft Year");
+
+            //ADD Y-AXIS LABEL
+            svg.append("text")
+                .attr("transform", "rotate(-90)") //will rotate the label 90 degrees pointed up
+                .attr("x", - (height / 2)) //x coordinate is middle of height (-300)
+                .attr("y", 20) //y coordinate = 15
+                .attr("class", "label")
+                .text("Player Stats");
+                
+        });
+
+
+    </script>
+</body>
+</html>
