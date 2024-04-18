@@ -45,7 +45,7 @@
             let shortData = data.splice(0,4);
             console.log('short', shortData);
 
-            //MATH - USE D3.MEAN TO CALCUATE TOTAL AVGS OF SCORES
+            //MATH - USE D3.MEAN TO CALCULATE TOTAL AVERAGES OF SCORES
             //USE d3.format(".1f") TO ROUND VALUES TO NEAREST TENTH PLACE - https://stackoverflow.com/questions/68992663/d3-round-number-from-nest-and-sum
             let readAvg = d3.format(".1f")(d3.mean(data, d=> d.reading_score));
             let mathAvg = d3.format(".1f")(d3.mean(data, d=> d.math_score));
@@ -55,7 +55,7 @@
             console.log('mathavg', mathAvg);
             console.log("writingavg", writingAvg);
 
-            //MATH - USE D3.MEAN TO CALCULATE AVERAGE OF THE SCORES FROM THE SPLICED ARRAY
+            //MATH - USE D3.MEAN TO CALCULATE AVERAGES OF SCORES FROM THE SPLICED ARRAY
             //USE d3.format(".1f") TO ROUND VALUES TO NEAREST TENTH PLACE
             let newReadAvg = d3.format(".1f")(d3.mean(shortData, d => d.reading_score));
             let newMathAvg = d3.format(".1f")(d3.mean(shortData, d => d.math_score));
