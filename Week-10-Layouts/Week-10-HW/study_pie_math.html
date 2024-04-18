@@ -66,9 +66,25 @@
             console.log("new writingAvg", newWritingAvg);
 
 
-            //TRYING TO CALCULATE SUM - BUT NOT WORKING
-            let readSum = d3.sum(data, d=> d.reading_score);
+            //TRYING TO CALCULATE SUM - BUT THE RESULTS DIFFER FROM CSV FILE (JS RESULTS ARE LOWER)
+            let readSum = d3.sum(data, d=> d.reading_score); 
             console.log('readsum', readSum);
+
+            let mathSum = d3.sum(data, d => d.math_score);
+            console.log('mathSum', mathSum);
+
+            let writeSum = d3.sum(data, d => d.writing_score);
+            console.log('writeSum', writeSum);
+
+            //CALCULATE SPLICED ARRAY SUMS - THIS WORKS
+            let newReadSum = d3.sum(shortData, d => d.reading_score);
+            console.log('new read sum', newReadSum);
+
+            let newMathSum = d3.sum(shortData, d => d.math_score);
+            console.log('new math sum', newMathSum);
+
+            let newWriteSum = d3.sum(shortData, d => d.writing_score);
+            console.log('new write sum', newWriteSum);
 
 
             //GROUP DATA - https://d3js.org/d3-array/group
