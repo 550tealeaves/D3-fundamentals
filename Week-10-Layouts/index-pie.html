@@ -35,8 +35,8 @@
                     "hold": 16,
                     "period": "2021-08-01",
                     "sell": 1,
-                    "strongBuy": 8,
-                    "strongSell": 0
+                    "strongBuy": 14,
+                    "strongSell": 3
                 }
             ];
 
@@ -56,7 +56,7 @@
 
             const color = d3.scaleOrdinal()
                 .domain(["Strong Sell", "Sell", "Hold", "Buy", "Strong Buy"])
-                .range(["#570e00", "#ff2a00", "#ffff00", "#00ff08", "#00570c"]);
+                .range(["#E9339A", "#FF4500", "#0041F1", "#6B43DC", "#FFF200"]);
 
             const pie = d3.pie()
                 .value(d => d.value);
