@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="company-chair">
+        <div class="company-profile"></div>
+        <div class="company-recommend"></div>
+    </div>
+    <div class="company-chair">
+        <div class="company-profile"></div>
+        <div class="company-recommend"></div>
+    </div>
+    <script>
+        //CODE from - https://stackoverflow.com/questions/68643451/how-to-create-multiple-pie-charts-with-d3-from-a-single-array-with-multiple-obje 
+
+        //JSON data
+        const tickers = [
+                {
+                    "symbol": "GME",
+                    "buy": 0,
+                    "hold": 3,
+                    "period": "2021-08-01",
+                    "sell": 5,
+                    "strongBuy": 0,
+                    "strongSell": 2
+                },
+                {
+                    "symbol": "AMD",
+                    "buy": 21,
+                    "hold": 16,
+                    "period": "2021-08-01",
+                    "sell": 1,
+                    "strongBuy": 8,
+                    "strongSell": 0
+                }
+            ];
+
+            //CONST/GLOBALS
+            const margin = 20;
+            const width = 250;
+            const height = 250;
+            const radius = Math.min(width, height) / 2 - margin;
+
+            const data = tickers.map(d => [
+                { key: 'Strong Sell', value: d.strongSell },
+                { key: 'Sell', value: d.sell },
+                { key: 'Hold', value: d.hold },
+                { key: 'Buy', value: d.buy },
+                { key: 'Strong Buy', value: d.strongBuy },
+            ]);
+
+            const color = d3.scaleOrdinal()
+                .domain(["Strong Sell", "Sell", "Hold", "Buy", "Strong Buy"])
+                .range(["#570e00", "#ff2a00", "#ffff00", "#00ff08", "#00570c"]);
+
+            const pie = d3.pie()
+                .value(d => d.value);
+
+            const arc = d3.arc()
+                .innerRadius(0)
+                .outerRadius(radius);
+
+            // bind our data to the divs. add a group to each div.
+            const svg = d3.selectAll('.company-recommend')
+                .data(data)
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .append('g')
+                .attr('transform', `translate(${width / 2},${height / 2})`);
+
+            // draw the pie chart in each group
+            // by creating one path for each slice
+            svg.selectAll('path')
+                .data(d => pie(d))
+                .join('path')
+                .attr('d', arc)
+                .attr('fill', d => color(d.data.key))
+                .attr('stroke', 'black')
+                .attr('stroke-width', '2px')
+                .attr('opacity', 0.7);
+                console.log("pie data", pie(data));
+            
+            //trying to add labels but not working
+            svg.append("text")
+                .attr("transform", d => "translate(" + arc.centroid(d) + ")") //arc.centroid figures out the math
+                .attr("text-anchor", "middle")
+                .attr("class", "labels")
+                .text(d => d.data.key); //this gives an error
+    </script>
+</body>
+</html>
