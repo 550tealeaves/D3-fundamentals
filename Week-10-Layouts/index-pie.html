@@ -60,10 +60,14 @@
 
             const pie = d3.pie()
                 .value(d => d.value);
+                //.padAngle(.02);
+                //.startAngle(0 * Math.PI)
+                //.endAngle(0.5 * Math.PI);
 
             const arc = d3.arc()
                 .innerRadius(0)
-                .outerRadius(radius);
+                .outerRadius(radius)
+                .cornerRadius(15);
 
             // bind our data to the divs. add a group to each div.
             const svg = d3.selectAll('.company-recommend')
