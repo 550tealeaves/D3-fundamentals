@@ -46,6 +46,7 @@
             const height = 250;
             const radius = Math.min(width, height) / 2 - margin;
 
+            //FORMAT THE DATA AND ASSIGN KEY AND VALUE
             const data = tickers.map(d => [
                 { key: 'Strong Sell', value: d.strongSell },
                 { key: 'Sell', value: d.sell },
