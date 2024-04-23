@@ -26,7 +26,49 @@
 
     <script>
         //SOURCE - https://d3-graph-gallery.com/graph/bubble_template.html
-        
+
+
+        //Replaced all the function {return """"} with arrow functions
+        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+
+        // // Traditional anonymous function
+        // (function (a) {
+        //     return a + 100;
+        // });
+
+        // // 1. Remove the word "function" and place arrow between the argument and opening body brace
+        // (a) => {
+        //     return a + 100;
+        // };
+
+        // // 2. Remove the body braces and word "return" — the return is implied.
+        // (a) => a + 100;
+
+        // // 3. Remove the parameter parentheses
+        // a => a + 100;
+
+        // Traditional anonymous function
+            // (function (a, b) {
+            //     const chuck = 42;
+            //     return a + b + chuck;
+            // });
+
+            // // Arrow function
+            // (a, b) => {
+            //     const chuck = 42;
+            //     return a + b + chuck;
+            // };
+
+            // Traditional Function
+                // function bob(a) {
+                //     return a + 100;
+                // }
+
+                // // Arrow Function
+                // const bob2 = (a) => a + 100;
+
+
+
     // set the dimensions and margins of the graph
         var margin = { top: 40, right: 150, bottom: 60, left: 30 },
             width = 500 - margin.left - margin.right,
