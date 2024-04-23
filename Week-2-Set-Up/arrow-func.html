@@ -38,7 +38,9 @@
 
 
 
-        //The braces can only be omitted if the function directly returns an expression. If the body has additional lines of processing, the braces are required — and so is the return keyword. Arrow functions cannot guess what or when you want to return.
+        //The braces can ONLY BE OMITTED IF FUNCTION DIRECTLY RETURNS AN EXPRESSION. 
+
+        //If the body has ADDITIONAL LINES OF PROCESSING, the BRACES & "RETURN" KEYWORD ARE BOTH REQUIRED. Arrow functions cannot guess what or when you want to return.
 
             // Traditional anonymous function
                 (function (a, b) {
@@ -46,7 +48,7 @@
                     return a + b + chuck;
                 });
 
-                // Arrow function
+                // Arrow function - keeps {} & has more processing
                 (a, b) => {
                     const chuck = 42;
                     return a + b + chuck;
