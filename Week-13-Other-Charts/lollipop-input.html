@@ -1,0 +1,107 @@
+<!-- Code from https://d3-graph-gallery.com/graph/lollipop_button_data_csv.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Lollipop with Input</title>
+  </head>
+  <body>
+    <h2 style="color: #6e5eeb">Lollipop chart with input</h2>
+    <!-- Add 2 buttons -->
+    <button onclick="update('var1')">Variable 1</button>
+    <button onclick="update('var2')">Variable 2</button>
+    <div id="container"></div>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script>
+
+      // SET DIMENSIONS & MARGINS
+      var margin = { top: 30, right: 30, bottom: 70, left: 60 },
+        width = 460 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+      // CREATE SVG & APPEND TO BODY
+      var svg = d3.select("#container")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+      // INITIALIZE X-AXIS
+      var x = d3.scaleBand()
+        .range([0, width])
+        .padding(1);
+      var xAxis = svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+
+      // INITIALIZE Y-AXIS
+      var y = d3.scaleLinear()
+        .range([height, 0]);
+      var yAxis = svg.append("g")
+        .attr("class", "myYaxis")
+
+
+      // A FUNCTION THAT CREATES/UPDATES THE PLOT FOR GIVEN VARIABLE
+      function update(selectedVar) {
+
+        // LOAD/PARSE DATA
+        d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/barplot_change_data.csv", function (data) {
+
+          // X-AXIS
+          x.domain(data.map(d => d.group))
+          xAxis.transition().duration(1000).call(d3.axisBottom(x))
+
+          // Y-AXIS
+          y.domain([0, d3.max(data, d => +d[selectedVar])]);
+          yAxis.transition().duration(1000).call(d3.axisLeft(y));
+
+          // VARIABLE J: MAP DATA TO EXISTING CIRCLE
+          var j = svg.selectAll(".myLine")
+            .data(data)
+          // update lines
+          j
+            .enter()
+            .append("line")
+            .attr("class", "myLine")
+            .merge(j)
+            .transition()
+            .duration(1000)
+            .attr("x1", d => { console.log(x(d.group)); return x(d.group); })
+            .attr("x2", d => x(d.group))
+            .attr("y1", y(0))
+            .attr("y2", d => y(d[selectedVar]))
+            .attr("stroke", "#e90000");
+
+
+          // VARIABLE U: MAP DATA TO EXISTING CIRCLE
+          var u = svg.selectAll("circle")
+            .data(data)
+          // UPDATE CIRCLE
+          u
+            .enter()
+            .append("circle")
+            .merge(u)
+            .transition()
+            .duration(1000)
+            .attr("cx", d => x(d.group))
+            .attr("cy", d => y(d[selectedVar]))
+            .attr("r", 8)
+            .attr("fill", "#30c1ff");
+        })
+      }
+
+      // INITIALIZE PLOT
+      update('var1')
+
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
