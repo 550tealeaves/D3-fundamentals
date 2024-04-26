@@ -1,0 +1,85 @@
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Lollipop</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script>
+
+      // SET DIMENSIONS & MARGIN
+      var margin = { top: 10, right: 30, bottom: 40, left: 100 },
+        width = 460 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+      // CREATE SVG & APPEND TO BODY
+      var svg = d3.select("#container")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+      // LOAD & PARSE DATA
+      d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv", data => {
+
+        console.log('data', data)
+
+        // ADD X-AXIS & APPEND
+        var x = d3.scaleLinear()
+          .domain([0, 13000])
+          .range([0, width]);
+        svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x))
+          .selectAll("text")
+          .attr("transform", "translate(-10,0)rotate(-45)")
+          .style("text-anchor", "end");
+
+        // ADD Y-AXIS & APPEND
+        var y = d3.scaleBand()
+          .range([0, height])
+          .domain(data.map(d => d.Country))
+          .padding(1);
+        svg.append("g")
+          .call(d3.axisLeft(y))
+
+
+        // LINES
+        svg.selectAll("lines")
+          .data(data)
+          .enter()
+          .append("line")
+          .attr("x1", d => x(d.Value))
+          .attr("x2", x(0))
+          .attr("y1", d => y(d.Country))
+          .attr("y2", d => y(d.Country))
+          .attr("stroke", "chocolate")
+
+        // CIRCLES
+        svg.selectAll("circles")
+          .data(data)
+          .enter()
+          .append("circle")
+          .attr("cx", d => x(d.Value))
+          .attr("cy", d => y(d.Country))
+          .attr("r", "6")
+          .style("fill", "#8856a7")
+          .attr("stroke", "blue")
+      });
+
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
