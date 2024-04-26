@@ -27,7 +27,7 @@
 
       // LOAD & PARSE DATA
       d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_cleveland.csv", data => {
-
+        console.log('data', data);
 
         // X-AXIS
         var x = d3.scaleLinear()
