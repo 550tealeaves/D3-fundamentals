@@ -1,0 +1,133 @@
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Correlogram</title>
+  </head>
+  <body>
+    
+    <div id="my_dataviz"></div>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script>
+
+      // DIMENSIONS/MARGINS
+      var margin = { top: 20, right: 20, bottom: 20, left: 20 },
+        width = 430 - margin.left - margin.right,
+        height = 430 - margin.top - margin.bottom
+
+      // CREATE SVG & APPEND
+      var svg = d3.select("#my_dataviz")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+      //LOAD/PARSE DATA
+      d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_correlogram.csv", function (error, rows) {
+
+        
+        // GOING FROM WIDE TO LONG FORMAT
+        var data = [];
+        rows.forEach(function (d) {
+          var x = d[""];
+          delete d[""];
+          for (prop in d) {
+            var y = prop,
+              value = d[prop];
+            data.push({
+              x: x,
+              y: y,
+              value: +value
+            });
+          }
+        });
+        console.log('data', data);
+
+        // LIST ALL VARS & NUMBER THEM
+        var domain = d3.set(data.map(d => d.x )).values()
+        var num = Math.sqrt(data.length)
+
+        // CREATE COLOR SCALE
+        var color = d3.scaleLinear()
+          .domain([-1, 0, 1])
+          .range(["#00dbce", "#bbbbbb", "#561756"]);
+
+        // CREATE SIZE SCALE FOR TOP-RIGHT BUBBLES. MUST BE A ROOTSCALE
+        var size = d3.scaleSqrt()
+          .domain([0, 1])
+          .range([0, 9]);
+
+        // X-SCALE
+        var x = d3.scalePoint()
+          .range([0, width])
+          .domain(domain)
+
+        // Y-SCALE
+        var y = d3.scalePoint()
+          .range([0, height])
+          .domain(domain)
+
+        // CREATE 1 'g' ELEMENT FOR EACH CELL OF CORRELOGRAM
+        var cor = svg.selectAll(".cor")
+          .data(data)
+          .enter()
+          .append("g")
+          .attr("class", "cor")
+          .attr("transform", d => "translate(" + x(d.x) + "," + y(d.y) + ")");
+
+        // BOTTOM-LEFT PART & DIAGONAL: ADD TEXT W/ SPECIFIC COLOR
+        cor
+          .filter(d => {var ypos = domain.indexOf(d.y);
+            var xpos = domain.indexOf(d.x);
+            return xpos <= ypos;
+          })
+          .append("text")
+          .attr("y", 5)
+          .text(d => {
+            if (d.x === d.y) {
+              return d.x;
+            } else {
+              return d.value.toFixed(2);
+            }
+          })
+          .style("font-size", 11)
+          .style("text-align", "center")
+          .style("fill", d => {
+            if (d.x === d.y) {
+              return "#000";
+            } else {
+              return color(d.value);
+            }
+          });
+
+
+        // UP RIGHT PART: ADD CIRCLES
+        cor
+          .filter(function (d) {
+            var ypos = domain.indexOf(d.y);
+            var xpos = domain.indexOf(d.x);
+            return xpos > ypos;
+          })
+          .append("circle")
+          .attr("r", d => size(Math.abs(d.value)))
+          .style("fill", d => {
+            if (d.x === d.y) {
+              return "#000";
+            } else {
+              return color(d.value);
+            }
+          })
+          .style("opacity", 0.9)
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
