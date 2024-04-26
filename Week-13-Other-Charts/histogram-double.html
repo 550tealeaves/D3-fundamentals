@@ -1,0 +1,116 @@
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Double Histogram</title>
+  </head>
+  <body>
+    <h2>Double Histogram</h2>
+    <div id="container"></div>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script>
+
+      // DIMENSIONS/MARGIN
+      var margin = { top: 10, right: 30, bottom: 30, left: 40 },
+        width = 460 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+      // CREATE/APPEND SVG TO BODY
+      var svg = d3.select("#container")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+      // GET DATA
+      d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_doubleHist.csv", data => {
+
+        console.log("data", data);
+
+        // X-AXIS - SCALE/DRAW
+        var x = d3.scaleLinear()
+          .domain([-4, 9])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+          .range([0, width]);
+        svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+
+        // SET HISTOGRAM PARAMETERS
+        var histogram = d3.histogram()
+          .value(d => +d.value)   // I need to give the vector of value
+          .domain(x.domain())  // then the domain of the graphic
+          .thresholds(x.ticks(40)); // then the numbers of bins
+
+        // APPLY TWICE THIS FUNCTION TO DATA TO GET THE BINS
+        // NEED SEPARATE VARIABLE FOR EACH SERIES
+        var bins1 = histogram(data.filter(d => d.type === "variable 1"));
+        var bins2 = histogram(data.filter(d => d.type === "variable 2"));
+
+        // Y-AXIS - SCALE/DRAW
+        var y = d3.scaleLinear()
+          .range([height, 0]);
+        y.domain([0, d3.max(bins1, d => d.length)]);   // d3.hist has to be called before the Y axis obviously
+        svg.append("g")
+          .call(d3.axisLeft(y));
+
+        // APPEND BARS FOR SERIES 1
+        svg.selectAll("rect")
+          .data(bins1)
+          .enter()
+          .append("rect")
+          .attr("x", 1)
+          .attr("transform", d => "translate(" + x(d.x0) + "," + y(d.length) + ")")
+          .attr("width", d => x(d.x1) - x(d.x0) - 1)
+          .attr("height", d => height - y(d.length))
+          .style("fill", "#69b3a2")
+          .style("opacity", 0.6)
+
+        // APPEND BARS FOR SERIES 2 
+        svg.selectAll("rect2")
+          .data(bins2)
+          .enter()
+          .append("rect")
+          .attr("x", 1)
+          .attr("transform", d => "translate(" + x(d.x0) + "," + y(d.length) + ")")
+          .attr("width", d => x(d.x1) - x(d.x0) - 1)
+          .attr("height", d => height - y(d.length))
+          .style("fill", "#404080")
+          .style("opacity", 0.6)
+
+        // CREATE LEGEND
+        // ADD THE X/Y COORDINATES FOR EACH SVG ELEMENT
+        svg.append("circle")
+            .attr("cx", 300)
+            .attr("cy", 30)
+            .attr("r", 6)
+            .style("fill", "#69b3a2")
+        svg.append("circle")
+            .attr("cx", 300)
+            .attr("cy", 60)
+            .attr("r", 6)
+            .style("fill", "#404080")
+        svg.append("text")
+            .attr("x", 320)
+            .attr("y", 30)
+            .text("variable A")
+            .style("font-size", "15px")
+            .attr("alignment-baseline", "middle")
+        svg.append("text")
+            .attr("x", 320)
+            .attr("y", 60)
+            .text("variable B")
+            .style("font-size", "15px")
+            .attr("alignment-baseline", "middle")
+
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
+
