@@ -1,0 +1,104 @@
+<!-- Code from https://d3-graph-gallery.com/graph/ridgeline_basic.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ridgeline Plot</title>
+  </head>
+  <body>
+    <!-- Create a div where the graph will take place -->
+    <div id="container"></div>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script>
+
+      // SET DIMENSIONS & MARGINES
+      var margin = { top: 60, right: 30, bottom: 20, left: 110 },
+        width = 460 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+      // CREATE SVG & APPEND TO BODY
+      var svg = d3.select("#container")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+      //LOAD/PARSE DATA
+      d3.csv("https://raw.githubusercontent.com/zonination/perceptions/master/probly.csv", data => {
+
+        // GET THE DIFFERENT CATEGORIES & COUNT THEM
+        var categories = data.columns
+        var n = categories.length
+
+        // ADD X-AXIS
+        var x = d3.scaleLinear()
+          .domain([-10, 140])
+          .range([0, width]);
+        svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+
+        // CREATE Y-SCALE FOR DENSITIES
+        var y = d3.scaleLinear()
+          .domain([0, 0.4])
+          .range([height, 0]);
+
+        // CREATE ANOTHER Y-AXIS FOR NAMES
+        var yName = d3.scaleBand()
+          .domain(categories)
+          .range([0, height])
+          .paddingInner(1)
+        svg.append("g")
+          .call(d3.axisLeft(yName));
+
+        // COMPUTE KERNEL DENSITY ESTIMATION FOR EACH COLUMN
+        var kde = kernelDensityEstimator(kernelEpanechnikov(7), x.ticks(40)) // increase this 40 for more accurate density.
+        var allDensity = []
+        for (i = 0; i < n; i++) {
+          key = categories[i]
+          density = kde(data.map(d => d[key]))
+          allDensity.push({ key: key, density: density })
+        }
+
+        // ADD AREAS
+        svg.selectAll("areas")
+          .data(allDensity)
+          .enter()
+          .append("path")
+          .attr("transform", d => ("translate(0," + (yName(d.key) - height) + ")"))
+          .datum(d => (d.density))
+          .attr("fill", "#ea0b0b")
+          .attr("stroke", "#934d1b")
+          .attr("stroke-width", 1.5)
+          .attr("d", d3.line()
+            .curve(d3.curveBasis)
+            .x(d => x(d[0]))
+            .y(d => y(d[1]))
+          )
+
+      })
+
+      // THIS COMPUTES KERNEL DENSITY ESTIMATION
+      function kernelDensityEstimator(kernel, X) {
+        return function (V) {
+          return X.map((x) => {
+            return [x, d3.mean(V, (v) => kernel(x - v))];
+          });
+        };
+      }
+      function kernelEpanechnikov(k) {
+        return (v) => Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
+        };
+
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
