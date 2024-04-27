@@ -1,0 +1,89 @@
+<!-- Code from https://d3-graph-gallery.com/graph/boxplot_basic.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Boxplot</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script>
+
+      // DIMENSIONS/MARGINS
+      var margin = { top: 10, right: 30, bottom: 30, left: 40 },
+        width = 400 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+      // CREATE/APPEND SVG
+      var svg = d3.select("#container")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+      // CREATE DUMMY DATA
+      var data = [12, 19, 11, 13, 12, 22, 13, 4, 15, 16, 18, 19, 20, 12, 11, 9]
+
+      // COMPUTE SUMMARY STATISTICS THAT WILL BE USED FOR BOXPLOT
+      var data_sorted = data.sort(d3.ascending) //sorts numbers
+      var q1 = d3.quantile(data_sorted, .25) //finds 1st quantile
+      var median = d3.quantile(data_sorted, .5) //finds median
+      var q3 = d3.quantile(data_sorted, .75) //finds 3rd quantile
+      var interQuantileRange = q3 - q1 //finds IQR
+      var min = q1 - 1.5 * interQuantileRange //calculate min
+      var max = q1 + 1.5 * interQuantileRange //calculate max
+
+      // Y-AXIS
+      var y = d3.scaleLinear()
+        .domain([0, 24])
+        .range([height, 0]);
+      svg.call(d3.axisLeft(y))
+
+      // ADD FEATURES FOR BOX
+      var center = 200
+      var width = 100
+
+      // SHOW MAIN VERTICAL LINE
+      svg
+        .append("line")
+        .attr("x1", center)
+        .attr("x2", center)
+        .attr("y1", y(min))
+        .attr("y2", y(max))
+        .attr("stroke", "#adfbe2")
+        .attr("stroke-width", 2)
+
+      // CREATE BOX
+      svg
+        .append("rect")
+        .attr("x", center - width / 2)
+        .attr("y", y(q3))
+        .attr("height", (y(q1) - y(q3)))
+        .attr("width", width)
+        .attr("stroke", "black")
+        .style("fill", "#733380")
+  
+
+      // SHOW MEDIAN, MIN, & MAX HORIZONTAL LINES
+      svg
+        .selectAll("toto")
+        .data([min, median, max]) //used variables that were computed
+        .enter()
+        .append("line")
+        .attr("x1", center - width / 2)
+        .attr("x2", center + width / 2)
+        .attr("y1", d => (y(d)))
+        .attr("y2", d => (y(d)))
+        .attr("stroke", "#adfbe2")
+        .attr("stroke-width", 2)
+    </script>
+  </body>
+</html>
+
+
+
+
+
