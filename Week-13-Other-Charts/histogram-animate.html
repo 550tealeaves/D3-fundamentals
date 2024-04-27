@@ -1,0 +1,115 @@
+<!-- Code from https://d3-graph-gallery.com/graph/histogram_binSize.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hist with diff bin size</title>
+    <style>
+      h2{
+        color: #f7b32b;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Histogram with variable bin size</h2>
+    <div id="container"></div>
+    <p>
+      <label># bins</label>
+      <input type="number" min="1" max="100" step="30" value="20" id="nBin">
+    </p>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script>
+
+      // DIMENSIONS/MARGINS
+      var margin = { top: 10, right: 30, bottom: 30, left: 40 },
+        width = 460 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+      // CREATE/APPEND SVG
+      var svg = d3.select("#container")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+      // GET DATA
+      d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/1_OneNum.csv", data => {
+
+        // X-AXIS - ADD SCALE, APPEND, & CALL
+        var x = d3.scaleLinear()
+          .domain([0, 1000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+          .range([0, width]);
+        svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+
+        // Y-AXIS - INITIALIZATION
+        var y = d3.scaleLinear()
+          .range([height, 0]);
+        var yAxis = svg.append("g")
+
+        // FUNCTION THAT BUILDS GRAPH FOR SPECIFIC VALUE OF BIN
+        function update(nBin) {
+
+          // SET HISTOGRAM PARAMETERS 
+          var histogram = d3.histogram()
+            .value(d => d.price)   // I need to give the vector of value
+            .domain(x.domain())  // then the domain of the graphic
+            .thresholds(x.ticks(nBin)); // then the numbers of bins
+
+          // APPLY THIS FUNCTION TO DATA TO GET BINS
+          var bins = histogram(data);
+
+          // Y-AXIS - UPDATE NOW THAT WE KNOW DOMAIN
+          y.domain([0, d3.max(bins, d => d.length)]);   // d3.hist has to be called before the Y axis 
+          yAxis
+            .transition()
+            .duration(1000)
+            .call(d3.axisLeft(y));
+
+          // JOIN RECT W/ BINS DATA
+          var u = svg.selectAll("rect")
+            .data(bins)
+
+          // MANAGE EXISTING BARS & THE NEW ONES
+          u
+            .enter()
+            .append("rect") // Add a new rect for each new elements
+            .merge(u) // get the already existing elements as well
+            .transition() // and apply changes to all of them
+            .duration(1000)
+            .attr("x", 1)
+            .attr("transform", d => "translate(" + x(d.x0) + "," + y(d.length) + ")")
+            .attr("width", d => x(d.x1) - x(d.x0) - 1)
+            .attr("height", d => height - y(d.length))
+            .style("fill", "deeppink")
+
+
+          // IF LESS BARS IN NEW HIST, DELETE THE ONES NOT IN USE 
+          u
+            .exit()
+            .remove()
+
+        }
+
+
+        // INITIALIZE W/ 20 BINS
+        update(20)
+
+
+        // LISTEN TO THE BUTTON & UPDATE IF USER CHANGES IT
+        d3.select("#nBin").on("input", function () {
+          update(+this.value);
+        });
+
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
+
