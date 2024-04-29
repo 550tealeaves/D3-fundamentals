@@ -29,6 +29,9 @@
 
         console.log('data', data)
 
+        //SORT DATA - ALWAYS SORT DATA FOR LOLLIPOPS = EASIER TO READ
+        data.sort((b, a) => a.Value - b.Value);
+        
         // ADD X-AXIS & APPEND
         var x = d3.scaleLinear()
           .domain([0, 13000])

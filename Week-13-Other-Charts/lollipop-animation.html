@@ -28,7 +28,7 @@
       d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv", data => {
         console.log('data', data);
 
-        // SORT DATA
+        // SORT DATA - ALWAYS SORT WHEN DOING LOLLIPOPS - EASIER TO INTERPRET
         data.sort((b, a) => a.Value - b.Value);
 
         // ADD X-AXIS & APPEND
