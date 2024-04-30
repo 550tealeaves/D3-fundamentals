@@ -41,24 +41,26 @@
         .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
+
+
       // INITIALIZE X-AXIS
      var x = d3.scaleLinear()
-        .domain([0, 13000])
-        .range([0, width]);
+        //.domain([0, 13000])
+        .range([0, width])
       var xAxis = svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .selectAll("text")
-        .attr("transform", "translate(-10,0)rotate(-45)") //rotates tick labels
-        .style("text-anchor", "end");
+        // .selectAll("text")
+        // .attr("transform", "translate(-10,0)rotate(-45)") //rotates tick labels
+        // .style("text-anchor", "end");
 
       // INITIALIZE Y-AXIS
        var y = d3.scaleBand()
-          //.domain(data.map(d => d.Country))
-          .range([0, height])
+          //.domain([0, 100])
+          .range([height, 0])
           .padding(1);
       var yAxis = svg.append("g")
         .attr("class", "myYaxis")
-        .attr("transform", "translate(-10,0)rotate(-45)")
+        //.attr("transform", "translate(-10,0)rotate(-45)")
 
 
       // A FUNCTION THAT CREATES/UPDATES THE PLOT FOR GIVEN VARIABLE
@@ -67,15 +69,21 @@
         // LOAD/PARSE DATA
         d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/barplot_change_data.csv", function (data) {
 
-
+          console.log('data', data);
 
           // X-AXIS
-          x.domain(data.map(d => +d[selectedVar] ))
-          xAxis.transition().duration(1000).call(d3.axisBottom(x))
+          x.domain([0, d3.max(data, d => +d[selectedVar])])
+          //x.domain(data.map(d => +d[selectedVar] ))
+          xAxis.transition()
+              .duration(1000)
+              .call(d3.axisBottom(x))
 
           // Y-AXIS
-          y.domain([0, d3.max(data, d => d.group)]);
-          yAxis.transition().duration(1000).call(d3.axisLeft(y));
+          y.domain(data.map(d => d.group));
+          //y.domain([0, d3.max(data, d => d.group)]);
+          yAxis.transition()
+              .duration(1000)
+              .call(d3.axisLeft(y));
 
           // VARIABLE J: MAP DATA TO EXISTING CIRCLE
           var j = svg.selectAll(".myLine")
@@ -88,10 +96,11 @@
             .merge(j)
             .transition()
             .duration(1000)
-            .attr("x1", d => { console.log(x(d[selectedVar])); return x(d[selectedVar]); })
+            .attr("x1", d => x(0)) //lines all originate from 1 place
+            //.attr("x1", d => { console.log(x(d[selectedVar])); return x(d[selectedVar]); }) //with this the lines drop from the top 
             .attr("x2", d => x(d[selectedVar]))
-            .attr("y1", y(0))
-            .attr("y2", d => y(d.group))
+            .attr("y1", d => y(0))
+            .attr("y2", d=> y(d.group))
             .attr("stroke", "#e90000");
 
 
