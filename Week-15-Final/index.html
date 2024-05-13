@@ -5,8 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Final</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+
+    </style>
 </head>
 <body>
-    <h1>What is the best Pokemon in generations 1, 2, and 3?</h1>
+    <h1>What is the best legendary Pokemon in generations 1, 2, and 3?</h1>
+
+    <script type="text/javascript">
+        //CONSTANTS & GLOBALS   
+        const width = 600;
+        const height = 650;
+        const margin = 25;
+
+
+        //IMPORT MULTIPLE DATASETS
+        Promise.all([
+            d3.csv("pokemon_g1tog3.csv"), d3.csv("pokemon_leg_myth.csv"),
+        ]).then(function(files){
+            const data = {
+                "pie": files[0].map(d=> {return{"legendary": d.legendary, "name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}}),
+                "bar": files[1].map(d=> {return{"name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}})
+            };
+            console.log("two datasets", data);
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
 </body>
 </html>
