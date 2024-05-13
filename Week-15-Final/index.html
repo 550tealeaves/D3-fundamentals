@@ -26,8 +26,81 @@
             const data = {
                 "pie": files[0].map(d=> {return{"legendary": d.legendary, "name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}}),
                 "bar": files[1].map(d=> {return{"name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}})
-            };
+            }; //will refer to dataset 1 as data.pie & dataset 2 as data.bar
             console.log("two datasets", data);
+
+            //PIE CHART
+            const myColor = d3.scaleOrdinal(["royalblue", "darkorange"]);
+
+            //RADIUS INFORMATION
+            const outerRadius = width / 2;
+            //const outerRadius = 200;
+            const innerRadius = 27;
+            //const innerRadius = 150; //to make a doughnut!
+
+
+            //TO CREATE A PIE, USE D3.ARC() & PIE GENERATOR
+
+            //D3.ARC()
+            //d3.arc() CREATES WEDGES 
+            const arc = d3.arc()
+                .innerRadius(innerRadius)//required 
+                .outerRadius(outerRadius) //required
+            //.cornerRadius(10);
+                .cornerRadius(177); //makes it more interesting looking
+
+             const pie = d3.pie().value(d => d.hp)
+                //.padAngle(.04); //adds space b/w arcs - apply here so you don't add bias
+            //.startAngle(-0.5 * Math.PI) //have to compute radians - changes shape [1 radian = (180/pi), 2pi = 90]
+            //.endAngle(0.5 * Math.PI); //must include start/end angle 
+            //.startAngle(0 * Math.PI)
+            //.endAngle(1 * Math.PI);
+            //.startAngle(0 * Math.PI)
+            //.endAngle(0.5 * Math.PI);
+            //.startAngle(0.5 * Math.PI)
+            //.endAngle(2 * Math.PI);
+            //.startAngle(-0.5 * Math.PI)
+            //.endAngle(0 * Math.PI);
+
+            //SVG
+            const svg = d3.select("body")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            //GROUPS TO BUILD CHART
+            const groups = svg.selectAll("g.arc")
+                .data(pie(data.pie))//give data to our pie generator - could also have created a separate constant instead
+                .enter()
+                .append("g")
+                .attr("class", "arc")
+                .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");//arcs transform translate 
+            console.log("pie data", pie(data.pie));
+
+            groups.append("path")
+                .attr("fill", (d, i) => myColor(i)) //gave it the index (i)
+                .attr("d", arc); //d of our path 
+
+            //LABELS
+            groups.append("text")
+                .attr("transform", d => "translate(" + arc.centroid(d) + ")") //arc.centroid figures out the math
+                .attr("text-anchor", "middle")
+                .attr("class", "labels")
+                .text(d => d.data.legendary);//in console look at "pie data" to see structure (data > part)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         })
 
 
