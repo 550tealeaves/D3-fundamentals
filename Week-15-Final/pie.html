@@ -19,9 +19,10 @@
     <script type="text/javascript">
 
         //Data
-        /*data fabricated using John Rich's "Pie Graphs of
-        Dogs" "Dachshund" example as inspiration & guessing vals:
-        https://johnrichtv.com/2022/06/14/pie-graphs-of-dogs/*/
+        
+        //problem is that it's showing each individual pokemon & each true/false legendary status instead of grouping them
+        //in tableau, it looks like I did a individual count for each, but not sure how to replicate that in d3
+
 
         d3.csv("pokemon_g1tog3.csv").then(data => {
             console.log("data", data)
