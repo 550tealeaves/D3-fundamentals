@@ -12,7 +12,7 @@
 <body>
     <h1>What is the best legendary Pokemon in generations 1, 2, and 3?</h1>
     <div id="svg"></div>
-
+    <p> Here is some text about the first chart.</p>
     <div id="svg2"></div>
 
     <script type="text/javascript">
@@ -24,16 +24,19 @@
 
         //IMPORT MULTIPLE DATASETS
         Promise.all([
-            d3.csv("pokemon_g1tog3.csv"), d3.csv("pokemon_leg_myth.csv"),
+            d3.csv("pokemon_g1tog3.csv"), 
+            d3.csv("pokemon_leg_myth.csv"),
+            d3.csv("leg_true_false.csv")
         ]).then(function(files){
             const data = {
                 "pie": files[0].map(d=> {return{"legendary": d.legendary, "name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}}),
-                "bar": files[1].map(d=> {return{"name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}})
+                "bar": files[1].map(d=> {return{"name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}}),
+                "legendary": files[2].map(d=> {return{"isLegendary": d.isLegendary, "Amount": +d.Amount}})
             }; //will refer to dataset 1 as data.pie & dataset 2 as data.bar
-            console.log("two datasets", data);
+            console.log("3 datasets", data);
 
             //PIE CHART
-            const myColor = d3.scaleOrdinal(["royalblue", "darkorange"]);
+            const myColor = d3.scaleOrdinal(["#b5b4c4", "#7a31c4"]);
 
             //RADIUS INFORMATION
             const outerRadius = width / 2;
@@ -52,7 +55,7 @@
             //.cornerRadius(10);
                 .cornerRadius(177); //makes it more interesting looking
 
-             const pie = d3.pie().value(d => d.hp)
+             const pie = d3.pie().value(d => d.Amount)
                 //.padAngle(.04); //adds space b/w arcs - apply here so you don't add bias
             //.startAngle(-0.5 * Math.PI) //have to compute radians - changes shape [1 radian = (180/pi), 2pi = 90]
             //.endAngle(0.5 * Math.PI); //must include start/end angle 
@@ -73,12 +76,12 @@
 
             //GROUPS TO BUILD CHART
             const groups = svg.selectAll("g.arc")
-                .data(pie(data.pie))//give data to our pie generator - could also have created a separate constant instead
+                .data(pie(data.legendary))//give data to our pie generator - could also have created a separate constant instead
                 .enter()
                 .append("g")
                 .attr("class", "arc")
                 .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");//arcs transform translate 
-            console.log("pie data", pie(data.pie));
+            console.log("pie data", pie(data.legendary));
 
             groups.append("path")
                 .attr("fill", (d, i) => myColor(i)) //gave it the index (i)
@@ -89,7 +92,7 @@
                 .attr("transform", d => "translate(" + arc.centroid(d) + ")") //arc.centroid figures out the math
                 .attr("text-anchor", "middle")
                 .attr("class", "labels")
-                .text(d => d.data.legendary);//in console look at "pie data" to see structure (data > part)
+                .text(d => d.isLegendary);//in console look at "pie data" to see structure (data > part)
 
 
             
@@ -102,7 +105,7 @@
             
             
             // SORT DATA - ALWAYS SORT WHEN DOING LOLLIPOPS - EASIER TO INTERPRET
-            data.bar.sort((b, a) => a.hp - b.hp);
+            data.bar.sort((b, a) => a.total - b.total);
 
 
 
@@ -144,19 +147,19 @@
                 .attr("cx", x(0))
                 .attr("cy", d => y(d.name))
                 .attr("r", "7")
-                .style("fill", "#f185b6")
-                .attr("stroke", "#6a4439")
+                .style("fill", "#ee1515")
+                .attr("stroke", "#222224")
 
             // CHANGE X-COORDINATES OF LINE & CIRCLE 
             svg2.selectAll("circle")
                 .transition()
                 .duration(4000)
-                .attr("cx", d => x(d.hp))
+                .attr("cx", d => x(d.total))
 
             svg2.selectAll("line")
                 .transition()
                 .duration(4000)
-                .attr("x1", d => x(d.hp))
+                .attr("x1", d => x(d.total))
 
 
 
