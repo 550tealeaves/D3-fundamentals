@@ -102,7 +102,7 @@
             
             
             // SORT DATA - ALWAYS SORT WHEN DOING LOLLIPOPS - EASIER TO INTERPRET
-            data.bar.sort((b, a) => a.Value - b.Value);
+            data.bar.sort((b, a) => a.hp - b.hp);
 
 
 
@@ -126,7 +126,7 @@
                 .call(d3.axisLeft(y))
 
             // LINES
-            svg2.selectAll("line")
+            svg2.selectAll("drawline")
                 .data(data.bar)
                 .enter()
                 .append("line")
@@ -137,7 +137,7 @@
                 .attr("stroke", "#718a9b")
 
             // CIRCLES -> START AT X=0
-            svg2.selectAll("circle")
+            svg2.selectAll("drawcircle")
                 .data(data.bar)
                 .enter()
                 .append("circle")
