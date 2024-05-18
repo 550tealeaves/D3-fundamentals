@@ -53,8 +53,8 @@
         const myColor = d3.scaleOrdinal(["#e0efee", "#df2c2b"]);
 
         //RADIUS INFORMATION
-        const outerRadius = width / 2;
-        //const outerRadius = 200;
+        //const outerRadius = width / 2;
+        const outerRadius = 200;
         const innerRadius = 5;
         //const innerRadius = 150; //to make a doughnut!
 
@@ -66,7 +66,6 @@
         const arc = d3.arc()
             .innerRadius(innerRadius)//required 
             .outerRadius(outerRadius) //required
-            //.cornerRadius(10);
             .cornerRadius(9); //makes it more interesting looking
 
         //PIE GENERATOR

@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Final</title>
+    <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
-
+        body{
+            background-color: #8f8f8f;
+        }
     </style>
 </head>
 <body>
@@ -38,12 +41,14 @@
             console.log("3 datasets", data);
 
             //PIE CHART
-            const myColor = d3.scaleOrdinal(["#b5b4c4", "#7a31c4"]);
+            //const myColor = d3.scaleOrdinal(["#b5b4c4", "#7a31c4"]);
+
+            const myColor = d3.scaleOrdinal(["#e0efee", "#df2c2b"]);
 
             //RADIUS INFORMATION
-            const outerRadius = width / 2;
-            //const outerRadius = 200;
-            const innerRadius = 27;
+            //const outerRadius = width / 2;
+            const outerRadius = 200;
+            const innerRadius = 5;
             //const innerRadius = 150; //to make a doughnut!
 
 
@@ -55,20 +60,20 @@
                 .innerRadius(innerRadius)//required 
                 .outerRadius(outerRadius) //required
             //.cornerRadius(10);
-                .cornerRadius(177); //makes it more interesting looking
+                .cornerRadius(9); //makes it more interesting looking
 
              const pie = d3.pie().value(d => d.Amount)
-                //.padAngle(.04); //adds space b/w arcs - apply here so you don't add bias
-            //.startAngle(-0.5 * Math.PI) //have to compute radians - changes shape [1 radian = (180/pi), 2pi = 90]
-            //.endAngle(0.5 * Math.PI); //must include start/end angle 
-            //.startAngle(0 * Math.PI)
-            //.endAngle(1 * Math.PI);
-            //.startAngle(0 * Math.PI)
-            //.endAngle(0.5 * Math.PI);
-            //.startAngle(0.5 * Math.PI)
-            //.endAngle(2 * Math.PI);
-            //.startAngle(-0.5 * Math.PI)
-            //.endAngle(0 * Math.PI);
+                .padAngle(.38) //adds space b/w arcs - apply here so you don't add bias
+                .startAngle(2.2 * Math.PI) //have to compute radians - changes shape [1 radian = (180/pi), 2pi = 90]
+                .endAngle(0.35 * Math.PI); //must include start/end angle
+                //.startAngle(0 * Math.PI)
+                //.endAngle(1 * Math.PI);
+                //.startAngle(0 * Math.PI)
+                //.endAngle(0.5 * Math.PI);
+                //.startAngle(0.5 * Math.PI)
+                //.endAngle(2 * Math.PI);
+                //.startAngle(-0.5 * Math.PI)
+                //.endAngle(0 * Math.PI);
 
             //SVG
             const svg = d3.select("#svg")
