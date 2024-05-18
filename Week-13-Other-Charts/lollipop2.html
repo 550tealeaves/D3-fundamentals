@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <title>Top Internet Countries Visualization</title>
+    <style>
+        body {
+        margin: 0px;
+      }
+      .domain {
+        display: none;
+      }
+      .tick line {
+        stroke: #C0C0BB;
+      }
+      .tick text {
+        fill: #8E8883;
+        font-size: 20px;
+        font-family: sans-serif;
+      }
+      .axis-label {
+        fill: #1e11da;
+        font-size: 25px;
+        font-family: sans-serif;
+      }
+    </style>
+</head>
+<body>
+    <svg width="960" height="500"></svg>
+
+    <script>
+
+    //SOURCE - https://gist.github.com/curran/d867264d468b323c2e76886d44e7e8f9
+
+            //CONSTANTS
+            const xValue = d => d.country;
+            const xLabel = 'Country'; //set the name of xLabel
+            const yValue = d => d.netUsers;
+            const yLabel = 'Internet Users'; //set name of yLabel
+            const margin = { left: 150, right: 70, top: 20, bottom: 110 };
+
+            //CREATE SVG & USE THE WIDTH/HEIGHT THAT WAS SET IN THE HTML
+            const svg = d3.select('svg');
+            const width = svg.attr('width');
+            const height = svg.attr('height');
+            const innerWidth = width - margin.left - margin.right; //960-150-70=740
+            const innerHeight = height - margin.top - margin.bottom; //500-20-110=370
+
+            //CREATE & APPEND AXES
+            const g = svg.append('g') //append axes
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+            
+            //xAxisG
+            const xAxisG = g.append('g')
+                .attr('transform', `translate(0, ${innerHeight})`);
+
+            //yAxisG
+            const yAxisG = g.append('g');
+
+            //AXES LABELS
+
+            //xAxisG LABEL
+            //COORDS = (370, 90) 
+            xAxisG.append('text')
+                .attr('class', 'axis-label')
+                .attr('x', innerWidth / 2) // 740/2 =370
+                .attr('y', 90)
+                .text(xLabel); //labels it country
+
+            //yAxisG LABEL
+            //COORDS (185, -100) 
+            yAxisG.append('text')
+                .attr('class', 'axis-label')
+                .attr('x', -innerHeight / 2) //370/2 = 185
+                .attr('y', -100)
+                .attr('transform', `rotate(-90)`) //rotate label up 90 degrees
+                .style('text-anchor', 'middle')
+                .text(yLabel); //labels it Internet Users
+
+            //SCALES
+
+            //X-SCALE
+            const xScale = d3.scaleBand()
+                            .padding(0.95);
+            
+            //Y-SCALE
+            const yScale = d3.scaleLinear();
+
+            //CREATE ANOTHER SET OF AXES
+            //X-AXIS
+            const xAxis = d3.axisBottom()
+                .scale(xScale)
+                .tickPadding(15)
+                .tickSize(-innerHeight);
+
+            const yTicks = 5; //assign value to this var to use later
+
+            //Y-AXIS
+            const yAxis = d3.axisLeft()
+                .scale(yScale)
+                .ticks(yTicks)
+                .tickPadding(15)
+                .tickFormat(d3.format('.0s'))
+                .tickSize(-innerWidth); //this is where they are positioned to form a grid
+
+            const row = d => {
+                const netUsersWithCommas = d['Internet Users 31 Mar 2017'];
+                return {
+                    country: d['Country or Region'],
+                    netUsers: +netUsersWithCommas.replace(/,/g, '')
+                };
+            };
+
+            //splice the data into the top 5
+            const top5 = data => data.slice(0, 5);
+
+            //LOAD THE DATA
+            d3.csv('https://gist.githubusercontent.com/curran/d867264d468b323c2e76886d44e7e8f9/raw/cff18702f57592986798313c3d3f0d4e97036f48/data.csv', row, data => {
+                data = top5(data);
+                console.log('data', data)
+                
+                //ADD DOMAIN/RANGE TO X-SCALE
+                xScale
+                    .domain(data.map(xValue))
+                    .range([0, innerWidth]);
+
+                //ADD DOMAIN/RANGE TO Y-SCALE & TICKS
+                yScale
+                    .domain(d3.extent(data, yValue))
+                    .range([innerHeight, 0])
+                    .nice(yTicks);
+
+                //CIRCLES
+                g.selectAll('circle')
+                    .data(data)
+                    .enter()
+                    .append('circle')
+                    .attr('cx', d => xScale(xValue(d)) + xScale.bandwidth() / 2)
+                    .attr('cy', d => yScale(yValue(d)))
+                    .attr('fill', 'green')
+                    .attr('fill-opacity', 0.9)
+                    .attr('r', 8);
+
+                //BARS
+                g.selectAll('rect')
+                    .data(data)
+                    .enter()
+                    .append('rect')
+                    .attr('x', d => xScale(xValue(d)))
+                    .attr('y', d => yScale(yValue(d)))
+                    .attr('width', d => xScale.bandwidth())
+                    .attr('height', d => innerHeight - yScale(yValue(d)))
+                    .attr('fill', 'brown')
+                    .attr('fill-opacity', 0.6);
+
+                //MUST ALWAYS CALL THE AXES
+                xAxisG.call(xAxis);
+                yAxisG.call(yAxis);
+            });
+    </script>
+</body>
+</html>
