@@ -134,15 +134,18 @@
 
             // ADD X-AXIS & APPEND
             var x = d3.scaleLinear()
-                .domain([0, d3.max(data.bar, d => d.total)])
+                .domain([0,850])
+                //.domain([0, d3.max(data.bar, d => d.total)])
                 // .domain([0, d3.max(data.bar, d => d.total + d.hp + d.attack + d.defense + d.sp_attack + d.sp_defense + d.speed + d.generation)])
                 .range([0, width]);
             svg2.append("g")
-                .attr("transform", "translate(0," + height/2 + ")") //moves the x-axis down half way the height of y-axis
+                .attr("transform", "translate(0," + (height/2) + ")") //height/2 moves the x-axis down half way the height of y-axis
                 .call(d3.axisBottom(x))
                 .selectAll("text")
-                .attr("transform", "translate(-10,0)rotate(-45)") //rotates tick labels
-                .style("text-anchor", "end");
+                //.attr("transform", "translate(-10,0)rotate(-45)") //rotates tick labels
+                .style("text-anchor", "middle")
+                .style("font-size", 14)
+                .style("font-weight", "bold");
 
             // ADD Y-AXIS & APPEND
             var y = d3.scaleBand()
