@@ -10,10 +10,12 @@
             background-color: #8f8f8f;
         }
         .labels {
-            font-size: 12px;
+            font-size: 16px;
             font-weight: bold;
             font-family: sans-serif;
-            fill: aliceblue;
+            fill: indigo;
+            font-style: oblique;
+
         }  
     </style>
 </head>
@@ -107,8 +109,7 @@
             .attr("transform", d => "translate(" + arc.centroid(d) + ")") //arc.centroid figures out the math
             .attr("text-anchor", "middle")
             .attr("class", "labels")
-            .attr("stroke", "yellow")
-            .text(d => d.legendary.isLegendary);//in console look at "pie data" to see structure (data > part)
+            .text(d => d.data.Amount);//in console look at "pie data" to see structure (data > part)
 
         /*Note: if you happen to like round / doughnut charts
           another option is to think into how you might make a radial
