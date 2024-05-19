@@ -7,7 +7,7 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         body{
-            background-color: #8f8f8f;
+            background-color: #c6c6c6;
         }
         .lollipop{
             margin-left: 50px;
@@ -15,10 +15,26 @@
         .pie-chart{
             margin-left: 30px;
         }
+        .colors{
+            text-align: center;
+            font-style: italic;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: linear-gradient(to right,
+                    red,
+                    blue,
+                    gold,
+                    #c81624,
+                    silver,
+                    #2e5f9b);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
     </style>
 </head>
 <body>
-    <h1>What is the best legendary Pokemon in generations 1, 2, and 3?</h1>
+    <h1 class="colors">Legendary Pokemon in Generations 1, 2, and 3</h1>
+    <h2>How many legendary pokemon are in the first three generations?</h2>
     <div id="container"></div>
     <h2> What is the best legendary pokemon of the first 3 generations?</h2>
     <br/>
@@ -51,7 +67,7 @@
             const myColor = d3.scaleOrdinal(["#e0efee", "#df2c2b"]);
 
             //RADIUS INFORMATION
-            const outerRadius = width / 3; //bigger the outerRadius, the larger the chart
+            const outerRadius = width / 4; //bigger the outerRadius, the larger the chart
             const innerRadius = 10;
             //const innerRadius = 150; //to make a doughnut!
 
