@@ -9,6 +9,9 @@
         body{
             background-color: #8f8f8f;
         }
+        .lollipop{
+            margin-left: 50px;
+        }
     </style>
 </head>
 <body>
@@ -98,7 +101,9 @@
                 .attr("transform", d => "translate(" + arc.centroid(d) + ")") //arc.centroid figures out the math
                 .attr("text-anchor", "middle")
                 .attr("class", "labels")
-                .text(d => d.isLegendary);//in console look at "pie data" to see structure (data > part)
+                .attr("font-size", 20)
+                .attr("font-weight", "bold")
+                .text(d => d.data.Amount);//in console look at "pie data" to see structure (data > part)
 
 
             
@@ -107,8 +112,8 @@
             const svg2 = d3.select("#container-two")
             .append("svg")
             .attr("class", "lollipop")
-            .attr("width", width - 200)
-            .attr("height", height + 400);
+            .attr("width", width)
+            .attr("height", height);
             
             
             // SORT DATA - ALWAYS SORT WHEN DOING LOLLIPOPS - EASIER TO INTERPRET
@@ -118,10 +123,10 @@
 
             // ADD X-AXIS & APPEND
             var x = d3.scaleLinear()
-                .domain([0, 800])
+                .domain([0, 850])
                 .range([0, width]);
             svg2.append("g")
-                .attr("transform", "translate(0," + height + ")")
+                .attr("transform", "translate(-100," + height + ") + 300")
                 .call(d3.axisBottom(x))
                 .selectAll("text")
                 .attr("transform", "translate(-10,0)rotate(-45)") //rotates tick labels
@@ -130,7 +135,7 @@
             // ADD Y-AXIS & APPEND
             var y = d3.scaleBand()
                 .range([0, height])
-                .domain(data.bar.map(d => data.bar.name))
+                .domain(data.bar.map(d => d.name))
                 .padding(1);
             svg2.append("g")
                 .call(d3.axisLeft(y))
@@ -144,7 +149,7 @@
                 .attr("x2", x(0))
                 .attr("y1", d => y(d.name))
                 .attr("y2", d => y(d.name))
-                .attr("stroke", "#718a9b")
+                .attr("stroke", "black")
 
             // CIRCLES -> START AT X=0
             svg2.selectAll("drawcircle")
@@ -155,7 +160,7 @@
                 .attr("cy", d => y(d.name))
                 .attr("r", "7")
                 .style("fill", "#ee1515")
-                .attr("stroke", "#222224")
+                .attr("stroke", "black")
 
             // CHANGE X-COORDINATES OF LINE & CIRCLE 
             svg2.selectAll("circle")
