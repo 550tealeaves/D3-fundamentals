@@ -12,12 +12,15 @@
         .lollipop{
             margin-left: 50px;
         }
+        .pie-chart{
+            margin-left: 30px;
+        }
     </style>
 </head>
 <body>
     <h1>What is the best legendary Pokemon in generations 1, 2, and 3?</h1>
     <div id="container"></div>
-    <p> Here is some text about the first chart.</p>
+    <h2> What is the best legendary pokemon of the first 3 generations?</h2>
     <br/>
     <br/>
     <div id="container-two"></div>
@@ -112,21 +115,30 @@
             const svg2 = d3.select("#container-two")
             .append("svg")
             .attr("class", "lollipop")
-            .attr("width", width)
+            .attr("width", width + 100)
             .attr("height", height);
             
             
             // SORT DATA - ALWAYS SORT WHEN DOING LOLLIPOPS - EASIER TO INTERPRET
             data.bar.sort((b, a) => a.total - b.total);
+            //data.bar.sort((d, c) => d.hp - c.hp);
+            // data.bar.sort((b, a) => a.attack - b.attack);
+            // data.bar.sort((b, a) => a.defense - b.defense);
+            // data.bar.sort((b, a) => a.sp_attack - b.sp_attack);
+            // data.bar.sort((b, a) => a.sp_defense - b.sp_defense);
+            // data.bar.sort((b, a) => a.speed - b.speed);
+            // data.bar.sort((b, a) => a.generation - b.generation);
+
 
 
 
             // ADD X-AXIS & APPEND
             var x = d3.scaleLinear()
-                .domain([0, 850])
+                .domain([0, d3.max(data.bar, d => d.total)])
+                // .domain([0, d3.max(data.bar, d => d.total + d.hp + d.attack + d.defense + d.sp_attack + d.sp_defense + d.speed + d.generation)])
                 .range([0, width]);
             svg2.append("g")
-                .attr("transform", "translate(-100," + height + ") + 300")
+                .attr("transform", "translate(0," + height/2 + ")") //moves the x-axis down half way the height of y-axis
                 .call(d3.axisBottom(x))
                 .selectAll("text")
                 .attr("transform", "translate(-10,0)rotate(-45)") //rotates tick labels
