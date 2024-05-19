@@ -57,7 +57,7 @@
             d3.csv("leg_true_false.csv")
         ]).then(function(files){
             const data = {
-                "pie": files[0].map(d=> {return{"legendary": d.legendary, "name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}}),
+                "all": files[0].map(d=> {return{"legendary": d.legendary, "name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}}),
                 "bar": files[1].map(d=> {return{"name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}}),
                 "legendary": files[2].map(d=> {return{"isLegendary": d.isLegendary, "Amount": +d.Amount}})
             }; //will refer to dataset 1 as data.pie & dataset 2 as data.bar
