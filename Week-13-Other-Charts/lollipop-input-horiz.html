@@ -43,6 +43,7 @@
 
 
 
+
       // INITIALIZE X-AXIS
      var x = d3.scaleLinear()
         //.domain([0, 13000])
@@ -53,9 +54,9 @@
         // .attr("transform", "translate(-10,0)rotate(-45)") //rotates tick labels
         // .style("text-anchor", "end");
 
-      // INITIALIZE Y-AXIS
+      // INITIALIZE Y-AXIS - can't yet use a d3.extent(data, d=>) b/c data not yet loaded so variable is undefined
        var y = d3.scaleBand()
-          //.domain([0, 100])
+          //.domain((d3.extent(data, d => d.group))) //data is not yet loaded so the variable is undefined
           .range([height, 0])
           .padding(1);
       var yAxis = svg.append("g")
@@ -96,9 +97,10 @@
             .merge(j)
             .transition()
             .duration(1000)
-            .attr("x1", d => x(0)) //lines all originate from 1 place
+            .attr("x1", d => x(0)) //lines all originate from 1 place (origin) - no error in c log
+            //.attr('x1', d=> x(d.group)) //does same as x(0) but also returns an error in the console log
             //.attr("x1", d => { console.log(x(d[selectedVar])); return x(d[selectedVar]); }) //with this the lines drop from the top 
-            .attr("x2", d => x(d[selectedVar]))
+            .attr("x2", d => x(+d[selectedVar]))
             .attr("y1", d => y(0))
             .attr("y2", d=> y(d.group))
             .attr("stroke", "#e90000");
@@ -114,7 +116,7 @@
             .merge(u)
             .transition()
             .duration(1000)
-            .attr("cx", d => x(d[selectedVar]))
+            .attr("cx", d => x(+d[selectedVar]))
             .attr("cy", d => y(d.group))
             .attr("r", 8)
             .attr("fill", "#30c1ff");
