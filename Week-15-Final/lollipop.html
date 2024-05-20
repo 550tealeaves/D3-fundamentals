@@ -13,16 +13,16 @@
   <body>
     <h1>Which legendary Pokémon is the best?</h1>
     <div id="container"></div>
-    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3.v6.js"></script>
     <script>
 
       // SET DIMENSIONS & MARGINS
-      var margin = { top: 10, right: 30, bottom: 40, left: 120 }, //adding more margin-left moves the graph over to the right so you can see the axis label
+      const margin = { top: 10, right: 30, bottom: 40, left: 120 }, //adding more margin-left moves the graph over to the right so you can see the axis label
         width = 760 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
       // CREATE SVG & APPEND TO BODY
-      var svg = d3.select("#container")
+      const svg = d3.select("#container")
         .append("svg")
         .attr("width", width + margin.left + margin.right )
         .attr("height", height + margin.top + margin.bottom)
@@ -38,7 +38,7 @@
         data.sort((b, a) => a.total - b.total);
 
         // ADD X-AXIS & APPEND
-        var x = d3.scaleLinear()
+        const x = d3.scaleLinear()
           .domain([0, 900])
           .range([0, width]);
         svg.append("g")
@@ -49,7 +49,7 @@
           .style("text-anchor", "middle");
 
         // ADD Y-AXIS & APPEND
-        var y = d3.scaleBand()
+        const y = d3.scaleBand()
           .range([0, height])
           .domain(data.map(d => d.name))
           .padding(1);
