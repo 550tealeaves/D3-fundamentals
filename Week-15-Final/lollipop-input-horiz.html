@@ -4,6 +4,7 @@
   <head>
     <meta charset="utf-8">
     <title>Lollipop with Input</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
       /* .svg{
         width: 900px;
@@ -64,16 +65,15 @@
     <button onclick="update('sp_defense')">Special Defense</button>
     <button onclick="update('speed')">Speed</button>
     <div id="container"></div>
-    <script src="https://d3js.org/d3.v4.js"></script>
     <script>
 
       // SET DIMENSIONS & MARGINS
-      var margin = { top: 30, right: 30, bottom: 70, left: 120 },
+      const margin = { top: 30, right: 30, bottom: 70, left: 120 },
         width = 800,
         height = 650;
 
       // CREATE SVG & APPEND TO BODY
-      var svg = d3.select("#container")
+      const svg = d3.select("#container")
         .append("svg")
         .attr("class", "svg")
         .attr("width", width + margin.right + margin.left)
@@ -83,18 +83,18 @@
           "translate(" + margin.left + "," + margin.top + ")");
 
       // INITIALIZE X-AXIS
-      var x = d3.scaleLinear()
+      const x = d3.scaleLinear()
         .range([0, width])
         //.padding(1);
-      var xAxis = svg.append("g")
+      const xAxis = svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .attr("class", "x-axis")
         
 
       // INITIALIZE Y-AXIS
-      var y = d3.scaleBand()
+      const y = d3.scaleBand()
         .range([height, 0]);
-      var yAxis = svg.append("g")
+      const yAxis = svg.append("g")
         .attr("class", "y-axis")
 
 
@@ -102,7 +102,7 @@
       function update(selectedStat) {
 
         // LOAD/PARSE DATA
-        d3.csv("pokemon_leg_myth.csv", function (data) {
+        d3.csv("pokemon_leg_myth.csv").then(data => {
 
           console.log('data', data);
 
@@ -176,7 +176,7 @@
 
 
           // VARIABLE J: MAP DATA TO EXISTING CIRCLE
-          var j = svg.selectAll(".myLine")
+          const j = svg.selectAll(".myLine")
             .data(data)
           // update lines
           j
@@ -194,7 +194,7 @@
 
 
           // VARIABLE U: MAP DATA TO EXISTING CIRCLE
-          var u = svg.selectAll("circle")
+          const u = svg.selectAll("circle")
             .data(data)
           // UPDATE CIRCLE
           u
