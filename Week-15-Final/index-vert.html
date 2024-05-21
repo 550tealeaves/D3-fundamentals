@@ -219,7 +219,7 @@
                     });
 
                     //SORT THE DATA - descending 
-                    dataTwo.sort((b, a) => b.total - a.total);
+                    dataTwo.sort((b, a) => a.total - b.total);
 
                     // X-AXIS
                     x.domain(dataTwo.map(d => d.name))
