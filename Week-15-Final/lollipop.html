@@ -13,7 +13,7 @@
   <body>
     <h1>Which legendary Pokémon is the best?</h1>
     <div id="container"></div>
-    <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
 
       // SET DIMENSIONS & MARGINS
@@ -30,13 +30,46 @@
         .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
+
+      //FOR D3.V7 - MUST USE BELOW SYNTAX TO ACCESS data.forEach - https://github.com/vlandham/js_data/blob/master/snippets/read_data/read_data.02.js
+      //d3.csv("/data/cities.csv").then(function(data) {
+      //data.forEach(function (d) {
+      //d.population = +d.population;
+      //d["land area"] = +d["land area"];
+      //});
+      //console.log(data[0]);
+      // });
+
       // LOAD/PARSE DATA
-      d3.csv("pokemon_leg_myth.csv", data => {
+      d3.csv("pokemon_leg_myth.csv").then((data) => { 
         console.log('data', data);
 
+      //FORMAT THE DATA
+        data.forEach(d => {
+          d.name = d.name;
+          d.type1 = d.type1;
+          d.type2 = d.type2;
+          d.total = +d.total;
+          d.hp = +d.hp;
+          d.attack = +d.attack;
+          d.defense = +d.defense;
+          d.sp_attack = +d.sp_attack;
+          d.sp_defense = +d.sp_defense;
+          d.speed = +d.speed;
+          d.generation = +d.generation;
+        });
+        
         // SORT DATA - ALWAYS SORT WHEN DOING LOLLIPOPS - EASIER TO INTERPRET
         data.sort((b, a) => a.total - b.total);
+        //data.sort(d3.descending);
+        // data
+        // .slice()
+        // .sort((a, b) => d3.ascending(a.total, b.total));
 
+
+
+
+        
         // ADD X-AXIS & APPEND
         const x = d3.scaleLinear()
           .domain([0, 900])
