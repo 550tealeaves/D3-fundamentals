@@ -151,7 +151,7 @@
 
 
             // ADD X-AXIS & APPEND
-            var x = d3.scaleLinear()
+            const x = d3.scaleLinear()
                 .domain([0,850])
                 //.domain([0, d3.max(data.bar, d => d.total)])
                 // .domain([0, d3.max(data.bar, d => d.total + d.hp + d.attack + d.defense + d.sp_attack + d.sp_defense + d.speed + d.generation)])
@@ -166,7 +166,7 @@
                 .style("font-weight", "bold");
 
             // ADD Y-AXIS & APPEND
-            var y = d3.scaleBand()
+            const y = d3.scaleBand()
                 .range([0, height])
                 .domain(data.bar.map(d => d.name))
                 .padding(1);
