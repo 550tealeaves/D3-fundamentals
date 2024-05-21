@@ -91,7 +91,7 @@
         //CONSTANTS & GLOBALS   
         const width = 850;
         const height = 650;
-        const margin = { top: 30, right: 30, bottom: 70, left: 110 };
+        const margin = { top: 30, right: 30, bottom: 70, left: 115 };
 
 
         //IMPORT MULTIPLE DATASETS
@@ -192,7 +192,8 @@
 
             // INITIALIZE Y-AXIS
             const y = d3.scaleBand()
-                .range([height, 0]);
+                .range([height, 0])
+                .padding(1); //w/o this the lines drawn don't match to the axis ticks
             const yAxis = svg2.append("g")
                 .attr("class", "y-axis")
 
@@ -287,13 +288,10 @@
                         .merge(j)
                         .transition()
                         .duration(1000)
-                        //.attr("x1", d => { console.log(x(d.name)); return x(d.name); })
-                        //.attr("y1", d => y(0))
-                        //.attr("y2", d => y(d[selectedStat]))
-                        .attr("x1", d => x(0))
-                        .attr("x2", d => x(+d[selectedStat]))
-                        .attr("y1", d => {console.log(y(d.name)); return y(d.name); })
-                        .attr("y2", d => y(0))
+                        .attr("x1", d => x(+d[selectedStat]))
+                        .attr("x2", x(0))
+                        .attr("y1", d => y(d.name))
+                        .attr("y2", d => y(d.name))
                         .attr("stroke", "#718a9b");
 
 
