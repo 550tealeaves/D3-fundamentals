@@ -94,13 +94,11 @@
         //IMPORT MULTIPLE DATASETS
         Promise.all([
             d3.csv("pokemon_g1tog3.csv"), 
-            d3.csv("pokemon_leg_myth.csv"),
             d3.csv("leg_true_false.csv")
         ]).then(function(files){
             const data = {
                 "all": files[0].map(d=> {return{"legendary": d.legendary, "name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}}),
-                "bar": files[1].map(d=> {return{"name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}}),
-                "legendary": files[2].map(d=> {return{"isLegendary": d.isLegendary, "Amount": +d.Amount}})
+                "legendary": files[1].map(d=> {return{"isLegendary": d.isLegendary, "Amount": +d.Amount}})
             }; //will refer to dataset 1 as data.pie & dataset 2 as data.bar
             console.log("3 datasets", data);
 
@@ -166,7 +164,7 @@
                 .attr("font-size", 20)
                 .attr("font-weight", "bold")
                 .text(d => d.data.Amount);//in console look at "pie data" to see structure (data > part)
-
+        });
 
             
 
@@ -196,27 +194,32 @@
             const yAxis = svg2.append("g")
                 .attr("class", "y-axis")
 
-
             // A FUNCTION THAT CREATES/UPDATES THE PLOT FOR GIVEN VARIABLE
+            //update function reads as undefined in console log
             function update(selectedStat) {
 
-                    // //FORMAT THE DATA
-                    // data.bar.forEach(d => {
-                    //     d.name = d.name;
-                    //     d.type1 = d.type1;
-                    //     d.type2 = d.type2;
-                    //     d.total = +d.total;
-                    //     d.hp = +d.hp;
-                    //     d.attack = +d.attack;
-                    //     d.defense = +d.defense;
-                    //     d.sp_attack = +d.sp_attack;
-                    //     d.sp_defense = +d.sp_defense;
-                    //     d.speed = +d.speed;
-                    //     d.generation = +d.generation;
-                    // });
+                // LOAD/PARSE DATA
+                d3.csv("pokemon_leg_myth.csv").then(function(dataTwo) {
+
+                    console.log('data-two', dataTwo);
+
+                    //FORMAT THE DATA
+                    dataTwo.forEach(d => {
+                        d.name = d.name;
+                        d.type1 = d.type1;
+                        d.type2 = d.type2;
+                        d.total = +d.total;
+                        d.hp = +d.hp;
+                        d.attack = +d.attack;
+                        d.defense = +d.defense;
+                        d.sp_attack = +d.sp_attack;
+                        d.sp_defense = +d.sp_defense;
+                        d.speed = +d.speed;
+                        d.generation = +d.generation;
+                    });
 
                     // X-AXIS
-                    x.domain(data.bar.map(d => d.name))
+                    x.domain(dataTwo.map(d => d.name))
                     xAxis
                         .transition()
                         .duration(1000)
@@ -228,7 +231,7 @@
                         .style("text-anchor", "end");
 
                     // Y-AXIS
-                    y.domain([0, d3.max(data.bar, d => +d[selectedStat])]);
+                    y.domain([0, d3.max(dataTwo, d => +d[selectedStat])]);
                     yAxis
                         .transition()
                         .duration(1000)
@@ -271,7 +274,7 @@
 
                     // VARIABLE J: MAP DATA TO EXISTING CIRCLE
                     const j = svg2.selectAll(".myLine")
-                        .data(data.bar)
+                        .data(dataTwo)
                     // update lines
                     j
                         .enter()
@@ -289,7 +292,7 @@
 
                     // VARIABLE U: MAP DATA TO EXISTING CIRCLE
                     const u = svg2.selectAll("circle")
-                        .data(data.bar)
+                        .data(dataTwo)
                     // UPDATE CIRCLE
                     u
                         .enter()
@@ -305,14 +308,11 @@
                         .on("mouseover", mouseover) //NEW: .on() - this is event
                         .on("mousemove", mousemove) //tells it what to do 
                         .on("mouseout", mouseout);
+            })};
+    
 
-
-                }
-
-            // INITIALIZE PLOT
-            update('total')
-        });
-
+    // INITIALIZE PLOT
+        update('total')
 
     </script>
 </body>
