@@ -85,7 +85,6 @@
       // INITIALIZE X-AXIS
       const x = d3.scaleLinear()
         .range([0, width])
-        //.padding(1);
       const xAxis = svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .attr("class", "x-axis")
@@ -93,7 +92,8 @@
 
       // INITIALIZE Y-AXIS
       const y = d3.scaleBand()
-        .range([height, 0]);
+        .range([height, 0])
+        .padding(1);
       const yAxis = svg.append("g")
         .attr("class", "y-axis")
 
