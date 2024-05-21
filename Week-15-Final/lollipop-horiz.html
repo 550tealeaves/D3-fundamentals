@@ -68,19 +68,19 @@
     <script>
 
       // SET DIMENSIONS & MARGINS
-      var margin = { top: 30, right: 50, bottom: 70, left: 60 },
+      var margin = { top: 30, right: 30, bottom: 70, left: 60 },
         width = 800,
-        height = 600 - margin.top - margin.bottom;
+        height = 650;
 
       // CREATE SVG & APPEND TO BODY
       var svg = d3.select("#container")
         .append("svg")
         .attr("class", "svg")
-        .attr("width", width + margin.right)
+        .attr("width", width + margin.right + margin.left)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform",
-          "translate(" + 130 + "," + margin.top + ")");
+          "translate(" + margin.left + "," + margin.top + ")");
 
       // INITIALIZE X-AXIS
       var x = d3.scaleLinear()

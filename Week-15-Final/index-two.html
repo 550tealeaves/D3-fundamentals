@@ -180,16 +180,15 @@
                     "translate(" + margin.left + "," + margin.top + ")");
 
             // INITIALIZE X-AXIS
-            const x = d3.scaleBand()
+            const x = d3.scaleLinear()
                 .range([0, width])
-                .padding(1);
             const xAxis = svg2.append("g")
                 .attr("transform", "translate(0," + height + ")")
                 .attr("class", "x-axis")
 
 
             // INITIALIZE Y-AXIS
-            const y = d3.scaleLinear()
+            const y = d3.scaleBand()
                 .range([height, 0]);
             const yAxis = svg2.append("g")
                 .attr("class", "y-axis")
@@ -219,7 +218,8 @@
                     });
 
                     // X-AXIS
-                    x.domain(dataTwo.map(d => d.name))
+                    //x.domain(dataTwo.map(d => d.name))
+                    x.domain([0, d3.max(dataTwo, d => +d[selectedStat])])
                     xAxis
                         .transition()
                         .duration(1000)
@@ -231,7 +231,8 @@
                         .style("text-anchor", "end");
 
                     // Y-AXIS
-                    y.domain([0, d3.max(dataTwo, d => +d[selectedStat])]);
+                    //y.domain([0, d3.max(dataTwo, d => +d[selectedStat])]);
+                    y.domain(dataTwo.map(d => d.name));
                     yAxis
                         .transition()
                         .duration(1000)
@@ -283,10 +284,13 @@
                         .merge(j)
                         .transition()
                         .duration(1000)
-                        .attr("x1", d => { console.log(x(d.name)); return x(d.name); })
-                        .attr("x2", d => x(d.name))
-                        .attr("y1", y(0))
-                        .attr("y2", d => y(d[selectedStat]))
+                        //.attr("x1", d => { console.log(x(d.name)); return x(d.name); })
+                        //.attr("y1", d => y(0))
+                        //.attr("y2", d => y(d[selectedStat]))
+                        .attr("x1", d => x(0))
+                        .attr("x2", d => x(+d[selectedStat]))
+                        .attr("y1", d => {console.log(y(d.name)); return y(d.name); })
+                        .attr("y2", d => y(0))
                         .attr("stroke", "#718a9b");
 
 
@@ -300,8 +304,10 @@
                         .merge(u)
                         .transition()
                         .duration(1000)
-                        .attr("cx", d => x(d.name))
-                        .attr("cy", d => y(d[selectedStat]))
+                        //.attr("cx", d => x(d.name))
+                        //.attr("cy", d => y(d[selectedStat]))
+                        .attr("cx", d => x(+d[selectedStat]))
+                        .attr("cy", d => {console.log(y(d.name)); return y(d.name); })
                         .attr("r", 6)
                         .style("fill", "#ee1515")
                         .attr("stroke", "#222224")
