@@ -120,6 +120,9 @@
                   d.speed = +d.speed;
                   d.generation = +d.generation;
                 });
+          
+          //SORT THE DATA - descending 
+          data.sort((b, a) => b.total - a.total);
 
           // X-AXIS
           x.domain([0, d3.max(data, d => +d[selectedStat])])

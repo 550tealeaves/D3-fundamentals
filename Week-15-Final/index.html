@@ -216,6 +216,9 @@
                         d.generation = +d.generation;
                     });
 
+                    //SORT THE DATA - descending 
+                    dataTwo.sort((b, a) => b.total - a.total);
+
                     // X-AXIS
                     x.domain([0, d3.max(dataTwo, d => +d[selectedStat])])
                     xAxis
