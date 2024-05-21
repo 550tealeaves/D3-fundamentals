@@ -157,7 +157,7 @@
           //1ST TOOLTIP FUNCTION - MOUSEOVER
           const mouseover = function (event, d) {  //listen for events being triggered on done elements
             tooltip  //give things to the tooltip
-              .html(d.name + " - " + d[selectedSta])//can add HTML features, like line break
+              .html(d.name + " - " + +d[selectedStat])//can add HTML features, like line break
               .style("opacity", 1) //opacity set to 1 is visible - mouse hovers & you can see it
               //Add absolute position of mouse b/c tooltip follows mouse
               .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
