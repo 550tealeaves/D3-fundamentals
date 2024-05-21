@@ -10,6 +10,9 @@
         body{
             background-color: #c6c6c6;
         }
+        #container-two{
+        padding: 1cm;
+      }
         .lollipop{
             margin-left: 50px;
         }
@@ -86,9 +89,9 @@
 
     <script type="text/javascript">
         //CONSTANTS & GLOBALS   
-        const width = 800;
+        const width = 850;
         const height = 650;
-        const margin = { top: 30, right: 30, bottom: 70, left: 60 };
+        const margin = { top: 30, right: 30, bottom: 70, left: 110 };
 
 
         //IMPORT MULTIPLE DATASETS
@@ -225,10 +228,10 @@
                         .duration(1000)
                         .call(d3.axisBottom(x))
                         .selectAll("text")
-                        .attr("transform", "translate(-10,0)rotate(-45)")
+                        //.attr("transform", "translate(-10,0)rotate(-45)")
                         .attr("fill", "black")
                         .attr("font-weight", 500)
-                        .style("text-anchor", "end");
+                        //.style("text-anchor", "end");
 
                     // Y-AXIS
                     //y.domain([0, d3.max(dataTwo, d => +d[selectedStat])]);
