@@ -10,6 +10,9 @@
         body{
             background-color: #c6c6c6;
         }
+        #container-two{
+        padding: 1cm;
+      }
         .lollipop{
             margin-left: 50px;
         }
@@ -86,9 +89,9 @@
 
     <script type="text/javascript">
         //CONSTANTS & GLOBALS   
-        const width = 800;
+        const width = 850;
         const height = 650;
-        const margin = { top: 30, right: 30, bottom: 70, left: 60 };
+        const margin = { top: 30, right: 30, bottom: 70, left: 115 };
 
 
         //IMPORT MULTIPLE DATASETS
@@ -103,15 +106,11 @@
             console.log("3 datasets", data);
 
             //PIE CHART
-            //const myColor = d3.scaleOrdinal(["#b5b4c4", "#7a31c4"]);
-
             const myColor = d3.scaleOrdinal(["#e0efee", "#df2c2b"]);
 
             //RADIUS INFORMATION
             const outerRadius = width / 4; //bigger the outerRadius, the larger the chart
             const innerRadius = 10;
-            //const innerRadius = 150; //to make a doughnut!
-
 
             //TO CREATE A PIE, USE D3.ARC() & PIE GENERATOR
 
@@ -120,7 +119,6 @@
             const arc = d3.arc()
                 .innerRadius(innerRadius)//required 
                 .outerRadius(outerRadius) //required
-            //.cornerRadius(10);
                 .cornerRadius(9); //makes it more interesting looking
 
              const pie = d3.pie().value(d => d.Amount)
@@ -180,17 +178,17 @@
                     "translate(" + margin.left + "," + margin.top + ")");
 
             // INITIALIZE X-AXIS
-            const x = d3.scaleBand()
+            const x = d3.scaleLinear()
                 .range([0, width])
-                .padding(1);
             const xAxis = svg2.append("g")
                 .attr("transform", "translate(0," + height + ")")
                 .attr("class", "x-axis")
 
 
             // INITIALIZE Y-AXIS
-            const y = d3.scaleLinear()
-                .range([height, 0]);
+            const y = d3.scaleBand()
+                .range([height, 0])
+                .padding(1); //w/o this the lines drawn don't match to the axis ticks
             const yAxis = svg2.append("g")
                 .attr("class", "y-axis")
 
@@ -219,19 +217,17 @@
                     });
 
                     // X-AXIS
-                    x.domain(dataTwo.map(d => d.name))
+                    x.domain([0, d3.max(dataTwo, d => +d[selectedStat])])
                     xAxis
                         .transition()
                         .duration(1000)
                         .call(d3.axisBottom(x))
                         .selectAll("text")
-                        .attr("transform", "translate(-10,0)rotate(-45)")
                         .attr("fill", "black")
-                        .attr("font-weight", 500)
-                        .style("text-anchor", "end");
+                        .attr("font-weight", 500);
 
                     // Y-AXIS
-                    y.domain([0, d3.max(dataTwo, d => +d[selectedStat])]);
+                    y.domain(dataTwo.map(d => d.name));
                     yAxis
                         .transition()
                         .duration(1000)
@@ -241,7 +237,7 @@
 
                     //CREATE TOOLTIP
                     //TOOLTIP - REQUIRES 3 FUNCTIONS
-                    const tooltip = d3.select("#container")
+                    const tooltip = d3.select("#container-two")
                         .append("div")
                         .attr("class", "tooltip") //class for styling in CSS
                         .style("opacity", 0); //opacity set to 0 is invisible until used
@@ -283,10 +279,10 @@
                         .merge(j)
                         .transition()
                         .duration(1000)
-                        .attr("x1", d => { console.log(x(d.name)); return x(d.name); })
-                        .attr("x2", d => x(d.name))
-                        .attr("y1", y(0))
-                        .attr("y2", d => y(d[selectedStat]))
+                        .attr("x1", d => x(+d[selectedStat]))
+                        .attr("x2", x(0))
+                        .attr("y1", d => y(d.name))
+                        .attr("y2", d => y(d.name))
                         .attr("stroke", "#718a9b");
 
 
@@ -300,8 +296,8 @@
                         .merge(u)
                         .transition()
                         .duration(1000)
-                        .attr("cx", d => x(d.name))
-                        .attr("cy", d => y(d[selectedStat]))
+                        .attr("cx", d => x(+d[selectedStat]))
+                        .attr("cy", d => y(d.name)) //could also be written as .attr("cy", d => {console.log(y(d.name)); return y(d.name); })
                         .attr("r", 6)
                         .style("fill", "#ee1515")
                         .attr("stroke", "#222224")

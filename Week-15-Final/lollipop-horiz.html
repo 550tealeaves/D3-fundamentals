@@ -68,7 +68,7 @@
     <script>
 
       // SET DIMENSIONS & MARGINS
-      var margin = { top: 30, right: 30, bottom: 70, left: 60 },
+      var margin = { top: 30, right: 30, bottom: 70, left: 120 },
         width = 800,
         height = 650;
 
@@ -129,14 +129,12 @@
             .duration(1000)
             .call(d3.axisBottom(x))
             .selectAll("text")
-            // .attr("transform", "translate(-10,0)rotate(-45)")
             .attr("fill", "black")
             .attr("font-weight", 500)
-            // .style("text-anchor", "end");
+
 
           // Y-AXIS
           y.domain(data.map(d => d.name));
-          //y.domain([0, d3.max(data, d => +d[selectedStat])]);
           yAxis
           .transition()
           .duration(1000)
@@ -188,12 +186,10 @@
             .merge(j)
             .transition()
             .duration(1000)
-            .attr("x1", d => x(0))
-            //.attr("x1", d => { console.log(x(+d[selectedStat])); return x(+d[selectedStat]); })
-            .attr("x2", d => x(+d[selectedStat]))
-            .attr("y1", d => { console.log(y(d.name)); return y(d.name); })
-            //attr("y1", d => y(d.name))
-            .attr("y2", d => y(0))
+            .attr("x1", d => x(+d[selectedStat]))
+            .attr("x2", d => x(0))
+            .attr("y1", d => y(d.name))
+            .attr("y2", d => y(d.name))
             .attr("stroke", "#718a9b");
 
 
@@ -208,7 +204,7 @@
             .transition()
             .duration(1000)
             .attr("cx", d => x(+d[selectedStat]))
-            .attr("cy", d => { console.log(y(d.name)); return y(d.name); })
+            .attr("cy", d => y(d.name))
             .attr("r", 6)
             .style("fill", "#ee1515")
             .attr("stroke", "#222224")
