@@ -61,7 +61,7 @@
 
       button:active{
         color: indigo;
-        background: rosybrown;
+        background: salmon;
       }
 
      
@@ -134,14 +134,7 @@
                 .padAngle(.38) //adds space b/w arcs - apply here so you don't add bias
                 .startAngle(2.2 * Math.PI) //have to compute radians - changes shape [1 radian = (180/pi), 2pi = 90]
                 .endAngle(0.35 * Math.PI); //must include start/end angle
-                //.startAngle(0 * Math.PI)
-                //.endAngle(1 * Math.PI);
-                //.startAngle(0 * Math.PI)
-                //.endAngle(0.5 * Math.PI);
-                //.startAngle(0.5 * Math.PI)
-                //.endAngle(2 * Math.PI);
-                //.startAngle(-0.5 * Math.PI)
-                //.endAngle(0 * Math.PI);
+    
 
             //SVG
             const svg = d3.select("#container")
@@ -152,7 +145,7 @@
 
             //GROUPS TO BUILD CHART
             const groups = svg.selectAll("g.arc")
-                .data(pie(data.legendary))//give data to our pie generator - could also have created a separate constant instead
+                .data(pie(data.legendary))//give data to pie generator
                 .enter()
                 .append("g")
                 .attr("class", "arc")
@@ -161,8 +154,7 @@
 
             groups.append("path")
                 .attr("fill", (d, i) => myColor(i)) //gave it the index (i)
-                .attr("d", arc) //d of our path 
-                .attr("stroke", "black");
+                .attr("d", arc); //d of our path 
 
             //LABELS
             groups.append("text")
