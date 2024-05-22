@@ -52,9 +52,9 @@
 
         //IMPORT MULTIPLE DATASETS
         Promise.all([
-            d3.csv("pokemon_g1tog3.csv"), 
-            d3.csv("pokemon_leg_myth.csv"),
-            d3.csv("leg_true_false.csv")
+            d3.csv("../pokemon_g1tog3.csv"), 
+            d3.csv("../pokemon_leg_myth.csv"),
+            d3.csv("../leg_true_false.csv")
         ]).then(function(files){
             const data = {
                 "all": files[0].map(d=> {return{"legendary": d.legendary, "name": d.name, "type1": d.type1, "type2": d.type2, "total": +d.total, "hp": +d.hp, "attack": +d.attack, "defense": +d.defense, "sp_attack": +d.sp_attack, "sp_defense": +d.sp_defense, "speed": +d.speed, "generation": +d.generation, "mythical": d.mythical, "variant": d.variant}}),

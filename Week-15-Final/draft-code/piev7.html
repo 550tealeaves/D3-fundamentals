@@ -29,8 +29,8 @@
         //Added another dataset with the sum totals and was able to get the pie to show, but do not know how to get text showing
 
         Promise.all([
-            d3.csv("pokemon_g1tog3.csv"), 
-            d3.csv("leg_true_false.csv", d3.autoType),
+            d3.csv("../pokemon_g1tog3.csv"), 
+            d3.csv("../leg_true_false.csv", d3.autoType),
         ]).then(([data, legendary]) => {
 
         console.log("data", data)
