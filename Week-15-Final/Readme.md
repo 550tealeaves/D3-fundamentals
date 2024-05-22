@@ -10,3 +10,8 @@ The first viz is a static pie chart depicting the amount of legendary pokemon (3
 The second viz is an interactive lollipop chart showcasing the seven stats of said legendary Pokemon. Inspiration for this viz is from [D3 Graph Gallery](https://d3-graph-gallery.com/graph/lollipop_button_data_csv.html) 
 The viewer gets to decide which one is actually best.
 
+## Review
+Overall, I completed my goal of creating a pie chart and interactive lollipop. However, there were many stylistic touches that would have made this project much stronger. 
+
+![alt text](https://www.markdownguide.org/assets/images/tux.png)
+
