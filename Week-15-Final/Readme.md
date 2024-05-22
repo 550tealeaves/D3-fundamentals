@@ -13,5 +13,9 @@ The viewer gets to decide which one is actually best.
 ## Review
 Overall, I completed my goal of creating a pie chart and interactive lollipop. However, there were many stylistic touches that would have made this project much stronger. 
 
-![alt text](https://www.markdownguide.org/assets/images/tux.png)
+![pie image](pie-chart.jpg)
+![lollipop1](lollipop1.jpg)
+![lollipop2](lollipop2.jpg)
+![transition](lollipop-transition1.jpg)
+![transition](lollipop-transition2.jpg)
 
