@@ -236,7 +236,7 @@
                         .selectAll("text")
                         .attr("transform", "translate(-10,0)rotate(-45)")
                         .attr("fill", "black")
-                        .attr("font-size", 16)
+                        .attr("font-size", 12)
                         .attr("font-weight", 500)
                         .style("text-anchor", "end");
 
@@ -247,11 +247,12 @@
                         .duration(1000)
                         .call(d3.axisLeft(y))
                         .selectAll("text")
-                        .attr("fill", "black");
+                        .attr("fill", "black")
+                        .attr("font-size", 12);
 
                     //CREATE TOOLTIP
                     //TOOLTIP - REQUIRES 3 FUNCTIONS
-                    const tooltip = d3.select("#container")
+                    const tooltip = d3.select("body")
                         .append("div")
                         .attr("class", "tooltip") //class for styling in CSS
                         .style("opacity", 0); //opacity set to 0 is invisible until used

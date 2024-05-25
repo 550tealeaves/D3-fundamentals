@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .line {
+            fill: none;
+            stroke: rgb(114, 180, 70);
+            stroke-width: 2px;
+            }
+
+        div.tooltip {
+            position: absolute;
+            text-align: center;
+            width: 60px;
+            height: 28px;
+            padding: 2px;
+            font: 12px sans-serif;
+            background: rgb(249, 142, 80);
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- load the d3.js library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        //Code from https://gist.github.com/d3noob/97e51c5be17291f79a27705cef827da2 
+
+        // SET DIMENSTIONS/MARGINS
+            var margin = { top: 20, right: 20, bottom: 30, left: 50 },
+                width = 960 - margin.left - margin.right,
+                height = 500 - margin.top - margin.bottom;
+
+            // PARSE DATE/TIME
+            var parseTime = d3.timeParse("%d-%b-%y");
+            var formatTime = d3.timeFormat("%e %B");
+
+            // SET RANGES
+            var x = d3.scaleTime().range([0, width]);
+            var y = d3.scaleLinear().range([height, 0]);
+
+            // DEFINE THE LINE
+            var valueline = d3.line()
+                .x(d => x(d.date))
+                .y(d => y(d.close));
+
+            // CREATE THE TOOLTIP
+            var div = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+
+            // APPEND SVG OBJECT TO BODY
+            // APPENDS  'GROUP' ELEMENT TO 'SVG'
+            // MOVES THE 'GROUP' ELEMENT TO THE TOP LEFT MARGIN
+            var svg = d3.select("body").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+            // OBTAIN DATA 
+            d3.csv("https://gist.githubusercontent.com/d3noob/97e51c5be17291f79a27705cef827da2/raw/9ed59a626759816f3eff58f32d9006aabea1ac9f/data.csv").then((data) => {
+
+                console.log('data', data);
+
+                // FORMAT DATA USING .forEach
+                data.forEach(d => {
+                    d.date = parseTime(d.date);
+                    d.close = +d.close;
+                });
+
+                // SCALE THE RANGE OF DATA
+                x.domain(d3.extent(data, d => d.date));
+                y.domain([0, d3.max(data, d => d.close)]);
+
+                // ADD THE LINE PATH
+                svg.append("path")
+                    .data([data]) //add data as an array
+                    .attr("class", "line")
+                    .attr("d", valueline);
+
+                // ADD THE DOTS W/ TOOLTIPS
+                svg.selectAll("dot")
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr("r", 5)
+                    .attr("cx", d => x(d.date))
+                    .attr("cy", d => y(d.close))
+                    //ADD TOOLTIP FUNCTIONS
+                    .on("mouseover", (event, d) => {
+                        div.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                        div.html(formatTime(d.date) + "<br/>" + d.close) //has date on 1st line & close on 2nd
+                            .style("left", (event.pageX) + "px")
+                            .style("top", (event.pageY - 28) + "px");
+                    })
+                    .on("mouseout", (d) => {
+                        div.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    });
+
+                // ADD X-AXIS
+                svg.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x));
+
+                // ADD Y-AXIS
+                svg.append("g")
+                    .call(d3.axisLeft(y));
+
+            });
+    </script>
+</body>
+</html>
