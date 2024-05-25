@@ -7,8 +7,8 @@
     <style>
         .line {
             fill: none;
-            stroke: rgb(114, 180, 70);
-            stroke-width: 2px;
+            stroke: rgb(202, 25, 95);
+            stroke-width: 3px;
             }
 
         div.tooltip {
@@ -94,6 +94,9 @@
                     .attr("r", 5)
                     .attr("cx", d => x(d.date))
                     .attr("cy", d => y(d.close))
+                    .attr("fill", "midnightblue")
+                    .attr("stroke", "rgb(168, 224, 228)")
+                    .attr("stroke-width", 2)
                     //ADD TOOLTIP FUNCTIONS
                     .on("mouseover", (event, d) => {
                         div.transition()
