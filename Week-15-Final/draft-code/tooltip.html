@@ -30,34 +30,34 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
         //Code from https://gist.github.com/d3noob/97e51c5be17291f79a27705cef827da2 
-
-        // SET DIMENSTIONS/MARGINS
-            var margin = { top: 20, right: 20, bottom: 30, left: 50 },
+        //changed all the var to const
+        // SET DIMENSIONS/MARGINS
+            const margin = { top: 20, right: 20, bottom: 30, left: 50 },
                 width = 960 - margin.left - margin.right,
                 height = 500 - margin.top - margin.bottom;
 
             // PARSE DATE/TIME
-            var parseTime = d3.timeParse("%d-%b-%y");
-            var formatTime = d3.timeFormat("%e %B");
+            const parseTime = d3.timeParse("%d-%b-%y");
+            const formatTime = d3.timeFormat("%e %B");
 
             // SET RANGES
-            var x = d3.scaleTime().range([0, width]);
-            var y = d3.scaleLinear().range([height, 0]);
+            const x = d3.scaleTime().range([0, width]);
+            const y = d3.scaleLinear().range([height, 0]);
 
             // DEFINE THE LINE
-            var valueline = d3.line()
+            const valueline = d3.line()
                 .x(d => x(d.date))
                 .y(d => y(d.close));
 
             // CREATE THE TOOLTIP
-            var div = d3.select("body").append("div")
+            const div = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
 
             // APPEND SVG OBJECT TO BODY
             // APPENDS  'GROUP' ELEMENT TO 'SVG'
             // MOVES THE 'GROUP' ELEMENT TO THE TOP LEFT MARGIN
-            var svg = d3.select("body").append("svg")
+            const svg = d3.select("body").append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
