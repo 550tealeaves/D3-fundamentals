@@ -194,6 +194,14 @@
             const yAxis = svg2.append("g")
                 .attr("class", "y-axis")
 
+
+            //CREATE TOOLTIP
+            //TOOLTIP - REQUIRES 3 FUNCTIONS
+            const tooltip = d3.select("#container-two")
+                .append("div")
+                .attr("class", "tooltip") //class for styling in CSS
+                .style("opacity", 0); //opacity set to 0 is invisible until used
+
             // A FUNCTION THAT CREATES/UPDATES THE PLOT FOR GIVEN VARIABLE
             //update function reads as undefined in console log
             function update(selectedStat) {
@@ -242,12 +250,7 @@
                         .attr("fill", "black")
                         .attr("font-size", 12);
 
-                    //CREATE TOOLTIP
-                    //TOOLTIP - REQUIRES 3 FUNCTIONS
-                    const tooltip = d3.select("#container-two")
-                        .append("div")
-                        .attr("class", "tooltip") //class for styling in CSS
-                        .style("opacity", 0); //opacity set to 0 is invisible until used
+                    
 
                     //1ST TOOLTIP FUNCTION - MOUSEOVER
                     const mouseover = function (event, d) {  //listen for events being triggered on done elements
@@ -311,6 +314,29 @@
                         .on("mouseover", mouseover) //NEW: .on() - this is event
                         .on("mousemove", mousemove) //tells it what to do 
                         .on("mouseout", mouseout);
+
+
+
+                    //ALTERNATIVE WAY TO ADD THE 3 TOOLTIP FUNCTIONS
+                        // .on("mouseover", (event, d) => {
+                        //     tooltip.transition()
+                        //     .duration(200)
+                        //     .style(opacity, 1)
+                        //     tooltip.html(d.name + " - " + d.selectedStat)
+                        //     .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
+                        //     .style("top", (event.pageY + 8) + "px");//mouse y coordinate - higher the # further away tooltip moves
+                        // })
+                        // .on("mousemove", (d) => {
+                        //     tooltip.transition()
+                        //     style("left", (event.pageX + 8) + "px") //higher the # further away tooltip moves
+                        //     .style("top", (event.pageY + 8) + "px"); //higher the # further away tooltip moves
+                        // })
+                        // .on("mouseout", (d) => {
+                        //     tooltip.transition()
+                        //     .duration(500)
+                        //     .style("opacity", 0);
+
+                        // });
             })};
     
 
