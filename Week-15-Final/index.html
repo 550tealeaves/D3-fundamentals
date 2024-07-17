@@ -179,6 +179,13 @@
                 .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")");
 
+            //CREATE TOOLTIP
+            //TOOLTIP - REQUIRES 3 FUNCTIONS
+            const tooltip = d3.select("#container-two")
+                .append("div")
+                .attr("class", "tooltip") //class for styling in CSS
+                .style("opacity", 0); //opacity set to 0 is invisible until used
+
             // INITIALIZE X-AXIS
             const x = d3.scaleLinear()
                 .range([0, width])
@@ -195,12 +202,7 @@
                 .attr("class", "y-axis")
 
 
-            //CREATE TOOLTIP
-            //TOOLTIP - REQUIRES 3 FUNCTIONS
-            const tooltip = d3.select("#container-two")
-                .append("div")
-                .attr("class", "tooltip") //class for styling in CSS
-                .style("opacity", 0); //opacity set to 0 is invisible until used
+            
 
             // A FUNCTION THAT CREATES/UPDATES THE PLOT FOR GIVEN VARIABLE
             //update function reads as undefined in console log
