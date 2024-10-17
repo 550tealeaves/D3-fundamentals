@@ -68,7 +68,7 @@
       .tooltip{
             position: absolute;
             width: auto;
-            height: 20px;
+            height: auto;
             margin-left: 14px;
             padding: 5px;    
             text-align: center; 
@@ -316,14 +316,9 @@
                         .attr("cy", d => y(d.name)) //could also be written as .attr("cy", d => {console.log(y(d.name)); return y(d.name); })
                         .attr("r", 6)
                         .style("fill", "#ee1515")
-                        .attr("stroke", "#222224");
-
-
-
-                   
+                        .attr("stroke", "#222224");         
             })};
     
-
     // INITIALIZE PLOT
         update('total')
 
