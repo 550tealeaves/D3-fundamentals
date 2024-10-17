@@ -257,11 +257,11 @@
                         .attr("font-size", 12);
 
                     //CREATE TOOLTIP
-                    // //TOOLTIP - REQUIRES 3 FUNCTIONS
-                    // const tooltip = d3.select("body")
-                    //     .append("div")
-                    //     .attr("class", "tooltip") //class for styling in CSS
-                    //     .style("opacity", 0); //opacity set to 0 is invisible until used
+                    //TOOLTIP - REQUIRES 3 FUNCTIONS
+                    const tooltip = d3.select("body")
+                        .append("div")
+                        .attr("class", "tooltip") //class for styling in CSS
+                        .style("opacity", 0); //opacity set to 0 is invisible until used
 
                     // //1ST TOOLTIP FUNCTION - MOUSEOVER
                     // const mouseover = function (event, d) {  //listen for events being triggered on done elements
@@ -315,26 +315,45 @@
                         .enter()
                         .append("circle")
                         .merge(u)
+                        .on("mouseover", (event, d) => {
+                            tooltip.transition()
+                            .duration(200)
+                            .style("opacity", 1)
+                            tooltip.html(d.name + " - " + d[selectedStat])
+                            .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
+                            .style("top", (event.pageY + 8) + "px");//mouse y coordinate - higher the # further away tooltip moves
+                        })
+                        .on("mousemove", (d) => {
+                            tooltip.transition()
+                            .style("left", (event.pageX + 8) + "px") //higher the # further away tooltip moves
+                            .style("top", (event.pageY + 8) + "px"); //higher the # further away tooltip moves
+                        })
+                        .on("mouseout", (d) => {
+                            tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+
+                        })
                         .transition()
                         .duration(1000)
                         .attr("cx", d => x(d.name))
                         .attr("cy", d => y(d[selectedStat]))
                         .attr("r", 6)
                         .style("fill", "#ee1515")
-                        .attr("stroke", "#222224")
-                        .on("mouseover", (event, d) => {
-                            tooltip.transition()
-                                .duration(200)
-                                .style("opacity", .9);
-                            tooltip.html(d.name + " - " + d.selectedStat) 
-                                .style("left", (event.pageX) + "px")
-                                .style("top", (event.pageY - 28) + "px");
-                        })
-                        .on("mouseout", (d) => {
-                            tooltip.transition()
-                                .duration(500)
-                                .style("opacity", 0);
-                        });
+                        .attr("stroke", "#222224");
+                        // .on("mouseover", (event, d) => {
+                        //     tooltip.transition()
+                        //         .duration(200)
+                        //         .style("opacity", .9);
+                        //     tooltip.html(d.name + " - " + d.selectedStat) 
+                        //         .style("left", (event.pageX) + "px")
+                        //         .style("top", (event.pageY - 28) + "px");
+                        // })
+                        // .on("mouseout", (d) => {
+                        //     tooltip.transition()
+                        //         .duration(500)
+                        //         .style("opacity", 0);
+                        // });
             })};
     
 

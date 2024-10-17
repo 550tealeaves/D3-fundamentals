@@ -61,12 +61,13 @@
      
       .tooltip{
             position: absolute;
-            width: 300px;
+            width: auto;
             height: 20px;
-            padding: 4px;    
+            margin-left: 14px;
+            padding: 5px;    
             text-align: center; 
             font-family:sans-serif;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
             background: rgb(189, 217, 249);
             color: black; 
@@ -236,7 +237,7 @@
                         .selectAll("text")
                         .attr("transform", "translate(-10,0)rotate(-45)")
                         .attr("fill", "black")
-                        .attr("font-size", 16)
+                        .attr("font-size", 12)
                         .attr("font-weight", 500)
                         .style("text-anchor", "end");
 
@@ -259,7 +260,7 @@
                     //1ST TOOLTIP FUNCTION - MOUSEOVER
                     const mouseover = function (event, d) {  //listen for events being triggered on done elements
                         tooltip  //give things to the tooltip
-                            .html(d.name + " - " + d.selectedStat)//can add HTML features, like line break
+                            .html(d.name + " - " + d[selectedStat])//can add HTML features, like line break
                             .style("opacity", 1) //opacity set to 1 is visible - mouse hovers & you can see it
                             //Add absolute position of mouse b/c tooltip follows mouse
                             .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
@@ -308,16 +309,37 @@
                         .enter()
                         .append("circle")
                         .merge(u)
+                        .on("mouseover", mouseover) 
+                        .on("mousemove", mousemove) 
+                        .on("mouseout", mouseout)
+                        // .on("mouseover", (event, d) => {
+                        //     tooltip.transition()
+                        //     .duration(200)
+                        //     .style("opacity", 1)
+                        //     tooltip.html(d.name + " - " + d[selectedStat])
+                        //     .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
+                        //     .style("top", (event.pageY + 8) + "px");//mouse y coordinate - higher the # further away tooltip moves
+                        // })
+                        // .on("mousemove", (d) => {
+                        //     tooltip.transition()
+                        //     .style("left", (event.pageX + 8) + "px") //higher the # further away tooltip moves
+                        //     .style("top", (event.pageY + 8) + "px"); //higher the # further away tooltip moves
+                        // })
+                        // .on("mouseout", (d) => {
+                        //     tooltip.transition()
+                        //     .duration(500)
+                        //     .style("opacity", 0);
+
+                        // })
+                        //ALTERNATIVE WAY TO ADD THE 3 TOOLTIP FUNCTIONS
                         .transition()
                         .duration(1000)
                         .attr("cx", d => x(d.name))
                         .attr("cy", d => y(d[selectedStat]))
                         .attr("r", 6)
                         .style("fill", "#ee1515")
-                        .attr("stroke", "#222224")
-                        .on("mouseover", mouseover) //NEW: .on() - this is event
-                        .on("mousemove", mousemove) //tells it what to do 
-                        .on("mouseout", mouseout);
+                        .attr("stroke", "#222224");                   
+                        
             })};
     
 
