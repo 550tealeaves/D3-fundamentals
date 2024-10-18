@@ -15,12 +15,13 @@
         h2{
             color: indigo;
             margin-left: 20px;
+            text-align: center;
         }
         .lollipop{
             margin-left: 50px;
         }
         .pie-chart{
-            margin-left: 30px;
+            margin-left: 30%;
         }
         .colors{
             text-align: center;
@@ -44,7 +45,7 @@
         background: #3b4cca;
         font-weight: bold;
         margin: 5px;
-        margin-left: 50px;
+        margin-left: 30px;
         border-radius: 30px;
         padding: 6px;
       }
@@ -73,6 +74,20 @@
             color: black; 
             border-radius: 16px;
           }
+
+          .move-button{
+            margin-left: 15%;
+          }
+
+          #container-two{
+            padding-left: 55px;
+          }
+
+          p{
+            font-style: italic;
+            margin-left: 20px;
+            text-align: center;
+          }
     </style>
 </head>
 <body>
@@ -80,15 +95,18 @@
     <h2>There are a combined 31 legendary & mythical Pokémon in the first 3 generations</h2>
     <div id="container"></div>
     <h2>How do the Legendary & Mythical Pokémon compare? Click the stats to find out!</h2>
-    <p style="font-style: italic; margin-left: 20px">Note: The 7 mythical Pokémon are denoted by (m) at the end of their names, and the 7 legendary variants are denoted by (v)</p>
+    <p>Note: The 7 mythical Pokémon are denoted by (m) at the end of their names, and the 7 legendary variants are denoted by (v)</p>
     <!-- Add buttons with event listener onclick="update" - must define update as a function in the script -->
-    <button onclick="update('total')">Total</button>
-    <button onclick="update('hp')">HP</button>
-    <button onclick="update('attack')">Attack</button>
-    <button onclick="update('defense')">Defense</button>
-    <button onclick="update('sp_attack')">Special Attack</button>
-    <button onclick="update('sp_defense')">Special Defense</button>
-    <button onclick="update('speed')">Speed</button>
+     <div class="move-button">
+        <button onclick="update('total')">Total</button>
+        <button onclick="update('hp')">HP</button>
+        <button onclick="update('attack')">Attack</button>
+        <button onclick="update('defense')">Defense</button>
+        <button onclick="update('sp_attack')">Special Attack</button>
+        <button onclick="update('sp_defense')">Special Defense</button>
+        <button onclick="update('speed')">Speed</button>
+     </div>
+    
     <div id="container-two"></div>
 
     <script type="text/javascript">
