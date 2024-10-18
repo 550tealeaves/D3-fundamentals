@@ -13,7 +13,8 @@
         }
 
         h2{
-            color: indgo;
+            color: indigo;
+            margin-left: 20px;
         }
         .lollipop{
             margin-left: 50px;
@@ -61,14 +62,14 @@
      
       .tooltip{
             position: absolute;
-            width: 300px;
-            height: 20px;
+            width: auto;
+            height: auto;
             padding: 4px;    
             text-align: center; 
             font-family:sans-serif;
-            font-size: 14px;
+            font-size: 11px;
             font-weight: bold;
-            background: rgb(189, 217, 249);
+            background: rgb(145, 236, 127);
             color: black; 
             border-radius: 16px;
           }
@@ -79,7 +80,7 @@
     <h2>There are a combined 31 legendary & mythical Pokémon in the first 3 generations</h2>
     <div id="container"></div>
     <h2>How do the Legendary & Mythical Pokémon compare? Click the stats to find out!</h2>
-    <p style="font-style: italic;">Note: The 7 mythical Pokémon are denoted by (m) at the end of their names, and the 7 legendary variants are denoted by (v)</p>
+    <p style="font-style: italic; margin-left: 20px">Note: The 7 mythical Pokémon are denoted by (m) at the end of their names, and the 7 legendary variants are denoted by (v)</p>
     <!-- Add buttons with event listener onclick="update" - must define update as a function in the script -->
     <button onclick="update('total')">Total</button>
     <button onclick="update('hp')">HP</button>
@@ -317,22 +318,16 @@
                         .merge(u)
                         .on("mouseover", (event, d) => {
                             tooltip.transition()
-                            .duration(200)
-                            .style("opacity", 1)
-                            tooltip.html(d.name + " - " + d[selectedStat])
-                            .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
-                            .style("top", (event.pageY + 8) + "px");//mouse y coordinate - higher the # further away tooltip moves
-                        })
-                        .on("mousemove", (d) => {
-                            tooltip.transition()
-                            .style("left", (event.pageX + 8) + "px") //higher the # further away tooltip moves
-                            .style("top", (event.pageY + 8) + "px"); //higher the # further away tooltip moves
+                                .duration(200)
+                                .style("opacity", .9);
+                            tooltip.html(d.name + " - " + d[selectedStat]) 
+                                .style("left", (event.pageX) + "px")
+                                .style("top", (event.pageY - 28) + "px");
                         })
                         .on("mouseout", (d) => {
                             tooltip.transition()
-                            .duration(500)
-                            .style("opacity", 0);
-
+                                .duration(500)
+                                .style("opacity", 0)
                         })
                         .transition()
                         .duration(1000)
@@ -341,20 +336,9 @@
                         .attr("r", 6)
                         .style("fill", "#ee1515")
                         .attr("stroke", "#222224");
-                        // .on("mouseover", (event, d) => {
-                        //     tooltip.transition()
-                        //         .duration(200)
-                        //         .style("opacity", .9);
-                        //     tooltip.html(d.name + " - " + d.selectedStat) 
-                        //         .style("left", (event.pageX) + "px")
-                        //         .style("top", (event.pageY - 28) + "px");
-                        // })
-                        // .on("mouseout", (d) => {
-                        //     tooltip.transition()
-                        //         .duration(500)
-                        //         .style("opacity", 0);
-                        // });
-            })};
+                        
+                         });
+            };
     
 
     // INITIALIZE PLOT
