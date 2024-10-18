@@ -3,6 +3,7 @@ body {
     width: 960px;
     height: 500px;
     position: relative;
+    background-color: beige;
 }
 
 h3{
