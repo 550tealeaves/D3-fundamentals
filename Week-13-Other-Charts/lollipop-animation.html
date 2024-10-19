@@ -4,6 +4,22 @@
   <head>
     <meta charset="utf-8">
     <title>Animated Lollipop</title>
+    <style>
+      .tooltip{
+            position: absolute;
+            width: auto;
+            height: auto;
+            margin-left: 14px;
+            padding: 5px;    
+            text-align: center; 
+            font-family:sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            background: rgb(217, 189, 249);
+            color: black; 
+            border-radius: 16px;
+          }
+    </style>
   </head>
   <body>
     <div id="container"></div>
@@ -15,6 +31,13 @@
         width = 460 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
+
+      // ADD TOOLTIP
+      const tooltip = d3.select("#container")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0); //tooltip is invisible until used
+
       // CREATE SVG & APPEND TO BODY
       var svg = d3.select("#container")
         .append("svg")
@@ -23,6 +46,7 @@
         .append("g")
         .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
+
 
       // LOAD/PARSE DATA
       d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv", data => {
@@ -50,6 +74,32 @@
         svg.append("g")
           .call(d3.axisLeft(y))
 
+        
+        
+
+          // //1st TOOLTIP FUNCTION - MOUSEOVER
+          // const mouseover = function(event, d){
+          //   tooltip
+          //     .html(d.Country + " - " + d.Value)
+          //     .style("opacity", 1)
+          //     .style("left", (event.pageX + 7) + "px")
+          //     .style("top", (event.pageY + 7) + "px");
+          // }
+
+          // //2nd TOOLTIP FUNCTION - MOUSEMOVE
+          // const mousemove = function (event, d) {
+          //   tooltip
+          //     .style("left", (event.pageX + 7) + "px")
+          //     .style("top", (event.pageY + 7) + "px");
+          // }
+
+          // //3RD TOOLTIP FUNCTION - MOUSEOUT
+          // const mouseout = function(event, d){
+          //   tooltip
+          //     .style("opacity", 0); //reset tooltip as invisible since cursor moved
+          // }
+
+
         // LINES
         svg.selectAll("myline")
           .data(data)
@@ -71,12 +121,28 @@
           .attr("r", "7")
           .style("fill", "#f185b6")
           .attr("stroke", "#6a4439")
+          .on("mouseover", (event, d) => {
+              tooltip.transition()
+                  .duration(200)
+                  .style("opacity", .9);
+              tooltip.html(d.Country + "<br/>" + d.Value) //has date on 1st line & close on 2nd
+                  .style("left", (event.pageX + 8) + "px")
+                  .style("top", (event.pageY - 28) + "px");
+          })
+          .on("mouseout", (d) => {
+              tooltip.transition()
+                  .duration(500)
+                  .style("opacity", 0);
+          });
 
         // CHANGE X-COORDINATES OF LINE & CIRCLE 
         svg.selectAll("circle")
+          // .on("mouseover", mouseover)
+          // .on("mousemove", mousemove)
+          // .on("mouseout", mouseout)
           .transition()
           .duration(4000)
-          .attr("cx", d => x(d.Value))
+          .attr("cx", d => x(d.Value));
 
         svg.selectAll("line")
           .transition()
