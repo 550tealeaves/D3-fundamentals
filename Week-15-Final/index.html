@@ -7,82 +7,7 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Allura&family=Frijole&family=Oleo+Script&display=swap');
-        /* body{
-            background-color: #c6c6c6;
-            font-family: sans-serif;
-        } */
-    
-
-        /* h2{
-            color: indigo;
-            margin-left: 20px;
-        }
-
-        #container-two{
-        padding: 1cm;
-        }
-        .lollipop{
-            margin-left: 50px;
-        }
-        .pie-chart{
-            margin-left: 250px;
-            margin-top: 50px;
-        }
-        .colors{
-            text-align: center;
-            font-style: italic;
-            font-weight: 700;
-            text-transform: uppercase;
-            background: linear-gradient(to right,
-                    red,
-                    blue,
-                    gold,
-                    #c81624,
-                    silver,
-                    #2e5f9b); */
-            /* background-clip: text; determines the background painting area for gradient, if not added, it would just color background instead of text */
-            /* color: transparent;
-            font-family: "Frijole", system-ui;
-            font-size: 26px;
-        } */
-
-        /* button{
-        color: #ffde00;
-        background: #3b4cca;
-        font-weight: bold;
-        margin: 4px;
-        margin-left: 45px;
-        border-radius: 30px;
-        padding: 6px;
-      }
-      button:hover{
-        color: whitesmoke;
-        background: indigo;
         
-      }
-
-      button:active{
-        color: indigo;
-        background: salmon;
-      }
-
-     
-      .tooltip{
-            position: absolute;
-            width: auto;
-            height: auto;
-            margin-left: 14px;
-            padding: 5px;    
-            text-align: center; 
-            font-family:sans-serif;
-            font-size: 11px;
-            font-weight: bold;
-            background: rgb(189, 217, 249);
-            color: black; 
-            border-radius: 16px;
-          } */
-
-
         /* ---------- Base styles ---------- */
         body {
             background-color: #c6c6c6;
@@ -163,6 +88,15 @@
             box-sizing: border-box;
             text-align: center;
         }
+
+        /*trying to center the pie chart but it's not working*/
+        #container svg {
+            display: block;
+            margin: 16px auto;   /* centers horizontally */
+            max-width: 100%;
+            height: auto;
+        }
+
 
         #container-two svg {
             max-width: 100%;
