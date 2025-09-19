@@ -7,12 +7,13 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Allura&family=Frijole&family=Oleo+Script&display=swap');
-        body{
+        /* body{
             background-color: #c6c6c6;
             font-family: sans-serif;
-        }
+        } */
+    
 
-        h2{
+        /* h2{
             color: indigo;
             margin-left: 20px;
         }
@@ -38,14 +39,14 @@
                     gold,
                     #c81624,
                     silver,
-                    #2e5f9b);
-            background-clip: text; /*determines the background painting area for gradient, if not added, it would just color background instead of text*/
-            color: transparent;
+                    #2e5f9b); */
+            /* background-clip: text; determines the background painting area for gradient, if not added, it would just color background instead of text */
+            /* color: transparent;
             font-family: "Frijole", system-ui;
             font-size: 26px;
-        }
+        } */
 
-        button{
+        /* button{
         color: #ffde00;
         background: #3b4cca;
         font-weight: bold;
@@ -79,7 +80,157 @@
             background: rgb(189, 217, 249);
             color: black; 
             border-radius: 16px;
-          }
+          } */
+
+
+        /* ---------- Base styles ---------- */
+        body {
+            background-color: #c6c6c6;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1.colors {
+            text-align: center;
+            font-size: clamp(24px, 4vw, 40px);
+            margin: 1rem auto;
+            font-weight: 700;
+                text-transform: uppercase;
+                background: linear-gradient(to right,
+                        red,
+                        blue,
+                        gold,
+                        #c81624,
+                        silver,
+                        #2e5f9b);
+                background-clip: text; /*determines the background painting area for gradient, if not added, it would just color background instead of text*/
+                color: transparent;
+                font-family: "Frijole", system-ui;
+        }
+
+        h2 {
+            color: indigo;
+            margin: 0.5rem 1rem;
+            font-size: clamp(16px, 2.5vw, 22.5px);
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            font-size: clamp(14px, 2vw, 18px);
+            margin: 0.5rem 1rem;
+        }
+
+        /* ---------- Buttons ---------- */
+        .button-group {
+            text-align: center;        /* center inline buttons */
+            margin: 1rem 0;
+        }
+
+        .button-group button {
+            display: inline-block;
+            margin: 0.4rem;
+        }  
+        
+        button {
+            color: #ffde00;
+            background: #3b4cca;
+            font-weight: bold;
+            margin: 0.4rem;
+            border-radius: 30px;
+            padding: 0.4rem 0.8rem;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            color: whitesmoke;
+            background: indigo;
+        }
+
+        button:active {
+            color: indigo;
+            background: salmon;
+        }
+
+        /* ---------- Chart containers ---------- */
+        #container, #container-two {
+            width: 100%;
+            overflow-x: auto; /* prevent chart overflow on small screens */
+            padding: 1rem;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        #container-two svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Make SVGs scale */
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        #container-two svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+
+        /* ---------- Tooltip ---------- */
+        .tooltip {
+            position: absolute;
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            background: rgb(189, 217, 249);
+            color: black;
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        /* ---------- Media queries for small devices ---------- */
+        @media (max-width: 768px) {
+        h1.colors {
+            font-size: 28px;
+        }
+        h2 {
+            font-size: 16px;
+        }
+        button {
+            font-size: 12px;
+            padding: 0.3rem 0.6rem;
+        }
+        }
+
+        @media (max-width: 480px) {
+        h1.colors {
+            font-size: 24px;
+            line-height: 1.3;
+        }
+        h2 {
+            font-size: 16px;
+        }
+        p {
+            font-size: 14px;
+        }
+        button {
+            font-size: 12px;
+            padding: 0.25rem 0.5rem;
+        }
+        }
+
+
+
+
+    
     </style>
 </head>
 <body>
@@ -89,13 +240,15 @@
     <h2>How do the Legendary & Mythical Pokémon compare? Click the stats to find out!</h2>
     <p style="font-style: italic; margin-left: 20px">Note: The 7 mythical Pokémon are denoted by (m) at the end of their names, and the 7 legendary variants are denoted by (v)</p>
     <!-- Add buttons with event listener onclick="update" - must define update as a function in the script -->
-    <button onclick="update('total')">Total</button>
-    <button onclick="update('hp')">HP</button>
-    <button onclick="update('attack')">Attack</button>
-    <button onclick="update('defense')">Defense</button>
-    <button onclick="update('sp_attack')">Special Attack</button>
-    <button onclick="update('sp_defense')">Special Defense</button>
-    <button onclick="update('speed')">Speed</button>
+    <div class="button-group">
+        <button onclick="update('total')">Total</button>
+        <button onclick="update('hp')">HP</button>
+        <button onclick="update('attack')">Attack</button>
+        <button onclick="update('defense')">Defense</button>
+        <button onclick="update('sp_attack')">Special Attack</button>
+        <button onclick="update('sp_defense')">Special Defense</button>
+        <button onclick="update('speed')">Speed</button>
+    </div>
     <div id="container-two"></div>
 
     <script type="text/javascript">
@@ -172,14 +325,27 @@
 
             //LOLLIPOP CHART
             // CREATE SVG & APPEND TO BODY
+            // const svg2 = d3.select("#container-two")
+            //     .append("svg")
+            //     .attr("class", "svg")
+            //     .attr("width", width + margin.left + margin.right)
+            //     .attr("height", height + margin.top + margin.bottom)
+            //     .append("g")
+            //     .attr("transform",
+            //         "translate(" + margin.left + "," + margin.top + ")");
+
+
             const svg2 = d3.select("#container-two")
                 .append("svg")
                 .attr("class", "svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
+                .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+                .attr("preserveAspectRatio", "xMidYMid meet")
+                .style("width", "100%")
+                .style("height", "auto")
                 .append("g")
-                .attr("transform",
-                    "translate(" + margin.left + "," + margin.top + ")");
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            
 
             // CREATE TOOLTIP
             // TOOLTIP - REQUIRES 3 FUNCTIONS
@@ -301,7 +467,7 @@
 
 
                     // VARIABLE U: MAP DATA TO POKÉBALL IMAGES (chatGPT)
-                    const iconSize = 20; // size of the Pokéball image in px
+                    const iconSize = 18; // size of the Pokéball image in px
 
                     const u = svg2.selectAll("image.pokeball")
                     .data(dataTwo, d => d.name); // use name as key
