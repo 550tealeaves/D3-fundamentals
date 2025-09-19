@@ -7,7 +7,7 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Allura&family=Frijole&family=Oleo+Script&display=swap');
-        
+
         /* ---------- Base styles ---------- */
         body {
             background-color: #c6c6c6;
@@ -274,7 +274,7 @@
                 .attr("class", "svg")
                 .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
                 .attr("preserveAspectRatio", "xMidYMid meet")
-                .style("width", "100%")
+                .style("width", "90%") //orig at 100% but it looked too large on the screen
                 .style("height", "auto")
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
