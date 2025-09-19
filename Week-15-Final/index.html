@@ -300,24 +300,33 @@
                         .attr("stroke", "#718a9b");
 
 
-                    // VARIABLE U: MAP DATA TO EXISTING CIRCLE
-                    const u = svg2.selectAll("circle")
-                        .data(dataTwo)
-                    // UPDATE CIRCLE
+                    // VARIABLE U: MAP DATA TO POKÉBALL IMAGES (chatGPT)
+                    const iconSize = 20; // size of the Pokéball image in px
+
+                    const u = svg2.selectAll("image.pokeball")
+                    .data(dataTwo, d => d.name); // use name as key
+
                     u
-                        .enter()
-                        .append("circle")
-                        .merge(u)
-                        .on("mouseover", mouseover) //NEW: .on() - this is event
-                        .on("mousemove", mousemove) //tells it what to do 
+                    .enter()
+                    .append("image")
+                        .attr("class", "pokeball")
+                        .attr("xlink:href", "pokeball.png") //add filepath to image
+                        .attr("width", iconSize)
+                        .attr("height", iconSize)
+                        .attr("x", d => x(+d[selectedStat]) - iconSize / 2)
+                        .attr("y", d => y(d.name) - iconSize / 2)
+                        .on("mouseover", mouseover)
+                        .on("mousemove", mousemove)
                         .on("mouseout", mouseout)
+                    .merge(u)
                         .transition()
                         .duration(1000)
-                        .attr("cx", d => x(+d[selectedStat]))
-                        .attr("cy", d => y(d.name)) //could also be written as .attr("cy", d => {console.log(y(d.name)); return y(d.name); })
-                        .attr("r", 6)
-                        .style("fill", "#ee1515")
-                        .attr("stroke", "#222224");         
+                        .attr("x", d => x(+d[selectedStat]) - iconSize / 2)
+                        .attr("y", d => y(d.name) - iconSize / 2)
+                        .attr("width", iconSize)
+                        .attr("height", iconSize);
+
+                    u.exit().remove();
             })};
     
     // INITIALIZE PLOT
