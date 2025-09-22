@@ -38,15 +38,8 @@
 
         .linethree{
             fill: none;
+            stroke-width: 3px;
             stroke: #ed174c;
-            stroke-width: 3px;
-        }
-
-        .linefour{
-            fill: none;
-            stroke: #ffc72c;
-            stroke-width: 3px;
-
         }
 
         /*STYLE THE TITLE*/
@@ -76,7 +69,7 @@
         }
 
         /*STYLE THE TOOLTIPS*/
-         .tooltip,.tooltip-two,.tooltip-three, .tooltip-four{
+         .tooltip,.tooltip-two,.tooltip-three{
             position: absolute;
             width: auto;
             height: auto;
@@ -99,10 +92,6 @@
             background: rgb(225, 253, 186); 
           }
 
-          .tooltip-four{
-            background: #ffad9c;
-          }
-
 
           /*STYLE THE CIRCLES*/
           .circle{
@@ -119,13 +108,6 @@
             fill: #ffc72c;
             stroke: black;
           }
-
-          .circle-four{
-            fill: rgb(74, 255, 186);
-            stroke: black;
-          }
-
-          
 
     </style>
 </head>
@@ -279,41 +261,6 @@
             }
 
 
-            //CREATE 4th TOOLTIP
-
-            //TOOLTIP - REQUIRES 3 FUNCTIONS
-            const tooltipFour = d3.select("body")
-                .append("div")
-                .attr("class", "tooltip-four") //class for styling in CSS
-                .style("opacity", 0); //opacity set to 0 is invisible until used
-
-            //1ST TOOLTIP FUNCTION - MOUSEOVER
-            const mouseoverFour = function (event, d) {  //listen for events being triggered on done elements
-                tooltipFour  //give things to the tooltip
-                    .html(d.YrPicked + " - " + d.Player + ": " + d.TOTAST + " rebs")//can add HTML features, like line break
-                    .style("opacity", 1) //opacity set to 1 is visible - mouse hovers & you can see it
-                    //Add absolute position of mouse b/c tooltip follows mouse
-                    .style("left", (event.pageX + 8) + "px")//mouse x coordinate - higher the # further away tooltip moves
-                    .style("top", (event.pageY + 8) + "px");//mouse y coordinate - higher the # further away tooltip moves
-            }
-
-            //2nd TOOLTIP FUNCTION - MOUSEMOVE
-            //Use event & d
-            const mousemoveFour = function (event, d) {
-                tooltipFour
-                    .style("left", (event.pageX + 8) + "px") //higher the # further away tooltip moves
-                    .style("top", (event.pageY + 8) + "px") //higher the # further away tooltip moves
-            }
-
-            //3rd TOOLTIP FUNCTION - MOUSEOUT
-            //Use event & d
-            const mouseoutFour = function (event, d) {
-                tooltipFour
-                    .style("opacity", 0); //invisible when cursor leaves
-            }
-
-
-
 
             //CREATE SVG
             const svg = d3.select("body")
@@ -370,12 +317,6 @@
                             .x(d => xScale(d.DraftYear))
                             .y(d => yScale(d.TOTTRB));
 
-            //CREATE 4th LINE USING D3.LINE GENERATOR
-            const line4 = d3.line()
-                            .curve(d3.curveLinear)
-                            .x(d => xScale(d.DraftYear))
-                            .y(d => yScale(d.TOTAST));
-
 
             //PATHS
 
@@ -391,17 +332,11 @@
                 .attr("class", "linetwo")
                 console.log('line2', line2(data));
 
-            //APPLY 3RD LINE GENERATOR USING PATH
+             //APPLY 3RD LINE GENERATOR USING PATH
             svg.append("path")
                 .attr("d", line3(data))
                 .attr("class", "linethree")
                 console.log('line3', line3(data));
-
-            //APPLY 4th LINE GENERATOR USING PATH
-            svg.append("path")
-                .attr("d", line4(data))
-                .attr("class", "linefour")
-                console.log('line4', line4(data));
 
 
             //CIRCLES
@@ -452,23 +387,7 @@
                 .on("mousemove", mousemoveThree) //tells it what to do 
                 .on("mouseout", mouseoutThree);
 
-              
-            //CRETE CIRCLES FOR TOTAST
-            const circleFour = svg.selectAll("circle")
-                .data(data)
-                .enter()
-                .append("path")
-                .attr("class", "circle-four")
-                .attr("d", symbolData)
-                .attr("transform", d => "translate(" + xScale(d.DraftYear) + "," + yScale(d.TOTAST) + ")")
-                //ADD THE 3 .on() - they attribute the 3 tooltip functions
-                .on("mouseover", mouseoverFour) //NEW: .on() - this is event
-                .on("mousemove", mousemoveFour) //tells it what to do 
-                .on("mouseout", mouseoutFour);
-
-                
-            
-
+               
             //ADD CHART TITLE
             svg.append("text")
                 .attr("x", width / 2) //x-coordinate is at 300
