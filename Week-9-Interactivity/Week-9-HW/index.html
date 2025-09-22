@@ -350,28 +350,30 @@
 
             //LINES
 
-            //CREATE 1ST LINE USING D3.LINE GENERATOR
+            //CREATE 1ST LINE USING D3.LINE GENERATOR - REQUIRES X&Y
+            //Added .curve (optional) to change the shape of the line
             const line = d3.line() //requires x & y
-                           .x(d => xScale(d.DraftYear))
-                           .y(d => yScale(d.TOTMP));
+                            .x(d => xScale(d.DraftYear))
+                            .y(d => yScale(d.TOTMP))
+                            .curve(d3.curveBumpY);
 
             //CREATE 2ND LINE USING D3.LINE GENERATOR
             const line2 = d3.line()
-                            .curve(d3.curveBumpX)
                             .x(d => xScale(d.DraftYear))
-                            .y(d => yScale(d.TOTPTS));
+                            .y(d => yScale(d.TOTPTS))
+                            .curve(d3.curveBumpX);
 
             //CREATE 3RD LINE USING D3.LINE GENERATOR
             const line3 = d3.line()
-                            .curve(d3.curveCardinal)
                             .x(d => xScale(d.DraftYear))
-                            .y(d => yScale(d.TOTTRB));
+                            .y(d => yScale(d.TOTTRB))
+                            .curve(d3.curveCardinal);
 
             //CREATE 4th LINE USING D3.LINE GENERATOR
             const line4 = d3.line()
-                            .curve(d3.curveLinear)
                             .x(d => xScale(d.DraftYear))
-                            .y(d => yScale(d.TOTAST));
+                            .y(d => yScale(d.TOTAST))
+                            .curve(d3.curveCardinal.tension(0.92));
 
 
             //PATHS
