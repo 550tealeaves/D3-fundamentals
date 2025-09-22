@@ -14,10 +14,13 @@
         <script type="text/javascript">
         
         //Declare consts/global variables
+        //Make this responsive by first defining the window.inner values and assigning those to width and height
+        const containerWidth = window.innerWidth * 0.95;
+        const containerHeight = window.innerHeight * 0.75;
+        const width = containerWidth;
+        const height = containerHeight;
         const margin = 30;
-        const width = 500; 
-        const height = 500;
-        const padding = .05; //space b/w bars
+        const padding = .15; //space b/w bars
 
 
         //LOAD EXTERNAL DATA & RELATED VARIABLES
@@ -57,8 +60,8 @@
         //CREATE SVG
         const svg = d3.select("body")
                     .append("svg")
-                    .attr("width", width)
-                    .attr("height", height);
+                    .attr("viewBox", `0 0 ${width} ${height}`) //makes the SVG responsive
+                    .attr("preserveAspectRatio", "xMidYMid meet"); //makes SVG responsive;
 
                     
         //AXES - CREATE & IMPLEMENT X/Y AXES
