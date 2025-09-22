@@ -62,6 +62,10 @@
         /*STYLE THE SVG*/
         .svg{
             margin-left: 20px;
+            /*add responsiveness*/
+            display: block;
+            max-width: 100%;
+            height: auto;
         }
 
         /*STYLE THE TOOLTIPS*/
@@ -110,9 +114,12 @@
 <body>
     <script type="text/javascript">
         //CONSTANTS & GLOBALS
-        const width = 1000;
-        const height = 600;
-        const margin = 67;
+        // Use window.inner instead of hardcoded values to make the SVG responsive
+        const containerWidth = window.innerWidth * 0.95;
+        const containerHeight = window.innerHeight * 0.95;
+        const width = containerWidth;
+        const height = containerHeight;
+        const margin = 70;
         const parseTime = d3.timeParse("%Y"); //will parse it using full year
         
 
@@ -148,7 +155,6 @@
 
             const yScale = d3.scaleLinear() //use linear scale for other bball metrics
                 .domain([0, 55000])    
-            //.domain(d3.extent(data, d => d.TOTMP))
                 .range([height-margin, margin]);
 
 
@@ -260,8 +266,8 @@
             const svg = d3.select("body")
                 .append("svg")
                 .attr("class", "svg")
-                .attr("width", width)
-                .attr("height", height);
+                .attr("viewBox", `0 0 ${width} ${height}`) //makes the SVG responsive
+                .attr("preserveAspectRatio", "xMidYMid meet"); //makes SVG responsive
 
 
             //AXES
@@ -385,7 +391,7 @@
             //ADD CHART TITLE
             svg.append("text")
                 .attr("x", width / 2) //x-coordinate is at 300
-                .attr("y", [height - margin] - 510)
+                .attr("y", margin / 2) //use margin for consistent spacing
                 .attr("class", "title")
                 .text("#1 NBA draft pick stats from 1990-2021");
 
