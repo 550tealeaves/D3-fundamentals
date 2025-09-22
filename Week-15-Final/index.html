@@ -229,7 +229,7 @@
             const svg = d3.select("#container")
                 .append("svg")
                 .attr("class", "pie-chart")
-                .attr("width", width)
+                .attr("width", width - margin.right*10)
                 .attr("height", height);
 
             //GROUPS TO BUILD CHART
