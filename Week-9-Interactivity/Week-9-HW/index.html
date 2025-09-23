@@ -491,6 +491,65 @@
                 .attr("y", 15) //y coordinate = 15
                 .attr("class", "label")
                 .text("Player Stats");
+
+
+            //ADD A LEGEND
+            svg
+                .append("circle")
+                .attr("class", "legend-one")
+                .attr("cx",800)
+                .attr("cy",130)
+                .attr("r", 6)
+                .style("fill", "#007a33")
+            svg
+                .append("circle")
+                .attr("class", "legend-two")
+                .attr("cx",800)
+                .attr("cy",160)
+                .attr("r", 6)
+                .style("fill", "rgb(44, 117, 185)")
+            svg
+                .append("circle")
+                .attr("class", "legend-three")
+                .attr("cx",800)
+                .attr("cy",190)
+                .attr("r", 6)
+                .style("fill", "#ed174c")
+            svg
+                .append("circle")
+                .attr("class", "legend-four")
+                .attr("cx",800)
+                .attr("cy",220)
+                .attr("r", 6)
+                .style("fill", "#c547ff")
+            svg
+                .append("text")
+                .attr("x", 820)
+                .attr("y", 130)
+                .text("Minutes")
+                .style("font-size", "15px")
+                .attr("alignment-baseline","middle")
+            svg
+                .append("text")
+                .attr("x", 820)
+                .attr("y", 160)
+                .text("Points")
+                .style("font-size", "15px")
+                .attr("alignment-baseline","middle")
+            svg
+                .append("text")
+                .attr("x", 820)
+                .attr("y", 190)
+                .text("Rebounds")
+                .style("font-size", "15px")
+                .attr("alignment-baseline","middle")
+            svg
+                .append("text")
+                .attr("x", 820)
+                .attr("y", 220)
+                .text("Assists")
+                .style("font-size", "15px")
+                .attr("alignment-baseline","middle")
                 
         });
     </script>
