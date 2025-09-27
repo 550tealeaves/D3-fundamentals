@@ -12,6 +12,12 @@
             background-color: rgb(255, 231, 235);
         }
 
+        .footer{
+            font-size: 12px;
+            transform: translateX(100px);
+            font-style: italic;
+        }
+
         /*STYLE THE AXES & PATHS*/
         .axis path,.axis line{
             stroke: rgb(39, 1, 1);
@@ -310,8 +316,6 @@
             }
 
 
-
-
             //CREATE SVG
             const svg = d3.select("body")
                 .append("svg")
@@ -467,7 +471,7 @@
                 .on("mouseout", mouseoutFour);
 
                 
-            
+            // TITLE AND FOOTER
 
             //ADD CHART TITLE
             svg.append("text")
@@ -475,6 +479,13 @@
                 .attr("y", margin / 2) //use margin for consistent spacing
                 .attr("class", "title")
                 .text("#1 NBA draft pick stats from 1990-2021");
+
+            //ADD FOOTER
+            svg.append('text')
+                .attr("class", "footer")
+                .attr("x", (width / 2) + margin*4)
+                .attr("y", height - 16)
+                .text("Coded by Nastasia Pollas")
 
 
             //ADD X-AXIS LABEL
