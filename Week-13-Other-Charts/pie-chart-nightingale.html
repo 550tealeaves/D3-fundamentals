@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>D3 Pie Chart - Dogs vs Cats (Animated)</title>
+  <title>D3 Nightingale Rose Chart</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
     body {
@@ -13,7 +13,7 @@
       padding-top: 40px;
     }
     text {
-      font-size: 14px;
+      font-size: 13px;
       fill: #333;
     }
   </style>
@@ -31,9 +31,10 @@ const data = [
 ];
 
 // Dimensions
-const width = 800;
-const height = 500;
-const radius = Math.min(width, height) / 2 - 20;
+const width = 600;
+const height = 450;
+const innerRadius = 20;
+const outerMax = 240; // Max petal radius
 
 // Color scale
 const color = d3.scaleOrdinal()
@@ -48,33 +49,35 @@ const svg = d3.select("body")
   .append("g")
     .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-// Pie generator
+// Scale values to radius
+const radiusScale = d3.scaleLinear()
+  .domain([0, d3.max(data, d => d.value)])
+  .range([innerRadius, outerMax]);
+
+// Each slice gets equal angle
 const pie = d3.pie()
-  .value(d => d.value)
-  .sort(null);
+  .sort(null)
+  .value(() => 1);
 
 // Arc generator
 const arc = d3.arc()
-  .innerRadius(0)
-  .outerRadius(radius);
+  .innerRadius(innerRadius)
+  .outerRadius(d => radiusScale(d.data.value))
+  .padAngle(0.02)
+  .cornerRadius(6);
 
-// Label arc (slightly larger radius)
-const labelArc = d3.arc()
-  .innerRadius(radius + 20)
-  .outerRadius(radius + 20);
-
-// Draw slices with animation
+// Draw slices
 svg.selectAll("path")
   .data(pie(data))
   .join("path")
     .attr("fill", d => color(d.data.animal))
-    .style("stroke", "white")
-    .style("stroke-width", "2px")
+    .attr("stroke", "white")
+    .attr("stroke-width", "2px")
     .transition()
-      .duration(3000)
+      .duration(2000)
       .attrTween("d", function(d) {
         const i = d3.interpolate(
-          { startAngle: d.startAngle, endAngle: d.startAngle },
+          { ...d, endAngle: d.startAngle }, // start collapsed
           d
         );
         return function(t) {
@@ -82,39 +85,27 @@ svg.selectAll("path")
         };
       });
 
-// Add leader lines
-svg.selectAll("polyline")
-  .data(pie(data))
-  .join("polyline")
-    .attr("stroke", "#555")
-    .attr("stroke-width", 1)
-    .attr("fill", "none")
-    .transition()
-      .delay(1500)
-      .duration(700)
-      .attr("points", function(d) {
-        const posA = arc.centroid(d);       // slice center
-        const posB = labelArc.centroid(d);  // label position
-        return [posA, posB];
-      });
+// Label positions (just past outer radius)
+const labelArc = d3.arc()
+  .innerRadius(d => radiusScale(d.data.value) + 20)
+  .outerRadius(d => radiusScale(d.data.value) + 20);
 
-// Add labels outside
+// Labels
 svg.selectAll("text")
   .data(pie(data))
   .join("text")
     .attr("transform", d => `translate(${labelArc.centroid(d)})`)
     .style("opacity", 0)
     .transition()
-      .delay(1500)
+      .delay(2000)
       .style("opacity", 1)
-      .text(d => `${d.data.animal}: ${d.data.value}`)
+      .text(d => `${d.data.animal} (${d.data.value})`)
       .style("text-anchor", d => {
-        // Align based on what side of the pie the label is on
         const mid = (d.startAngle + d.endAngle) / 2;
         return mid < Math.PI ? "start" : "end";
       });
-</script>
 
+</script>
 
 </body>
 </html>

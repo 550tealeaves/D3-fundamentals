@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>D3 Radial Bar Chart</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      padding-top: 40px;
+    }
+    text {
+      font-size: 12px;
+      fill: #333;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+// Data
+const data = [
+  { animal: "Dogs", value: 20 },
+  { animal: "Cats", value: 50 },
+  { animal: "Birds", value: 10},
+  { animal: "Fish", value: 5},
+  { animal: "Hedgehog", value: 15}
+];
+
+// Dimensions
+const width = 600;
+const height = 450;
+const innerRadius = 90;
+const outerRadius = 250;
+
+// SVG container
+const svg = d3.select("body")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+// Scale values
+const maxVal = d3.max(data, d => d.value);
+const radiusScale = d3.scaleLinear()
+  .domain([0, maxVal])
+  .range([innerRadius, outerRadius]);
+
+// Angle scale
+const angle = d3.scaleBand()
+  .domain(data.map(d => d.animal))
+  .range([0, 2 * Math.PI])
+  .padding(0.55);
+
+// Color scale
+const color = d3.scaleOrdinal()
+  .domain(data.map(d => d.animal))
+  .range(["#F2755E", "#E65EF2", "#16DE2A", "#3BF7E7", "#F7F73B"]);
+
+// Arc generator
+const arc = d3.arc()
+  .innerRadius(innerRadius)
+  .outerRadius(d => radiusScale(d.value))
+  .startAngle(d => angle(d.animal))
+  .endAngle(d => angle(d.animal) + angle.bandwidth())
+  .cornerRadius(90);
+
+// Bars with animation
+svg.selectAll("path")
+  .data(data)
+  .join("path")
+    .attr("fill", d => color(d.animal))
+    .attr("stroke", "white")
+    .attr("stroke-width", "2px")
+    .transition()
+      .duration(2000)
+      .attrTween("d", function(d) {
+        const interp = d3.interpolate(
+          { value: 0 },
+          d
+        );
+        return function(t) {
+          return arc(interp(t));
+        };
+      });
+
+// Labels
+svg.selectAll("text")
+  .data(data)
+  .join("text")
+    .attr("transform", d => {
+      const anglePos = angle(d.animal) + angle.bandwidth() / 2 - Math.PI / 2;
+      const r = radiusScale(d.value) + 18;
+      const x = Math.cos(anglePos) * r;
+      const y = Math.sin(anglePos) * r;
+      return `translate(${x}, ${y})`;
+    })
+    .style("opacity", 0)
+    .transition()
+      .delay(2000)
+      .style("opacity", 1)
+      .text(d => `${d.animal} (${d.value})`)
+      .style("text-anchor", d => {
+        const midpoint = angle(d.animal) + angle.bandwidth() / 2;
+        return midpoint < Math.PI ? "start" : "end";
+      });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>D3 Spiral Pie Chart</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      padding-top: 40px;
+    }
+    text {
+      font-size: 12px;
+      fill: #333;
+    }
+  </style>
+</head>
+<body>
+<script>
+// Data
+const data = [
+  { animal: "Dogs", value: 20 },
+  { animal: "Cats", value: 50 },
+  { animal: "Birds", value: 10},
+  { animal: "Fish", value: 5},
+  { animal: "Hedgehog", value: 15}
+];
+
+// Dimensions (slightly taller)
+const width = 500;
+const height = 540;
+const centerX = width / 2;
+const centerY = height / 2 - 40;   // shift the chart upward
+
+// Spiral tighter spacing
+const turns = 2.0;
+const spacing = 14;
+
+// SVG container
+const svg = d3.select("body")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", `translate(${centerX}, ${centerY})`);
+
+// Colors
+const color = d3.scaleOrdinal()
+  .domain(data.map(d => d.animal))
+  .range(["#F2755E", "#E65EF2", "#16DE2A", "#3BF7E7", "#F7F73B"]);
+
+// Total value
+const total = d3.sum(data, d => d.value);
+
+// Helper
+function polar(angle, radius) {
+  return [
+    Math.cos(angle) * radius,
+    Math.sin(angle) * radius
+  ];
+}
+
+// Build spiral arcs
+let currentAngle = 0;
+let segments = [];
+
+data.forEach(d => {
+  const fraction = d.value / total;
+  const angleLength = 2 * Math.PI * turns * fraction;
+
+  segments.push({
+    ...d,
+    startAngle: currentAngle,
+    endAngle: currentAngle + angleLength
+  });
+
+  currentAngle += angleLength;
+});
+
+// Draw spiral
+segments.forEach(segment => {
+  const steps = 80;
+  let points = [];
+
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const angle = segment.startAngle + t * (segment.endAngle - segment.startAngle);
+    const radius = spacing * angle;
+    const [x, y] = polar(angle, radius);
+    points.push([x, y]);
+  }
+
+  const line = d3.line().curve(d3.curveCardinal);
+
+  const path = svg.append("path")
+    .datum(points)
+    .attr("fill", "none")
+    .attr("stroke", color(segment.animal))
+    .attr("stroke-width", 12)
+    .attr("d", line)
+    .attr("stroke-dasharray", function() {
+      return this.getTotalLength();
+    })
+    .attr("stroke-dashoffset", function() {
+      return this.getTotalLength();
+    });
+
+  // animate
+  path.transition()
+    .duration(2000)
+    .attr("stroke-dashoffset", 0);
+
+  // Label placement (slightly inward)
+  const midAngle = (segment.startAngle + segment.endAngle) / 2;
+  const labelRadius = spacing * midAngle - 10;
+  const [lx, ly] = polar(midAngle, labelRadius);
+
+  svg.append("text")
+    .attr("x", lx)
+    .attr("y", ly)
+    .style("opacity", 0)
+    .transition()
+      .delay(2000)
+      .style("opacity", 1)
+      .text(`${segment.animal} (${segment.value})`)
+      .style("text-anchor", "middle");
+});
+</script>
+
+
+
+</body>
+</html>
