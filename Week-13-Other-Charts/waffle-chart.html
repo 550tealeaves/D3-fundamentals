@@ -1,0 +1,99 @@
+<!--Used chatGPT-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>D3 Waffle Chart - Animals</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+    font-family: sans-serif;
+      background: aliceblue;
+      display: flex;
+      justify-content: center;
+      padding-top: 40px;
+    }
+    .tile {
+      font-size: 22px;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+// Data
+const data = [
+  { animal: "Dogs", value: 20, icon: "🐶" },
+  { animal: "Cats", value: 50, icon: "🐱" },
+  { animal: "Birds", value: 10, icon: "🐦" },
+  { animal: "Fish", value: 5, icon: "🐟" },
+  { animal: "Hedgehog", value: 15, icon: "🦔" }
+];
+
+// Waffle chart settings
+const tileSize = 40;       // size of each square - bigger # = larger
+const tilesPerRow = 10;    // number of tiles in a row
+const gap = 5;             // gap between tiles - bigger # = wider gap
+
+// Calculate total tiles
+const total = d3.sum(data, d => d.value);
+
+// Flatten data into individual tiles
+let tiles = [];
+data.forEach(d => {
+  for (let i = 0; i < d.value; i++) {
+    tiles.push({ icon: d.icon, category: d.animal });
+  }
+});
+
+// SVG container
+const rows = Math.ceil(tiles.length / tilesPerRow);
+const width = tilesPerRow * (tileSize + gap);
+const height = rows * (tileSize + gap);
+
+const svg = d3.select("body")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// Draw tiles
+svg.selectAll("text")
+  .data(tiles)
+  .join("text")
+    .attr("class", "tile")
+    .attr("x", (d,i) => (i % tilesPerRow) * (tileSize + gap))
+    .attr("y", (d,i) => Math.floor(i / tilesPerRow) * (tileSize + gap) + tileSize * 0.8)
+    .text(d => d.icon)
+    .attr("opacity", 0)
+  .transition()
+    .delay((d,i) => i * 50) // animate tiles appearing sequentially
+    .duration(400)
+    .attr("opacity", 1);
+
+// Optional: legend
+const legend = svg.append("g")
+  .attr("transform", `translate(10, ${height + 30})`);
+
+data.forEach((d, i) => {
+  const g = legend.append("g")
+    .attr("transform", `translate(${i * 90},0)`);
+
+  g.append("text")
+    .text(d.icon)
+    .attr("y", 0)
+    .attr("x", 0)
+    .attr("font-size", "22px");
+
+  g.append("text")
+    .text(`${d.animal} (${d.value})`)
+    .attr("x", 25)
+    .attr("y", 5)
+    .attr("font-size", "14px")
+    .attr("dominant-baseline", "middle");
+});
+
+</script>
+
+</body>
+</html>
