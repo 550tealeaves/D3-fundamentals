@@ -38,8 +38,8 @@ const data = [
 ];
 
 // Dimensions
-const width = 500;
-const height = 500;
+const width = 600;
+const height = 700;
 const radius = Math.min(width, height) / 2 - 50;
 
 // Number of axes
@@ -104,7 +104,7 @@ const radarLine = d3.lineRadial()
 // Draw radar area
 const radarPath = svg.append("path")
   .datum(data)
-  .attr("fill", "#FFFFAC88")
+  .attr("fill", "#FFFFAC88") //88 provides the opacity
   .attr("stroke", "#16DE2A")
   .attr("stroke-width", 2)
   .attr("d", d3.lineRadial()
